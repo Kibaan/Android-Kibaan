@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 角丸の半径 -->
+    <attr name="cornerRadius" format="dimension" />
+    <!-- 枠線の色 -->
+    <attr name="borderColor" format="color" />
+    <!-- 枠線の太さ -->
+    <attr name="borderWidth" format="dimension" />
+    <!-- ユーザの操作を許可するか -->
+    <attr name="isUserInteractionEnabled" format="boolean" />
+    <!-- 文字サイズを端末サイズに合わせて調整するかどうか -->
+    <attr name="adjustsFontSizeForDevice" format="boolean" />
+    <!-- カスタムフォントを使用するかどうか -->
+    <attr name="useGlobalFont" format="boolean" />
+
+    <!-- RoundedView -->
+    <declare-styleable name="RoundedView">
+        <attr name="isUserInteractionEnabled" />
+        <attr name="cornerRadius" />
+        <attr name="borderColor" />
+        <attr name="borderWidth" />
+    </declare-styleable>
+
+    <!-- RoundedConstraintLayout -->
+    <declare-styleable name="RoundedConstraintLayout">
+        <attr name="isUserInteractionEnabled" />
+        <attr name="cornerRadius" />
+        <attr name="borderColor" />
+        <attr name="borderWidth" />
+    </declare-styleable>
+
+    <!-- RoundedLinearLayout -->
+    <declare-styleable name="RoundedLinearLayout">
+        <attr name="isUserInteractionEnabled" />
+        <attr name="cornerRadius" />
+        <attr name="borderColor" />
+        <attr name="borderWidth" />
+    </declare-styleable>
+
+    <!-- RoundedFrameLayout -->
+    <declare-styleable name="RoundedFrameLayout">
+        <attr name="isUserInteractionEnabled" />
+        <attr name="cornerRadius" />
+        <attr name="borderColor" />
+        <attr name="borderWidth" />
+    </declare-styleable>
+
+    <!-- RoundedRelativeLayout -->
+    <declare-styleable name="RoundedRelativeLayout">
+        <attr name="isUserInteractionEnabled" />
+        <attr name="cornerRadius" />
+        <attr name="borderColor" />
+        <attr name="borderWidth" />
+    </declare-styleable>
+
+    <!-- SmartLabel -->
+    <declare-styleable name="SmartLabel">
+        <attr name="isUserInteractionEnabled" />
+        <attr name="cornerRadius" />
+        <attr name="borderColor" />
+        <attr name="borderWidth" />
+        <attr name="adjustsFontSizeForWidth" />
+        <attr name="adjustsFontSizeForDevice" />
+        <attr name="useGlobalFont" />
+        <attr name="android:textStyle" />
+    </declare-styleable>
+
+    <!-- SmartButton -->
+    <declare-styleable name="SmartButton">
+        <attr name="isUserInteractionEnabled" />
+        <attr name="cornerRadius" />
+        <attr name="borderColor" />
+        <attr name="borderWidth" />
+        <attr name="adjustsFontSizeForDevice" />
+        <attr name="useGlobalFont" />
+        <attr name="enableRepeat" format="boolean" />
+        <attr name="iconImage" format="reference" />
+        <attr name="selectedIconImage" format="reference" />
+        <attr name="iconScale" format="string" />
+        <attr name="iconTopInset" format="float" />
+        <attr name="iconBottomInset" format="float" />
+        <attr name="iconLeftInset" format="float" />
+        <attr name="iconRightInset" format="float" />
+        <attr name="iconAspectRatio" format="float" />
+        <attr name="selectedBackgroundColor" format="color" />
+    </declare-styleable>
+
+    <!-- SmartTextView -->
+    <declare-styleable name="SmartTextView">
+        <attr name="isUserInteractionEnabled" />
+        <attr name="cornerRadius" />
+        <attr name="borderColor" />
+        <attr name="borderWidth" />
+        <attr name="adjustsFontSizeForDevice" />
+        <attr name="useGlobalFont" />
+        <attr name="text" format="string" />
+        <attr name="content_paddingBottom" format="dimension" />
+        <attr name="content_paddingTop" format="dimension" />
+        <attr name="content_paddingLeft" format="dimension" />
+        <attr name="content_paddingRight" format="dimension" />
+        <attr name="android:textSize" />
+    </declare-styleable>
+
+    <!-- SmartTextField -->
+    <declare-styleable name="SmartTextField">
+        <attr name="cornerRadius" />
+        <attr name="borderColor" />
+        <attr name="borderWidth" />
+        <attr name="paddingLeft" format="float" />
+        <attr name="paddingRight" format="float" />
+        <attr name="left_view_width_percent" format="float" />
+        <attr name="right_view_width_percent" format="float" />
+        <attr name="showClearButton" format="boolean" />
+        <attr name="android:hint" />
+        <attr name="android:inputType" />
+        <attr name="android:textSize" />
+        <attr name="android:imeOptions" />
+        <attr name="android:maxLength" />
+    </declare-styleable>
+
+    <!-- SmartScrollView -->
+    <declare-styleable name="SmartScrollView">
+        <attr name="topIndicatorImage" format="reference" />
+        <attr name="bottomIndicatorImage" format="reference" />
+    </declare-styleable>
+
+    <!-- UITableView -->
+    <declare-styleable name="UITableView">
+        <attr name="allowsSelection" format="boolean" />
+        <attr name="separatorColor" format="color" />
+    </declare-styleable>
+
+    <!-- SegmentedButton -->
+    <declare-styleable name="SegmentedButton">
+        <attr name="segmentType" format="enum">
+            <enum name="PLAIN" value="0" />
+            <enum name="ROUNDED_SQUARE" value="1" />
+        </attr>
+        <attr name="columnSize" format="integer" />
+        <attr name="rowSize" format="integer" />
+        <attr name="names" format="string" />
+        <attr name="android:textSize" />
+        <attr name="segmentCornerRadius" format="dimension" />
+    </declare-styleable>
+
+</resources>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black">
+
+        <jp.co.altonotes.android.kibaan.ui.SmartLabel
+            android:id="@+id/label_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="ラベル１"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <jp.co.altonotes.android.kibaan.ui.SmartLabel
+            android:id="@+id/label_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ラベル２"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            app:layout_constraintLeft_toLeftOf="@id/label_1"
+            app:layout_constraintTop_toBottomOf="@id/label_1" />
+
+        <jp.co.altonotes.android.kibaan.ui.SmartLabel
+            android:id="@+id/label_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ラベル３"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            app:layout_constraintLeft_toLeftOf="@id/label_2"
+            app:layout_constraintTop_toBottomOf="@id/label_2" />
+
+        <jp.co.altonotes.android.kibaan.ui.SmartButton
+            android:id="@+id/close_button"
+            android:layout_width="200dp"
+            android:layout_height="44dp"
+            android:layout_marginBottom="20dp"
+            android:background="@android:color/transparent"
+            android:text="閉じる"
+            android:textColor="@android:color/white"
+            app:borderColor="@android:color/white"
+            app:borderWidth="1dp"
+            app:cornerRadius="22dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

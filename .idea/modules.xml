@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Android-Kibaan.iml" filepath="$PROJECT_DIR$/Android-Kibaan.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kibaan/kibaan.iml" filepath="$PROJECT_DIR$/kibaan/kibaan.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kibaansample/kibaansample.iml" filepath="$PROJECT_DIR$/kibaansample/kibaansample.iml" />
+    </modules>
+  </component>
+</project>

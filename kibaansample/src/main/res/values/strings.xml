@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Kibaan</string>
+    <string name="message_01">これはローカライズ文言取得のテストです。</string>
+</resources>

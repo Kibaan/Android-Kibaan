@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#333333">
+
+        <jp.co.altonotes.android.kibaan.ui.SmartButton
+            android:id="@+id/button1"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:text="角丸"
+            android:textColor="@android:color/white"
+            app:borderColor="@android:color/white"
+            app:borderWidth="1dp"
+            app:cornerRadius="15dp"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <jp.co.altonotes.android.kibaan.ui.SmartButton
+            android:id="@+id/button2"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:background="#55DD55"
+            android:gravity="center"
+            android:text="角丸"
+            app:cornerRadius="15dp"
+            app:layout_constraintLeft_toRightOf="@id/button1" />
+
+        <jp.co.altonotes.android.kibaan.ui.SmartButton
+            android:id="@+id/button3"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:background="#5555DD"
+            android:gravity="center"
+            android:text="角丸"
+            app:cornerRadius="15dp"
+            app:layout_constraintLeft_toRightOf="@id/button2" />
+
+        <jp.co.altonotes.android.kibaan.ui.SmartButton
+            android:id="@+id/button4"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:background="#DD55DD"
+            android:gravity="center"
+            android:text="角丸"
+            app:cornerRadius="15dp"
+            app:layout_constraintLeft_toRightOf="@id/button3" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>
