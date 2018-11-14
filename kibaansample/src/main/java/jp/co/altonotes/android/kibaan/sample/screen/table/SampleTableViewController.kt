@@ -31,6 +31,7 @@ class SampleTableViewController : BaseViewController(), UITableViewDataSource, U
         tableView.dataSource = this
         tableView.registerCellClass(SampleTableViewCell::class)
         tableView.rowHeight = 44.0
+        tableView.estimatedRowHeight = tableView.rowHeight
     }
 
     override fun onEnterForeground() {

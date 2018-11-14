@@ -60,6 +60,9 @@ open class UITableView : FrameLayout {
     var dataSource: UITableViewDataSource? = null
     /** セルの高さ */
     var rowHeight: CGFloat? = null
+    /** セルの推定の高さ（iOS版との互換性を保つ為のプロパティであり、使用することはない） */
+    @Suppress("unused")
+    var estimatedRowHeight: CGFloat? = null
     /** セクション内フッターの高さ */
     var sectionFooterHeight: CGFloat? = null
     /** テーブルのヘッダー(セクション内のヘッダーではない) */
