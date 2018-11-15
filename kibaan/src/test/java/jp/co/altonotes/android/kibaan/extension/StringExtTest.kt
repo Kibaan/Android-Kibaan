@@ -307,4 +307,16 @@ class StringExtTest {
         val src = "ABC"
         assertEquals("b5d4045c3f466fa91fe2cc6abe79232a1a57cdf104f7a26e716e0a1e2789df78", src.sha256())
     }
+
+    @Test
+    fun testLiteralEscaped() {
+        assertEquals("ABC".literalEscaped, "ABC")
+        assertEquals("\r".literalEscaped, "")
+        assertEquals("\n".literalEscaped, "\\n")
+        assertEquals("\t".literalEscaped, "\\t")
+        assertEquals("\"".literalEscaped, "\\\"")
+        assertEquals("\'".literalEscaped, "\\\'")
+        assertEquals("\r\n\t\"\'".literalEscaped, "\\n\\t\\\"\\\'")
+    }
+
 }

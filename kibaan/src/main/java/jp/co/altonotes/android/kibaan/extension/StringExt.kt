@@ -257,6 +257,18 @@ fun String.leftPadded(size: Int, spacer: String = " "): String {
     return result
 }
 
+val String.literalEscaped: String
+    get() {
+        val conversion = mapOf("\r" to "", "\n" to "\\n", "\"" to "\\\"", "\'" to "\\'", "\t" to "\\t")
+
+        var result = this
+        conversion.forEach {
+            result = result.replace(it.key, it.value)
+        }
+        return result
+    }
+
+
 /**
  * ローカライズされた文字列を取得する
  */
