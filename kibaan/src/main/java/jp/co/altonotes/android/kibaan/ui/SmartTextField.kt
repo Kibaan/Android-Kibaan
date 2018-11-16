@@ -301,21 +301,21 @@ class SmartTextField : RoundedConstraintLayout {
         constraintSet.clone(this)
 
         // Setting constraint for leftView
-        constraintSet.connect(leftParentView.id, ConstraintSet.TOP, id, ConstraintSet.TOP)
-        constraintSet.connect(leftParentView.id, ConstraintSet.BOTTOM, id, ConstraintSet.BOTTOM)
-        constraintSet.connect(leftParentView.id, ConstraintSet.LEFT, id, ConstraintSet.LEFT)
+        constraintSet.connect(leftParentView.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+        constraintSet.connect(leftParentView.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+        constraintSet.connect(leftParentView.id, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT)
         constraintSet.constrainPercentWidth(leftParentView.id, leftViewWidthPercent)
 
         // Setting constraint for editText
         constraintSet.connect(editText.id, ConstraintSet.LEFT, leftParentView.id, ConstraintSet.RIGHT)
-        constraintSet.connect(editText.id, ConstraintSet.TOP, id, ConstraintSet.TOP)
-        constraintSet.connect(editText.id, ConstraintSet.BOTTOM, id, ConstraintSet.BOTTOM)
+        constraintSet.connect(editText.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+        constraintSet.connect(editText.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
         constraintSet.connect(editText.id, ConstraintSet.RIGHT, rightParentView.id, ConstraintSet.LEFT)
 
         // Setting constraint for rightView
-        constraintSet.connect(rightParentView.id, ConstraintSet.TOP, id, ConstraintSet.TOP)
-        constraintSet.connect(rightParentView.id, ConstraintSet.BOTTOM, id, ConstraintSet.BOTTOM)
-        constraintSet.connect(rightParentView.id, ConstraintSet.RIGHT, id, ConstraintSet.RIGHT)
+        constraintSet.connect(rightParentView.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+        constraintSet.connect(rightParentView.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+        constraintSet.connect(rightParentView.id, ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT)
         rightViewWidthPercent?.let { percent ->
             constraintSet.constrainPercentWidth(rightParentView.id, percent)
         }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- SmartTextField -->
+    <item name="smart_text_field_edit_text" type="id" />
+    <item name="smart_text_field_left_parent" type="id" />
+    <item name="smart_text_field_right_parent" type="id" />
+
+</resources>
