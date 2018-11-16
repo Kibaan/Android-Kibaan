@@ -4,7 +4,7 @@ import jp.co.altonotes.android.kibaan.ios.HTTPURLResponse
 import jp.co.altonotes.android.kibaan.task.TaskHolder
 
 
-typealias ErrorHandler<DataType> = (DataType?, HTTPDataTask.ErrorInfo) -> HTTPTask.ErrorHandlingStatus
+typealias ErrorHandler<DataType> = (DataType?, HTTPErrorInfo) -> HTTPTask.ErrorHandlingStatus
 
 abstract class HTTPDataTask<DataType : Any> : HTTPTask {
 
@@ -63,7 +63,7 @@ abstract class HTTPDataTask<DataType : Any> : HTTPTask {
     }
 
     open fun handleError(type: HTTPTaskError, result: DataType?, error: Exception? = null, response: HTTPURLResponse?, data: ByteArray?) {
-        val errorInfo = ErrorInfo(error = error, response = response, data = data)
+        val errorInfo = HTTPErrorInfo(error = error, response = response, data = data)
 
         if (errorHandler == null || errorHandler?.invoke(result, errorInfo) == ErrorHandlingStatus.handleError) {
             errorProcess(type, result = result, errorInfo = errorInfo)
@@ -72,7 +72,7 @@ abstract class HTTPDataTask<DataType : Any> : HTTPTask {
         this.error()
     }
 
-    open fun errorProcess(type: HTTPTaskError, result: DataType?, errorInfo: ErrorInfo) {
+    open fun errorProcess(type: HTTPTaskError, result: DataType?, errorInfo: HTTPErrorInfo) {
         // Override
     }
 
@@ -96,10 +96,5 @@ abstract class HTTPDataTask<DataType : Any> : HTTPTask {
     open fun postProcessOnComplete(result: DataType) {
         // Override
     }
-
-    data class ErrorInfo(
-            var error: Exception? = null,
-            var response: HTTPURLResponse? = null,
-            var data: ByteArray? = null)
 
 }

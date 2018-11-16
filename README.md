@@ -3,6 +3,12 @@
 基本的な使用方法については`iOS-Kibaan`と同じな為、`iOS-Kibaan`の[README](https://github.com/altonotes/iOS-Kibaan/blob/master/README.md)を参照。
 本READMEには、Android版特有のことについてのみ説明する。  
 
+# バージョンアップ方法
+
+1. kibaan/build.gradle に記載の`kibaanVersion`の数字を更新する。
+2. プロジェクト直下にある`./buildAndArchive.sh`を実行する
+3. GitHubリポジトリにPUSHする
+
 ## 開発環境
 * Android Studio(v3.2)
 
