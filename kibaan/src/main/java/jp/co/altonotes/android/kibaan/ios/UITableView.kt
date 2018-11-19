@@ -1,6 +1,7 @@
 package jp.co.altonotes.android.kibaan.ios
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RectShape
@@ -199,7 +200,11 @@ open class UITableView : FrameLayout {
     protected fun resourceId(type: KClass<*>): Int {
         val fullName = type.java.simpleName
         val str = fullName.toSnakeCase()
-        return resources.getIdentifier(str, "layout", context.packageName)
+        val id = resources.getIdentifier(str, "layout", context.packageName)
+        if (id == 0) {
+            throw Resources.NotFoundException("Layout file not found!!! file name is [$str.xml]")
+        }
+        return id
     }
 
     // endregion
