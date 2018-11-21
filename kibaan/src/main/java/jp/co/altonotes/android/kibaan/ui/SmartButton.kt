@@ -131,7 +131,7 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
     @IBInspectable var iconLeftInset: CGFloat = 0.0
     /** アイコンの右余白 */
     @IBInspectable var iconRightInset: CGFloat = 0.0
-
+    // TODO:消す必要がある（iOS版ではない）
     @IBInspectable var iconAspectRatio: CGFloat = 1.0
     /** アイコン描画用の元[Rect] */
     private var iconSrc: Rect? = null
