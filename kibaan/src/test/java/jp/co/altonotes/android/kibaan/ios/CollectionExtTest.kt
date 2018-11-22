@@ -64,6 +64,12 @@ class CollectionExtTest {
     }
 
     @Test
+    fun testCompactMap() {
+        val list = mutableListOf("A", null, "B")
+        assertArrayEquals(arrayOf("A", "B"), list.compactMap { it }.toTypedArray())
+    }
+
+    @Test
     fun enumerated() {
         val list = mutableListOf("A", "B", "C")
 

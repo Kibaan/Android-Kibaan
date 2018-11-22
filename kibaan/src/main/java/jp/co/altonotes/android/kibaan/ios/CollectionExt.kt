@@ -48,4 +48,8 @@ fun <T> Collection<T>.enumerated(): List<CollectionEnumerationItem<T>> {
     }
 }
 
+fun <T, R : Any> Collection<T>.compactMap(transform: (T) -> R?): List<R> {
+    return mapNotNull(transform)
+}
+
 data class CollectionEnumerationItem<T>(val offset: Int, val element: T)
