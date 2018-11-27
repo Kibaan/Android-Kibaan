@@ -7,6 +7,10 @@ val Boolean?.isTrue: Boolean
         return this == true
     }
 
+fun Boolean.toggle(): Boolean {
+    return !this
+}
+
 object Bool {
     /**
      * ランダムなBool値を取得する
