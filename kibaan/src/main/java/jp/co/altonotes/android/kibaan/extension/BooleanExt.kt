@@ -7,7 +7,7 @@ val Boolean?.isTrue: Boolean
         return this == true
     }
 
-fun Boolean.toggle(): Boolean {
+fun Boolean.toggled(): Boolean {
     return !this
 }
 
