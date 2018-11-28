@@ -37,7 +37,7 @@ abstract class HTTPDataTask<DataType : Any> : HTTPTask {
         // データをパース
         val result: DataType
         try {
-            result = parseResponse(data)
+            result = parseResponse(data, response = response)
         } catch (e: Exception) {
             handleError(HTTPTaskError.parse, result = null, response = response, data = data)
             return
@@ -76,7 +76,7 @@ abstract class HTTPDataTask<DataType : Any> : HTTPTask {
         // Override
     }
 
-    abstract fun parseResponse(data: ByteArray): DataType
+    abstract fun parseResponse(data: ByteArray, response: HTTPURLResponse): DataType
 
     /**
      * レスポンス内容が正常か判定する
