@@ -12,23 +12,31 @@ import jp.co.altonotes.android.kibaan.ios.removeAll
 object AlertUtils {
 
     var isEnabled = true
+    var defaultErrorTitle = "エラー"
+    var defaultCloseLabel = "閉じる"
 
     private var displayingList: MutableList<AlertDialog> = mutableListOf()
 
-    fun showNotice(title: String, message: String) {
+    /**
+     * 閉じるだけのアラートを表示する
+     */
+    fun showNotice(title: String, message: String, handler: (() -> Unit)? = null) {
         show(title = title, message = message)
     }
 
-    fun showErrorNotice(message: String) {
-        show(title = "エラー", message = message)
+    /**
+     * 閉じるだけのエラーアラートを表示する
+     */
+    fun showErrorNotice(message: String, handler: (() -> Unit)? = null) {
+        show(title = defaultErrorTitle, message = message, handler = handler)
     }
 
-    fun showErrorNotice(message: String, handler: (() -> Unit)) {
-        show(title = "エラー", message = message, handler = handler)
-    }
-
-    fun show(title: String, message: String, okLabel: String = "閉じる",
-             handler: (() -> Unit)? = null, cancelLabel: String? = null, cancelHandler: (() -> Unit)? = null): AlertDialog? {
+    fun show(title: String,
+             message: String,
+             okLabel: String = defaultCloseLabel,
+             handler: (() -> Unit)? = null,
+             cancelLabel: String? = null,
+             cancelHandler: (() -> Unit)? = null): AlertDialog? {
 
         if (!isEnabled) return null
         val activity = SmartActivity.sharedOrNull ?: return null
