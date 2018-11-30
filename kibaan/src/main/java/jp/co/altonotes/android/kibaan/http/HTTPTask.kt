@@ -23,14 +23,15 @@ abstract class HTTPTask : Task {
     var defaultUserAgent: String? = null
     /** 通信インジケーター */
     var indicator: View? = null
+    /** データ転送のタイムアウト時間 */
+    open var timeoutIntervalForRequest: TimeInterval = 30.0
+    /** 通信完了までのタイムアウト時間 */
+    open var timeoutIntervalForResource: TimeInterval = 60.0
+    /** 通信オブジェクト */
+    open var httpConnector: HTTPConnector = createHttpConnector()
+
     /** クエリパラメーター */
     private var queryItems: MutableList<KeyValue> = mutableListOf()
-    /** データ転送のタイムアウト時間 */
-    private var timeoutIntervalForRequest: TimeInterval = 30.0
-    /** 通信完了までのタイムアウト時間 */
-    private var timeoutIntervalForResource: TimeInterval = 60.0
-    /** 通信オブジェクト */
-    private var httpConnector: HTTPConnector = createHttpConnector()
 
     /** リクエスト内容をログ出力するか */
     open val isRequestLogEnabled: Boolean get() = true

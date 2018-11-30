@@ -3,6 +3,8 @@ package jp.co.altonotes.android.kibaan.extension
 import jp.co.altonotes.android.kibaan.controller.SmartActivity
 import jp.co.altonotes.android.kibaan.ios.*
 import java.lang.StringBuilder
+import java.net.URLDecoder
+import java.net.URLEncoder
 import java.security.MessageDigest
 
 /**
@@ -326,3 +328,9 @@ fun String.shaString(type: String): String {
     }
     return result.toString()
 }
+
+val String.urlEncoded: String
+    get() = URLEncoder.encode(this, "UTF-8")
+
+val String.urlDecoded: String
+    get() = URLDecoder.decode(this, "UTF-8")
