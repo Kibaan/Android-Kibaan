@@ -53,13 +53,6 @@ class OSUtils {
             }
         }
 
-        fun appVersion(): String = BuildConfig.VERSION_NAME
-
-        /**
-         * ApplicationIdを取得する
-         */
-        val applicationId: String get() = BuildConfig.APPLICATION_ID
-
         fun getStatusBarHeight(context: Activity): Int {
             val rect = Rect()
             val window = context.window

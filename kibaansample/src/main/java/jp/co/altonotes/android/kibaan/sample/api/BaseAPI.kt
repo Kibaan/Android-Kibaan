@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import jp.co.altonotes.android.kibaan.AndroidUnique
 import jp.co.altonotes.android.kibaan.http.HTTPDataTask
 import jp.co.altonotes.android.kibaan.http.HTTPTaskError
+import jp.co.altonotes.android.kibaan.ios.HTTPURLResponse
 import jp.co.altonotes.android.kibaan.task.TaskHolder
 import java.nio.charset.Charset
 import kotlin.reflect.KClass
@@ -42,7 +43,7 @@ abstract class BaseAPI<DataType : Any> : HTTPDataTask<DataType> {
         }
     }
 
-    override fun parseResponse(data: ByteArray): DataType {
+    override fun parseResponse(data: ByteArray, response: HTTPURLResponse): DataType {
         try {
             val jsonString = String(bytes = data, charset = encoding)
             return Gson().fromJson(jsonString, resultClass.java)
