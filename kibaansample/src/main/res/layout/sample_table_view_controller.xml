@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         android:background="@android:color/holo_green_dark">
 
-        <jp.co.altonotes.android.kibaan.ui.SmartTextView
+        <kibaan.ui.SmartTextView
             android:id="@+id/count_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -15,7 +15,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:text="0" />
 
-        <jp.co.altonotes.android.kibaan.ui.SmartTableView
+        <kibaan.ui.SmartTableView
             android:id="@+id/table_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"

@@ -6,7 +6,7 @@
     <data>
         <variable
                 name="controller"
-                type="jp.co.altonotes.android.kibaan.sample.screen.top.TopViewController"/>
+                type="kibaan.sample.screen.top.TopViewController"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -29,7 +29,7 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.5"/>
 
-        <jp.co.altonotes.android.kibaan.ios.UIButton
+        <kibaan.ios.UIButton
                 android:id="@+id/set_image_test_button"
                 android:layout_width="0dp" android:layout_height="100dp"
                 app:layout_constraintBottom_toTopOf="@id/data_binding_test_button"
@@ -38,7 +38,7 @@
                 android:layout_marginBottom="10dp"
         />
 
-        <jp.co.altonotes.android.kibaan.ios.UIButton
+        <kibaan.ios.UIButton
                 android:id="@+id/set_image_state_change_button"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -47,7 +47,7 @@
                 app:layout_constraintRight_toRightOf="@id/data_binding_test_button"
                 app:layout_constraintLeft_toRightOf="@id/set_image_test_button"/>
 
-        <jp.co.altonotes.android.kibaan.ui.SmartButton
+        <kibaan.ui.SmartButton
                 android:id="@+id/data_binding_test_button"
                 android:layout_width="200dp"
                 android:layout_height="40dp"
@@ -60,7 +60,7 @@
                 app:layout_constraintRight_toRightOf="@id/table_button"
         />
 
-        <jp.co.altonotes.android.kibaan.ui.SmartButton
+        <kibaan.ui.SmartButton
                 android:id="@+id/connection_button"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
@@ -74,7 +74,7 @@
                 app:layout_constraintRight_toRightOf="@id/table_button"
         />
 
-        <jp.co.altonotes.android.kibaan.ui.SmartButton
+        <kibaan.ui.SmartButton
                 android:id="@+id/table_button"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
@@ -87,7 +87,7 @@
                 app:layout_constraintLeft_toLeftOf="@id/sub_button"
                 app:layout_constraintRight_toRightOf="@id/sub_button"/>
 
-        <jp.co.altonotes.android.kibaan.ui.SmartButton
+        <kibaan.ui.SmartButton
                 android:id="@+id/sub_button"
                 android:layout_width="200dp"
                 android:layout_height="40dp"
