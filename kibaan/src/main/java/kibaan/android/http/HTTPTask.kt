@@ -8,6 +8,7 @@ import kibaan.android.valueobject.KeyValue
 import kibaan.android.ios.*
 import kibaan.android.task.Task
 import kibaan.android.task.TaskHolder
+import kibaan.android.util.Log
 import java.nio.charset.Charset
 
 
@@ -51,7 +52,7 @@ abstract class HTTPTask : Task {
         var urlStr = requestURL
 
         if (isRequestLogEnabled) {
-            print("[$httpMethod] $urlStr")
+            Log.d( javaClass.simpleName,"[$httpMethod] $urlStr")
         }
 
         prepareRequest()
@@ -138,7 +139,7 @@ abstract class HTTPTask : Task {
      */
     open fun handleConnectionError(type: HTTPTaskError, error: Exception? = null, response: HTTPURLResponse? = null, data: ByteArray? = null) {
         val message = error?.localizedMessage ?: ""
-        print("[ConnectionError] Type= ${type.description}, NativeMessage=$message")
+        Log.d( javaClass.simpleName,"[ConnectionError] Type= ${type.description}, NativeMessage=$message")
     }
 
     /**
@@ -205,7 +206,7 @@ abstract class HTTPTask : Task {
     open fun makeQueryString(): String? {
         val query = QueryUtils.makeQueryString(items = queryItems, encoder = parameterEncoder) ?: return null
         if (isRequestLogEnabled) {
-            print("      > $query")
+            Log.d( javaClass.simpleName,"      > $query")
         }
         return query
     }
