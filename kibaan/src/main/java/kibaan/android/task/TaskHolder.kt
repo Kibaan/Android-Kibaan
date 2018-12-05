@@ -39,7 +39,7 @@ class TaskHolder {
      * 保持するタスクを全てクリアする
      */
     fun clearAll() {
-        taskList.forEach { it.cancel() }
+        taskList.toList().forEach { it.cancel() }
         taskMap.removeAll()
     }
 
