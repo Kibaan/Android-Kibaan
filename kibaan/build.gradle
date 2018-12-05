@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
-def kibaanVersion = "0.6.13"
+def kibaanVersion = "0.6.14"
 
 android {
     compileSdkVersion 28
@@ -81,7 +81,7 @@ uploadArchives {
         mavenDeployer {
             repository url: "file://${repo.absolutePath}"
             pom.version = kibaanVersion
-            pom.groupId = 'jp.co.altonotes.kibaan'
+            pom.groupId = 'kibaan.android'
             pom.artifactId = 'kibaan'
         }
     }

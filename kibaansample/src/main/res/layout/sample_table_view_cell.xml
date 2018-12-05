@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         android:background="#333333">
 
-        <kibaan.ui.SmartButton
+        <kibaan.android.ui.SmartButton
             android:id="@+id/button1"
             android:layout_width="80dp"
             android:layout_height="30dp"
@@ -21,7 +21,7 @@
             app:cornerRadius="15dp"
             app:layout_constraintLeft_toLeftOf="parent" />
 
-        <kibaan.ui.SmartButton
+        <kibaan.android.ui.SmartButton
             android:id="@+id/button2"
             android:layout_width="80dp"
             android:layout_height="30dp"
@@ -32,7 +32,7 @@
             app:cornerRadius="15dp"
             app:layout_constraintLeft_toRightOf="@id/button1" />
 
-        <kibaan.ui.SmartButton
+        <kibaan.android.ui.SmartButton
             android:id="@+id/button3"
             android:layout_width="80dp"
             android:layout_height="30dp"
@@ -43,7 +43,7 @@
             app:cornerRadius="15dp"
             app:layout_constraintLeft_toRightOf="@id/button2" />
 
-        <kibaan.ui.SmartButton
+        <kibaan.android.ui.SmartButton
             android:id="@+id/button4"
             android:layout_width="80dp"
             android:layout_height="30dp"
