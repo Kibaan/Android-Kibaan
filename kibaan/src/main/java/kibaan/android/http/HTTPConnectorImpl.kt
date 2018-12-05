@@ -34,7 +34,8 @@ class HTTPConnectorImpl: HTTPConnector {
                 .cacheControl(CacheControl.Builder().noCache().noStore().build())
 
         if (request.httpMethod == "POST") {
-            val body = RequestBody.create(MediaType.parse(request.headers["Content-type"]), request.body)
+            val contentType = request.headers["Content-type"] ?: "text/plain"
+            val body = RequestBody.create(MediaType.parse(contentType), request.body)
             requestBuilder.post(body)
         } else {
             requestBuilder.get()
