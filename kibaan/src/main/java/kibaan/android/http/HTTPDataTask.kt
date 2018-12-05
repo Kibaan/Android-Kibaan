@@ -39,7 +39,7 @@ abstract class HTTPDataTask<DataType : Any> : HTTPTask {
         try {
             result = parseResponse(data, response = response)
         } catch (e: Exception) {
-            handleError(HTTPTaskError.parse, result = null, response = response, data = data)
+            handleError(HTTPTaskError.parse, result = null, error = e, response = response, data = data)
             return
         }
 
