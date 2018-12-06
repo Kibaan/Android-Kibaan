@@ -2,6 +2,7 @@ package kibaan.android.http
 
 import kibaan.android.ios.HTTPURLResponse
 import kibaan.android.ios.TimeInterval
+import kibaan.android.ios.first
 import okhttp3.*
 import java.io.IOException
 import java.lang.Exception
@@ -34,7 +35,10 @@ class HTTPConnectorImpl: HTTPConnector {
                 .cacheControl(CacheControl.Builder().noCache().noStore().build())
 
         if (request.httpMethod == "POST") {
-            val contentType = request.headers["Content-type"] ?: "text/plain"
+            val headerContentType = request.headers.first {
+                it.key.toLowerCase() == "content-type"
+            }?.value
+            val contentType = headerContentType ?: "application/octet-stream"
             val body = RequestBody.create(MediaType.parse(contentType), request.body)
             requestBuilder.post(body)
         } else {
