@@ -21,7 +21,7 @@ object QueryUtils {
         if (items.isNotEmpty()) {
             return items.map {
                 val encoder = encoder
-                return if (encoder != null) {
+                if (encoder != null) {
                     encoder(it.key) + "=" + encoder(it.value ?: "")
                 } else {
                     urlEncode(it.key) + "=" + urlEncode(it.value ?: "")
