@@ -2,7 +2,6 @@ package kibaan.android.ui
 
 import android.graphics.*
 import android.os.Build
-import android.support.annotation.RequiresApi
 import android.view.View
 import android.view.ViewOutlineProvider
 import kibaan.android.ios.CGFloat
@@ -39,7 +38,13 @@ class ViewOutlineProcessor(val view: View) {
             field = value
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 if (0 < radius) {
-                    view.outlineProvider = clipOutlineProvider
+                    if (view.outlineProvider == null) {
+                        view.outlineProvider = object : ViewOutlineProvider() {
+                            override fun getOutline(view: View, outline: Outline) {
+                                outline.setRoundRect(0, 0, view.width, view.height, radius.toFloat())
+                            }
+                        }
+                    }
                     view.clipToOutline = true
                 } else {
                     view.outlineProvider = null
@@ -70,13 +75,6 @@ class ViewOutlineProcessor(val view: View) {
     private val clearRect = RectF(0.0f, 0.0f, 0.0f, 0.0f)
     /** [ViewOutlineProvider]を使用可能かどうか */
     private val canUsedOutlineProvider: Boolean = Build.VERSION_CODES.LOLLIPOP <= Build.VERSION.SDK_INT
-    /** APILevel21以上用の[ViewOutlineProvider] */
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    private val clipOutlineProvider = object : ViewOutlineProvider() {
-        override fun getOutline(view: View, outline: Outline) {
-            outline.setRoundRect(0, 0, view.width, view.height, radius.toFloat())
-        }
-    }
 
     // endregion
 
