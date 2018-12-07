@@ -15,13 +15,14 @@ import java.nio.charset.Charset
 abstract class HTTPTask : Task {
 
     companion object {
+        /** 共通のUser-Agent */
+        var defaultUserAgent: String? = null
+        /** 共通のHTTPConnector */
         var createHttpConnector: () -> HTTPConnector = {
             HTTPConnectorImpl()
         }
     }
 
-    /** 共通のUser-Agent */
-    var defaultUserAgent: String? = null
     /** 通信インジケーター */
     var indicator: View? = null
     /** データ転送のタイムアウト時間 */
