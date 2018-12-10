@@ -87,12 +87,12 @@ class ViewOutlineProcessor(val view: View) {
         val canvas = canvas ?: return
         val baseCanvas = getCanvas(canvas)
         defaultDraw(baseCanvas)
-        drawBorder(baseCanvas)
 
         if (needsOutlineProcessing) {
             clipRoundedRect(baseCanvas)
             canvas.drawBitmap(bitmap, 0.0f, 0.0f, null)
         }
+        drawBorder(canvas)
     }
 
     private fun getCanvas(canvas: Canvas): Canvas {
@@ -123,8 +123,8 @@ class ViewOutlineProcessor(val view: View) {
             val borderWidth = borderWidth
             val halfWidth: Float = borderWidth.toFloat() / 2
             val rect = RectF(halfWidth, halfWidth, (canvas.width - halfWidth), (canvas.height - halfWidth))
-            val rx = if (0 < radius) radius.toFloat() - halfWidth else 0.0f
-            val ry = if (0 < radius) radius.toFloat() - halfWidth else 0.0f
+            val rx = if (0 < radius) radius.toFloat() else 0.0f
+            val ry = if (0 < radius) radius.toFloat() else 0.0f
             canvas.drawRoundRect(rect, rx, ry, borderPaint)
         }
     }
