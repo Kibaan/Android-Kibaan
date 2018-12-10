@@ -249,13 +249,7 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
     // region -> Draw
 
     override fun draw(canvas: Canvas?) {
-        if (!viewOutlineProcessor.needsOutlineProcessing) {
-            super.draw(canvas)
-            return
-        }
-        val tempCanvas = viewOutlineProcessor.createTempCanvas(canvas)
-        super.draw(tempCanvas)
-        viewOutlineProcessor.afterDraw(canvas, tempCanvas)
+        viewOutlineProcessor.draw(canvas) { super.draw(it) }
     }
 
     // endregion

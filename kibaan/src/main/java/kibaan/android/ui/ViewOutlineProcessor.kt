@@ -83,33 +83,41 @@ class ViewOutlineProcessor(val view: View) {
 
     // region -> Draw
 
-    fun createTempCanvas(canvas: Canvas?): Canvas {
+    fun draw(canvas: Canvas?, defaultDraw: ((Canvas?) -> Unit)) {
+        val canvas = canvas ?: return
+        val baseCanvas = getCanvas(canvas)
+        defaultDraw(baseCanvas)
+        drawBorder(baseCanvas)
+
+        if (needsOutlineProcessing) {
+            clipRoundedRect(baseCanvas)
+            canvas.drawBitmap(bitmap, 0.0f, 0.0f, null)
+        }
+    }
+
+    private fun getCanvas(canvas: Canvas): Canvas {
+        if (!needsOutlineProcessing) {
+            return canvas
+        }
         bitmap?.recycle()
-        val width = if (view.isInEditMode) view.width else (canvas?.width ?: view.width)
-        val height = if (view.isInEditMode) view.height else (canvas?.height ?: view.height)
+        val width = if (view.isInEditMode) view.width else canvas.width
+        val height = if (view.isInEditMode) view.height else canvas.height
         bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         return Canvas(bitmap)
     }
 
-    @Suppress("NAME_SHADOWING")
-    fun afterDraw(canvas: Canvas?, tmpCanvas: Canvas?) {
-        val canvas = canvas ?: return
-        val bitmap = bitmap ?: return
-
-        drawBorder(tmpCanvas)
-
+    private fun clipRoundedRect(canvas: Canvas) {
         val path = Path()
         path.fillType = Path.FillType.INVERSE_EVEN_ODD
         path.addRoundRect(
             RectF(0.0f, 0.0f, canvas.width.toFloat(), canvas.height.toFloat()),
             radius.toFloat(), radius.toFloat(), Path.Direction.CW
         )
-        tmpCanvas?.drawPath(path, clearPaint)
-        canvas.drawBitmap(bitmap, 0.0f, 0.0f, null)
+        canvas.drawPath(path, clearPaint)
     }
 
     @Suppress("NAME_SHADOWING")
-    fun drawBorder(canvas: Canvas?) {
+    private fun drawBorder(canvas: Canvas?) {
         val canvas = canvas ?: return
         if (borderWidth != 0.0 && borderColor.intValue != Color.TRANSPARENT) {
             val borderWidth = borderWidth
