@@ -95,12 +95,9 @@ class ViewOutlineProcessor(val view: View) {
     fun afterDraw(canvas: Canvas?, tmpCanvas: Canvas?) {
         val canvas = canvas ?: return
         val bitmap = bitmap ?: return
-        if (borderWidth != 0.0 && borderColor.intValue != Color.TRANSPARENT) {
-            val borderWidth = borderWidth
-            val halfWidth: Float = borderWidth.toFloat() / 2
-            val rect = RectF(halfWidth, halfWidth, (canvas.width - halfWidth), (canvas.height - halfWidth))
-            tmpCanvas?.drawRoundRect(rect, radius.toFloat() - halfWidth, radius.toFloat() - halfWidth, borderPaint)
-        }
+
+        drawBorder(tmpCanvas)
+
         val path = Path()
         path.fillType = Path.FillType.INVERSE_EVEN_ODD
         path.addRoundRect(
@@ -109,6 +106,19 @@ class ViewOutlineProcessor(val view: View) {
         )
         tmpCanvas?.drawPath(path, clearPaint)
         canvas.drawBitmap(bitmap, 0.0f, 0.0f, null)
+    }
+
+    @Suppress("NAME_SHADOWING")
+    fun drawBorder(canvas: Canvas?) {
+        val canvas = canvas ?: return
+        if (borderWidth != 0.0 && borderColor.intValue != Color.TRANSPARENT) {
+            val borderWidth = borderWidth
+            val halfWidth: Float = borderWidth.toFloat() / 2
+            val rect = RectF(halfWidth, halfWidth, (canvas.width - halfWidth), (canvas.height - halfWidth))
+            val rx = if (0 < radius) radius.toFloat() - halfWidth else 0.0f
+            val ry = if (0 < radius) radius.toFloat() - halfWidth else 0.0f
+            canvas.drawRoundRect(rect, rx, ry, borderPaint)
+        }
     }
 
     // endregion

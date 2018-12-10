@@ -346,6 +346,7 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
         var iconCanvas = canvas
         if (!viewOutlineProcessor.needsOutlineProcessing) {
             super.draw(canvas)
+            viewOutlineProcessor.drawBorder(canvas)
         } else {
             val tempCanvas = viewOutlineProcessor.createTempCanvas(canvas)
             super.draw(tempCanvas)
