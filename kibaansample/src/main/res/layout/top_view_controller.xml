@@ -23,7 +23,7 @@
 
     <kibaan.android.ios.UIButton
         android:id="@+id/set_image_test_button"
-        android:layout_width="0dp" android:layout_height="100dp"
+        android:layout_width="0dp" android:layout_height="50dp"
         app:layout_constraintBottom_toTopOf="@id/data_binding_test_button"
         app:layout_constraintLeft_toLeftOf="@id/data_binding_test_button"
         app:layout_constraintRight_toRightOf="@id/guide_horizontal_center"
@@ -44,7 +44,7 @@
     <kibaan.android.ui.SmartButton
         android:id="@+id/data_binding_test_button"
         android:layout_width="200dp"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         android:layout_marginBottom="10dp"
         android:background="#F98855"
         android:text="バインディング確認"
@@ -56,12 +56,12 @@
     <kibaan.android.ui.SmartButton
         android:id="@+id/connection_button"
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         android:layout_marginBottom="10dp"
         android:background="#998855"
         android:text="通信確認画面へ"
         android:textColor="@android:color/white"
-        app:cornerRadius="20dp"
+        app:cornerRadius="15dp"
         app:layout_constraintBottom_toTopOf="@id/table_button"
         app:layout_constraintLeft_toLeftOf="@id/table_button"
         app:layout_constraintRight_toRightOf="@id/table_button"
@@ -70,12 +70,25 @@
     <kibaan.android.ui.SmartButton
         android:id="@+id/table_button"
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         android:layout_marginBottom="10dp"
         android:background="#0088ff"
         android:text="テーブル画面へ"
         android:textColor="@android:color/white"
-        app:cornerRadius="20dp"
+        app:cornerRadius="15dp"
+        app:layout_constraintBottom_toTopOf="@id/button_button"
+        app:layout_constraintLeft_toLeftOf="@id/button_button"
+        app:layout_constraintRight_toRightOf="@id/button_button"/>
+
+    <kibaan.android.ui.SmartButton
+        android:id="@+id/button_button"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="10dp"
+        android:background="#FF5500"
+        android:text="ボタン確認画面へ"
+        android:textColor="@android:color/white"
+        app:cornerRadius="15dp"
         app:layout_constraintBottom_toTopOf="@id/sub_button"
         app:layout_constraintLeft_toLeftOf="@id/sub_button"
         app:layout_constraintRight_toRightOf="@id/sub_button"/>
@@ -83,12 +96,12 @@
     <kibaan.android.ui.SmartButton
         android:id="@+id/sub_button"
         android:layout_width="200dp"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         android:layout_marginBottom="20dp"
         android:background="@android:color/darker_gray"
         android:text="サブ画面へ"
         android:textColor="@android:color/white"
-        app:cornerRadius="20dp"
+        app:cornerRadius="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
