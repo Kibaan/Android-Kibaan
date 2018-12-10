@@ -38,11 +38,9 @@ class ViewOutlineProcessor(val view: View) {
             field = value
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 if (0 < radius) {
-                    if (view.outlineProvider == null) {
-                        view.outlineProvider = object : ViewOutlineProvider() {
-                            override fun getOutline(view: View, outline: Outline) {
-                                outline.setRoundRect(0, 0, view.width, view.height, radius.toFloat())
-                            }
+                    view.outlineProvider = object : ViewOutlineProvider() {
+                        override fun getOutline(view: View, outline: Outline) {
+                            outline.setRoundRect(0, 0, view.width, view.height, radius.toFloat())
                         }
                     }
                     view.clipToOutline = true
