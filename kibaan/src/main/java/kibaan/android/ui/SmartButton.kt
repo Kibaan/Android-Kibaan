@@ -343,16 +343,20 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
     // region -> Draw
 
     override fun draw(canvas: Canvas?) {
-        val tmpCanvas = viewOutlineProcessor.getTmpCanvas(canvas) ?: return
-        super.draw(tmpCanvas)
-        viewOutlineProcessor.afterDraw(canvas, tmpCanvas)
+        if (!viewOutlineProcessor.needsOutlineProcessing) {
+            super.draw(canvas)
+            return
+        }
+        val tempCanvas = viewOutlineProcessor.createTempCanvas(canvas)
+        super.draw(tempCanvas)
+        viewOutlineProcessor.afterDraw(canvas, tempCanvas)
 
         val icon = if (isSelected && selectedIconImage != null) selectedIconImage else iconImage
         if (icon != null) {
             if (iconSrc == null || iconDst == null) {
                 updateIconRect()
             }
-            tmpCanvas.drawBitmap(icon, iconSrc, iconDst, iconPaint)
+            tempCanvas.drawBitmap(icon, iconSrc, iconDst, iconPaint)
         }
     }
 

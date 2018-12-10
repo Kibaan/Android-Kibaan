@@ -80,7 +80,12 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
     private var fontCalculatedSnapshot: StateSnapshot? = null
     /** 現在の状態 */
     private val stateSnapshot: StateSnapshot
-        get() = StateSnapshot(text = text, baseTextSize = originalFont.pointSize.toFloat(), textFrameWidth = textFrameWidth, typeface = typeface)
+        get() = StateSnapshot(
+            text = text,
+            baseTextSize = originalFont.pointSize.toFloat(),
+            textFrameWidth = textFrameWidth,
+            typeface = typeface
+        )
 
     var textColor: UIColor?
         get() {
@@ -113,10 +118,13 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
             cornerRadius = array.getDimensionPixelOffset(R.styleable.SmartLabel_cornerRadius, 0)
             borderColor = UIColor(array.getColor(R.styleable.SmartLabel_borderColor, Color.TRANSPARENT))
             borderWidth = array.getDimensionPixelOffset(R.styleable.SmartLabel_borderWidth, 0).toDouble()
-            isUserInteractionEnabled = array.getBoolean(R.styleable.SmartLabel_isUserInteractionEnabled, isUserInteractionEnabled)
+            isUserInteractionEnabled =
+                    array.getBoolean(R.styleable.SmartLabel_isUserInteractionEnabled, isUserInteractionEnabled)
 
-            adjustsFontSizeForWidth = array.getBoolean(R.styleable.SmartLabel_adjustsFontSizeForWidth, adjustsFontSizeForWidth)
-            adjustsFontSizeForDevice = array.getBoolean(R.styleable.SmartLabel_adjustsFontSizeForDevice, adjustsFontSizeForDevice)
+            adjustsFontSizeForWidth =
+                    array.getBoolean(R.styleable.SmartLabel_adjustsFontSizeForWidth, adjustsFontSizeForWidth)
+            adjustsFontSizeForDevice =
+                    array.getBoolean(R.styleable.SmartLabel_adjustsFontSizeForDevice, adjustsFontSizeForDevice)
             useGlobalFont = array.getBoolean(R.styleable.SmartLabel_useGlobalFont, useGlobalFont)
 
             // android:textStyleがある場合はそちらを優先、なければisBoldを反映
@@ -176,8 +184,10 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
     private fun resizeFontForWidth() {
         if (isLayoutCompleted && adjustsFontSizeForWidth &&
             (fontCalculatedSnapshot == null || fontCalculatedSnapshot != stateSnapshot) /* 前回リサイズ時と状態が異なる場合のみ再設定 */) {
-            val size = FontUtils.adjustTextSize(text = text.toString(), baseTextSize = rawTextSizePx,
-                    width = textFrameWidth, typeface = typeface, minSize = autoResizeMinTextSize)
+            val size = FontUtils.adjustTextSize(
+                text = text.toString(), baseTextSize = rawTextSizePx,
+                width = textFrameWidth, typeface = typeface, minSize = autoResizeMinTextSize
+            )
             super.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
             fontCalculatedSnapshot = stateSnapshot
         }
@@ -198,7 +208,12 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
 
     // region -> SnapShot
 
-    data class StateSnapshot(val text: CharSequence, val baseTextSize: Float, val textFrameWidth: Int, val typeface: Typeface) {
+    data class StateSnapshot(
+        val text: CharSequence,
+        val baseTextSize: Float,
+        val textFrameWidth: Int,
+        val typeface: Typeface
+    ) {
         @Suppress("NAME_SHADOWING")
         override operator fun equals(other: Any?): Boolean {
             val other = (other as? StateSnapshot) ?: return false
@@ -234,9 +249,13 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
     // region -> Draw
 
     override fun draw(canvas: Canvas?) {
-        val tmpCanvas = viewOutlineProcessor.getTmpCanvas(canvas) ?: return
-        super.draw(tmpCanvas)
-        viewOutlineProcessor.afterDraw(canvas, tmpCanvas)
+        if (!viewOutlineProcessor.needsOutlineProcessing) {
+            super.draw(canvas)
+            return
+        }
+        val tempCanvas = viewOutlineProcessor.createTempCanvas(canvas)
+        super.draw(tempCanvas)
+        viewOutlineProcessor.afterDraw(canvas, tempCanvas)
     }
 
     // endregion

@@ -13,11 +13,6 @@ class ViewOutlineProcessor(val view: View) {
     // region -> Companion
 
     companion object {
-        val path: Path by lazy {
-            val path = Path()
-            path.fillType = Path.FillType.INVERSE_EVEN_ODD
-            return@lazy path
-        }
 
         val clearPaint: Paint by lazy {
             val paint = Paint()
@@ -69,10 +64,11 @@ class ViewOutlineProcessor(val view: View) {
     private var borderPaint = Paint()
     /** APILevel21未満用にクリップ処理をする為の[Bitmap] */
     private var bitmap: Bitmap? = null
-    /** クリアする対象の[RectF] */
-    private val clearRect = RectF(0.0f, 0.0f, 0.0f, 0.0f)
     /** [ViewOutlineProvider]を使用可能かどうか */
     private val canUsedOutlineProvider: Boolean = Build.VERSION_CODES.LOLLIPOP <= Build.VERSION.SDK_INT
+
+    val needsOutlineProcessing: Boolean
+        get() = 0 < radius || 0.0 < borderWidth || canUsedOutlineProvider
 
     // endregion
 
@@ -87,44 +83,31 @@ class ViewOutlineProcessor(val view: View) {
 
     // region -> Draw
 
-    @Suppress("NAME_SHADOWING")
-    private fun getBitmap(canvas: Canvas?): Bitmap? {
-        val canvas = canvas ?: return null
-        val bitmap = bitmap
-        if (bitmap != null) {
-            return bitmap
-        }
-        val width = if (view.isInEditMode) view.width else canvas.width
-        val height = if (view.isInEditMode) view.height else canvas.height
-        this.bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        return this.bitmap
-    }
-
-    fun getTmpCanvas(canvas: Canvas?): Canvas? {
-        if (canUsedOutlineProvider) {
-            return canvas
-        }
-        val bitmap = getBitmap(canvas) ?: return null
+    fun createTempCanvas(canvas: Canvas?): Canvas {
+        bitmap?.recycle()
+        val width = if (view.isInEditMode) view.width else (canvas?.width ?: view.width)
+        val height = if (view.isInEditMode) view.height else (canvas?.height ?: view.height)
+        bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         return Canvas(bitmap)
     }
 
     @Suppress("NAME_SHADOWING")
-    fun afterDraw(canvas: Canvas?, tmpCanvas: Canvas) {
+    fun afterDraw(canvas: Canvas?, tmpCanvas: Canvas?) {
         val canvas = canvas ?: return
+        val bitmap = bitmap ?: return
         if (borderWidth != 0.0 && borderColor.intValue != Color.TRANSPARENT) {
             val borderWidth = borderWidth
             val halfWidth: Float = borderWidth.toFloat() / 2
             val rect = RectF(halfWidth, halfWidth, (canvas.width - halfWidth), (canvas.height - halfWidth))
-            tmpCanvas.drawRoundRect(rect, radius.toFloat() - halfWidth, radius.toFloat() - halfWidth, borderPaint)
+            tmpCanvas?.drawRoundRect(rect, radius.toFloat() - halfWidth, radius.toFloat() - halfWidth, borderPaint)
         }
-        if (canUsedOutlineProvider) {
-            return
-        }
-        val bitmap = getBitmap(canvas) ?: return
-        clearRect.set(0.0f, 0.0f, canvas.width.toFloat(), canvas.height.toFloat())
-        path.reset()
-        path.addRoundRect(clearRect, radius.toFloat(), radius.toFloat(), Path.Direction.CW)
-        tmpCanvas.drawPath(path, clearPaint)
+        val path = Path()
+        path.fillType = Path.FillType.INVERSE_EVEN_ODD
+        path.addRoundRect(
+            RectF(0.0f, 0.0f, canvas.width.toFloat(), canvas.height.toFloat()),
+            radius.toFloat(), radius.toFloat(), Path.Direction.CW
+        )
+        tmpCanvas?.drawPath(path, clearPaint)
         canvas.drawBitmap(bitmap, 0.0f, 0.0f, null)
     }
 

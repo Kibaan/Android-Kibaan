@@ -56,15 +56,13 @@ open class RoundedLinearLayout : LinearLayout, ViewOutlineProcessable {
     // region -> Draw
 
     override fun draw(canvas: Canvas?) {
-        val tmpCanvas = viewOutlineProcessor.getTmpCanvas(canvas) ?: return
-        super.draw(tmpCanvas)
-        viewOutlineProcessor.afterDraw(canvas, tmpCanvas)
-    }
-
-    override fun dispatchDraw(canvas: Canvas?) {
-        val tmpCanvas = viewOutlineProcessor.getTmpCanvas(canvas) ?: return
-        super.dispatchDraw(tmpCanvas)
-        viewOutlineProcessor.afterDraw(canvas, tmpCanvas)
+        if (!viewOutlineProcessor.needsOutlineProcessing) {
+            super.draw(canvas)
+            return
+        }
+        val tempCanvas = viewOutlineProcessor.createTempCanvas(canvas)
+        super.draw(tempCanvas)
+        viewOutlineProcessor.afterDraw(canvas, tempCanvas)
     }
 
     // endregion
