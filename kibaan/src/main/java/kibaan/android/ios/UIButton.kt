@@ -125,6 +125,7 @@ open class UIButton : AppCompatButton {
     fun setImage(@DrawableRes imageId: Int, state: Int) {
         val bitmap = BitmapFactory.decodeResource(resources, imageId)
         imageMap[state] = bitmap
+        invalidate()
     }
 
     fun setBackgroundImage(@DrawableRes imageId: Int, state: UIControlState) {
