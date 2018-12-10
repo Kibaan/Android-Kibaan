@@ -66,9 +66,9 @@ class ViewOutlineProcessor(val view: View) {
     private var bitmap: Bitmap? = null
     /** [ViewOutlineProvider]を使用可能かどうか */
     private val canUsedOutlineProvider: Boolean = Build.VERSION_CODES.LOLLIPOP <= Build.VERSION.SDK_INT
-
+    /** 独自でのアウトライン処理が必要かどうか */
     val needsOutlineProcessing: Boolean
-        get() = 0 < radius || 0.0 < borderWidth || canUsedOutlineProvider
+        get() = !canUsedOutlineProvider && (0 < radius || 0.0 < borderWidth)
 
     // endregion
 
