@@ -30,10 +30,12 @@
         android:layout_marginBottom="10dp"
     />
 
-    <kibaan.android.ios.UIButton
+    <kibaan.android.ui.SmartButton
         android:id="@+id/set_image_state_change_button"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:iconImage="@drawable/checkmark"
+        app:iconScale="h:0.5"
         app:layout_constraintTop_toTopOf="@id/set_image_test_button"
         app:layout_constraintBottom_toBottomOf="@id/set_image_test_button"
         app:layout_constraintRight_toRightOf="@id/data_binding_test_button"
