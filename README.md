@@ -9,19 +9,6 @@
 2. プロジェクト直下にある`./buildAndArchive.sh`を実行する
 3. GitHubリポジトリにPUSHする
 
-# デバッグ方法
-1. settings.gradleの記載を以下のように変更する
-```
-include ':app', ':kibaan'
-project(':kibaan').projectDir = new File('../Android-Kibaan/kibaan')
-```
-2. app/build.gradleの[dependencies]の記載を以下のように変更する
-```
-implementation project(':kibaan')
-implementation 'com.google.code.gson:gson:2.8.2'
-```
-3. 上記の変更を加えた状態で実行する
-
 ## 開発環境
 * Android Studio(v3.2)
 
