@@ -116,7 +116,7 @@ open class SegmentedButton : UIStackView {
      * セグメントの行数
      */
     @IBInspectable
-    private var rowSize: Int by didSet(1) {
+    var rowSize: Int by didSet(1) {
         if (!ViewCompat.isAttachedToWindow(this)) return@didSet
         constructSegments()
     }
