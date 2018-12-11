@@ -1,14 +1,14 @@
 package kibaan.android.sample.screen.connection
 
 import android.view.View
-import kibaan.android.controller.BaseViewController
+import kibaan.android.framework.BaseViewController
 import kibaan.android.extension.integerValue
 import kibaan.android.extension.stringValue
 import kibaan.android.ios.IBAction
 import kibaan.android.ios.IBOutlet
 import kibaan.android.sample.R
 import kibaan.android.sample.api.UsersAPI
-import kibaan.android.service.ScreenService
+import kibaan.android.framework.ScreenService
 import kibaan.android.ui.SmartLabel
 
 /**

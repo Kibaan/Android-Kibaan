@@ -1,12 +1,10 @@
-package kibaan.android.controller
+package kibaan.android.framework
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.FrameLayout
 import kibaan.android.ios.UIViewController
-import kibaan.android.service.ScreenService
-import kibaan.android.service.SingletonService
 import kibaan.android.ui.SmartContext
 
 /**
@@ -52,7 +50,7 @@ open class SmartActivity : AppCompatActivity() {
         super.onDestroy()
         UIViewController.setActivity(null)
         ViewControllerCache.clear()
-        SingletonService.clear()
+        SingletonContainer.clear()
     }
 
     // endregion

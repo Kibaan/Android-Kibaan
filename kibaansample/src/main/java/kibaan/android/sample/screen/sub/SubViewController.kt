@@ -2,8 +2,8 @@ package kibaan.android.sample.screen.sub
 
 import android.os.Handler
 import android.view.View
-import kibaan.android.controller.BaseViewController
-import kibaan.android.service.ScreenService
+import kibaan.android.framework.BaseViewController
+import kibaan.android.framework.ScreenService
 import kibaan.android.extension.stringValue
 import kibaan.android.ios.IBAction
 import kibaan.android.ios.IBOutlet

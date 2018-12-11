@@ -1,10 +1,10 @@
 package kibaan.android.ui
 
 import android.graphics.Typeface
-import kibaan.android.controller.SmartActivity
+import kibaan.android.framework.SmartActivity
 import kibaan.android.ios.CGFloat
 import kibaan.android.ios.UIFont
-import kibaan.android.service.SingletonService
+import kibaan.android.framework.SingletonContainer
 import kibaan.android.util.DeviceUtils
 
 
@@ -45,7 +45,7 @@ class SmartContext {
 
 
     companion object {
-        val shared: SmartContext get() = SingletonService.get(SmartContext::class)
+        val shared: SmartContext get() = SingletonContainer.get(SmartContext::class)
     }
 
     fun setActivity(activity: SmartActivity?) {

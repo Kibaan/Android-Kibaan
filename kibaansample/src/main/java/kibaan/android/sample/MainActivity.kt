@@ -1,8 +1,8 @@
 package kibaan.android.sample
 
 import android.os.Bundle
-import kibaan.android.service.ScreenService
-import kibaan.android.controller.SmartActivity
+import kibaan.android.framework.ScreenService
+import kibaan.android.framework.SmartActivity
 import kibaan.android.sample.screen.top.TopViewController
 
 class MainActivity : SmartActivity() {

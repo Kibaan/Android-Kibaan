@@ -1,7 +1,7 @@
 package kibaan.android.sample.screen.top
 
 import android.view.View
-import kibaan.android.controller.BaseViewController
+import kibaan.android.framework.BaseViewController
 import kibaan.android.ios.IBAction
 import kibaan.android.ios.IBOutlet
 import kibaan.android.ios.UIButton
@@ -11,7 +11,7 @@ import kibaan.android.sample.screen.connection.ConnectionViewController
 import kibaan.android.sample.screen.sub.ButtonViewController
 import kibaan.android.sample.screen.sub.SubViewController
 import kibaan.android.sample.screen.table.SampleTableViewController
-import kibaan.android.service.ScreenService
+import kibaan.android.framework.ScreenService
 import kibaan.android.ui.SmartButton
 import kibaan.android.util.Log
 

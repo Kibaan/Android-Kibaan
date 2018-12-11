@@ -1,12 +1,12 @@
 package kibaan.android.sample.screen.sub
 
 import android.view.View
-import kibaan.android.controller.BaseViewController
+import kibaan.android.framework.BaseViewController
 import kibaan.android.ios.IBAction
 import kibaan.android.ios.IBOutlet
 import kibaan.android.ios.UIControlState
 import kibaan.android.sample.R
-import kibaan.android.service.ScreenService
+import kibaan.android.framework.ScreenService
 import kibaan.android.ui.SmartButton
 
 /**

@@ -1,4 +1,4 @@
-package kibaan.android.controller
+package kibaan.android.framework
 
 import kibaan.android.ios.removeAll
 import kibaan.android.ios.removeFromSuperview
@@ -18,7 +18,8 @@ object ViewControllerCache {
 
         var controller = if (cache) controllerMap[controllerKey] else null
         if (controller == null) {
-            controller = create(type = type, layoutName = layoutName, id = id)
+            controller =
+                    create(type = type, layoutName = layoutName, id = id)
             controllerMap[controllerKey] = controller
         }
 

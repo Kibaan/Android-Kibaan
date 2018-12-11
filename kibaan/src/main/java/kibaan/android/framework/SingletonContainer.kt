@@ -1,12 +1,12 @@
-package kibaan.android.service
+package kibaan.android.framework
 
 import kibaan.android.ios.removeAll
 import kotlin.reflect.KClass
 
 /**
- * シングルトンなインスタンスを管理するサービス
+ * シングルトンのインスタンスを保持する
  */
-object SingletonService {
+object SingletonContainer {
 
     var map: MutableMap<KClass<*>, Any> = mutableMapOf()
 

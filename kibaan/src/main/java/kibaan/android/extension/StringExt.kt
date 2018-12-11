@@ -1,6 +1,6 @@
 package kibaan.android.extension
 
-import kibaan.android.controller.SmartActivity
+import kibaan.android.framework.SmartActivity
 import kibaan.android.ios.*
 import java.lang.StringBuilder
 import java.net.URLDecoder

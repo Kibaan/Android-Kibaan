@@ -11,7 +11,7 @@ import android.util.TypedValue
 import android.view.*
 import android.widget.FrameLayout
 import kibaan.android.AndroidUnique
-import kibaan.android.controller.SmartActivity
+import kibaan.android.framework.SmartActivity
 import kibaan.android.ios.IntEnumDefault
 import kibaan.android.ios.UIColor
 import kibaan.android.ios.append

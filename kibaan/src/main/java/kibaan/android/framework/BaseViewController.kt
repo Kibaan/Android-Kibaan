@@ -1,4 +1,4 @@
-package kibaan.android.controller
+package kibaan.android.framework
 
 import android.animation.Animator
 import android.os.Build

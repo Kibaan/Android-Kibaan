@@ -1,7 +1,7 @@
 package kibaan.android.sample.screen.table
 
 import android.view.View
-import kibaan.android.controller.BaseViewController
+import kibaan.android.framework.BaseViewController
 import kibaan.android.extension.stringValue
 import kibaan.android.ios.*
 import kibaan.android.sample.R

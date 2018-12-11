@@ -1,6 +1,6 @@
 package kibaan.android.extension
 
-import kibaan.android.controller.SmartActivity
+import kibaan.android.framework.SmartActivity
 import java.util.*
 
 val Int?.stringValue: String

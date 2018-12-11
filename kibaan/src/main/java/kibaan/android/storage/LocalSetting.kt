@@ -3,7 +3,7 @@ package kibaan.android.storage
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kibaan.android.controller.SmartActivity
+import kibaan.android.framework.SmartActivity
 import kibaan.android.extension.isNotEmpty
 import kibaan.android.ios.CGFloat
 import kibaan.android.ios.StringEnum

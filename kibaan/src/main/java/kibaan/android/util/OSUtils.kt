@@ -10,7 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.support.v4.app.NotificationManagerCompat
 import android.view.View
-import kibaan.android.controller.SmartActivity
+import kibaan.android.framework.SmartActivity
 import kibaan.android.extension.isTrue
 import java.io.IOException
 

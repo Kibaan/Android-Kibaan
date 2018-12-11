@@ -1,12 +1,9 @@
-package kibaan.android.service
+package kibaan.android.framework
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import kibaan.android.AndroidUnique
-import kibaan.android.controller.BaseViewController
-import kibaan.android.controller.SmartActivity
-import kibaan.android.controller.ViewControllerCache
 import kibaan.android.extension.isTrue
 import kibaan.android.ios.*
 import kibaan.android.ui.ScreenIndicator
@@ -20,10 +17,13 @@ class ScreenService {
 
     companion object {
         private var activity: SmartActivity? = null
-        val shared: ScreenService get() = SingletonService.get(ScreenService::class)
+        val shared: ScreenService
+            get() = SingletonContainer.get(
+                ScreenService::class
+            )
 
         fun setActivity(activity: SmartActivity?) {
-            ScreenService.activity = activity
+            Companion.activity = activity
             if (activity != null) {
                 shared.init(context = activity)
             }
