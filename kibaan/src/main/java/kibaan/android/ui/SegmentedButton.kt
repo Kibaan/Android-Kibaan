@@ -394,6 +394,7 @@ open class SegmentedButton : UIStackView {
         if (columnSize == undefinedSize || rowSize == undefinedSize) {
             return
         }
+        buttons.removeAll()
         for (i in 0 until rowSize) {
             val stackView = addHorizontalStackView()
             for (j in 0 until columnSize) {
