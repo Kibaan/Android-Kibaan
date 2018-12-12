@@ -55,8 +55,9 @@ open class RoundedLinearLayout : LinearLayout, ViewOutlineProcessable {
 
     // region -> Draw
 
-    override fun draw(canvas: Canvas?) {
-        viewOutlineProcessor.draw(canvas) { super.draw(it) }
+    override fun dispatchDraw(canvas: Canvas?) {
+        // ViewGroupは自分の描画内容がないと"draw"が呼ばれない為、"dispatchDraw"でViewOutlineProcessorの処理をする
+        viewOutlineProcessor.draw(canvas) { super.dispatchDraw(it) }
     }
 
     // endregion
