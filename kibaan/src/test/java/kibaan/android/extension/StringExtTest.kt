@@ -319,4 +319,19 @@ class StringExtTest {
         assertEquals("\r\n\t\"\'".literalEscaped, "\\n\\t\\\"\\\'")
     }
 
+    @Test
+    fun testIntegerValue() {
+        assertEquals("111".integerValue, 111)
+        assertEquals("222.000".integerValue, 222)
+        assertEquals("-333".integerValue, -333)
+        assertEquals("+444".integerValue, 444)
+        assertEquals("ー555".integerValue, 0)
+        assertEquals("＋666".integerValue, 0)
+        assertEquals("   777".integerValue, 777)
+        assertEquals("\n\n888".integerValue, 888)
+        assertEquals(" 999 000".integerValue, 999)
+        assertEquals("   +111   ".integerValue, 111)
+        assertEquals("   -222   ".integerValue, -222)
+        assertEquals("3E+2".integerValue, 3)
+    }
 }
