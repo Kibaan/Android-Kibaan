@@ -1,6 +1,8 @@
+@file:Suppress("SpellCheckingInspection")
+
 package kibaan.android.extension
 
-import org.junit.Assert.assertEquals
+import org.junit.Assert.*
 import org.junit.Test
 
 class StringExtTest {
@@ -186,6 +188,127 @@ class StringExtTest {
 
     // endregion
 
+    // region -> Remove
+
+    @Test
+    fun testRemove() {
+        assertEquals("TestTest", "TestATest".remove(of = "A"))
+        assertEquals("TestTest", "TestATestA".remove(of = "A"))
+    }
+
+    @Test
+    fun testRemoveAll() {
+        assertEquals("TestATestBC", "TestATestBC".removeAll(listOf()))
+        assertEquals("TestATestB", "TestATestBC".removeAll(listOf("C")))
+        assertEquals("TestTestC", "TestATestBC".removeAll(listOf("A", "B")))
+    }
+
+    // endregion
+
+    // region -> xxxxValue
+
+    @Test
+    fun testDoubleValue() {
+        assertEquals(0.1, "0.1".doubleValue, 0.0)
+        assertEquals(12345.0, "12345".doubleValue, 0.0)
+        assertEquals(-1.54, "-1.54".doubleValue, 0.0)
+        assertEquals(2.9584, "+2.9584".doubleValue, 0.0)
+        assertEquals(0.0, "29.94.24".doubleValue, 0.0)
+        assertEquals(0.0, "abc".doubleValue, 0.0)
+    }
+
+    @Test
+    fun testFloatValue() {
+        assertEquals(0.1, "0.1".floatValue, 0.0)
+        assertEquals(12345.0, "12345".floatValue, 0.0)
+        assertEquals(-1.54, "-1.54".floatValue, 0.0)
+        assertEquals(2.9584, "+2.9584".floatValue, 0.0)
+        assertEquals(0.0, "29.94.24".floatValue, 0.0)
+        assertEquals(0.0, "abc".floatValue, 0.0)
+    }
+
+    @Test
+    fun testIntegerValue() {
+        assertEquals(" 111/222".integerValue, 111)
+        assertEquals("111".integerValue, 111)
+        assertEquals("222.000".integerValue, 222)
+        assertEquals("-333".integerValue, -333)
+        assertEquals("+444".integerValue, 444)
+        assertEquals("ー555".integerValue, 0)
+        assertEquals("＋666".integerValue, 0)
+        assertEquals("   777".integerValue, 777)
+        assertEquals("\n\n888".integerValue, 888)
+        assertEquals(" 999 000".integerValue, 999)
+        assertEquals("   +111   ".integerValue, 111)
+        assertEquals("   -222   ".integerValue, -222)
+        assertEquals("3E+2".integerValue, 3)
+        assertEquals(" ".integerValue, 0)
+    }
+
+    @Test
+    fun testLongValue() {
+        assertEquals(123, "123".longValue)
+        assertEquals(-1500, "-1500".longValue)
+        assertEquals(999, "+999".longValue)
+        assertEquals(0, "123.5".longValue)
+        assertEquals(0, "abc".longValue)
+    }
+
+    // endregion
+
+    // region -> Others
+
+    @Test
+    fun testSplit() {
+        assertEquals(listOf("111", "222", "333"), "111222333".split(3))
+        assertEquals(listOf("111", "222", "333"), "11122233344".split(3))
+        assertEquals(listOf("11", "12", "22", "33", "34"), "11122233344".split(2))
+        assertEquals(listOf("1", "2", "3"), "123".split(1))
+        assertEquals(listOf<String>(), "".split(1))
+        assertEquals(listOf<String>(), "11122233344".split(0))
+        assertEquals(listOf<String>(), "11122233344".split(-1))
+    }
+
+    @Test
+    fun testHasAnyPrefix() {
+        assertTrue("+123".hasAnyPrefix(listOf("+")))
+        assertTrue("+123".hasAnyPrefix(listOf("-", "+")))
+        assertFalse("123".hasAnyPrefix(listOf("-")))
+        assertFalse("123".hasAnyPrefix(listOf("-", "+")))
+    }
+
+    @Test
+    fun testAnyPrefix() {
+        assertEquals("+", "+395".anyPrefix(listOf("+", "-", "/")))
+        assertEquals(null, "395".anyPrefix(listOf("+", "-", "/")))
+        assertEquals("/", "/+395".anyPrefix(listOf("+", "-", "/")))
+        assertEquals(null, "".anyPrefix(listOf("+", "-", "/")))
+    }
+
+    @Test
+    fun testIsNumber() {
+        val nullValue: String? = null
+        assertTrue("1".isNumber)
+        assertTrue("1.5".isNumber)
+        assertTrue("-30.2".isNumber)
+        assertTrue("+14.90".isNumber)
+        assertTrue("913953285239".isNumber)
+        assertFalse("935325a".isNumber)
+        assertFalse("anfd".isNumber)
+        assertFalse(nullValue.isNumber)
+    }
+
+    @Test
+    fun testEnclosed() {
+        assertEquals("9583", "(9583)".enclosed("(", ")"))
+        assertEquals("9583", "指値(9583)です".enclosed("(", ")"))
+        assertEquals("1,000円", "指値(1,000円)/ｽﾀﾝﾀﾞｰﾄﾞ".enclosed("(", ")"))
+        assertEquals("これで良いのか？", "指値(これで良いのか？".enclosed("(", ")"))
+        assertEquals(null, "こっちはダメだと思う)です".enclosed("(", ")"))
+    }
+
+    // endregion
+
     // region -> Format
 
     @Test
@@ -295,6 +418,45 @@ class StringExtTest {
 
     // endregion
 
+    @Test
+    fun testLiteralEscaped() {
+        assertEquals("ABC".literalEscaped, "ABC")
+        assertEquals("\r".literalEscaped, "")
+        assertEquals("\n".literalEscaped, "\\n")
+        assertEquals("\t".literalEscaped, "\\t")
+        assertEquals("\"".literalEscaped, "\\\"")
+        assertEquals("\'".literalEscaped, "\\\'")
+        assertEquals("\r\n\t\"\'".literalEscaped, "\\n\\t\\\"\\\'")
+    }
+
+    @Test
+    fun testLocalizedString() {
+        assertEquals("Context is null", "test".localizedString)
+    }
+
+    @Test
+    fun testIsEmpty() {
+        val nullValue: String? = null
+        assertTrue("".isEmpty)
+        assertTrue(nullValue.isEmpty)
+        assertFalse("1".isEmpty)
+    }
+
+    @Test
+    fun testIsNotEmpty() {
+        val nullValue: String? = null
+        assertTrue("1".isNotEmpty)
+        assertFalse("".isNotEmpty)
+        assertFalse(nullValue.isNotEmpty)
+    }
+
+    @Test
+    fun testEmptyConverted() {
+        val nullValue: String? = null
+        assertEquals("--", "".emptyConverted("--"))
+        assertEquals("--", nullValue.emptyConverted("--"))
+        assertEquals("123", "123".emptyConverted("--"))
+    }
 
     @Test
     fun testSHA1() {
@@ -309,31 +471,20 @@ class StringExtTest {
     }
 
     @Test
-    fun testLiteralEscaped() {
-        assertEquals("ABC".literalEscaped, "ABC")
-        assertEquals("\r".literalEscaped, "")
-        assertEquals("\n".literalEscaped, "\\n")
-        assertEquals("\t".literalEscaped, "\\t")
-        assertEquals("\"".literalEscaped, "\\\"")
-        assertEquals("\'".literalEscaped, "\\\'")
-        assertEquals("\r\n\t\"\'".literalEscaped, "\\n\\t\\\"\\\'")
+    fun testUrlEncoded() {
+        assertEquals("%e3%81%93%e3%82%93%e3%81%ab%e3%81%a1%e3%81%af".toUpperCase(), "こんにちは".urlEncoded)
+        assertEquals(
+            "URL%e3%82%a8%e3%83%b3%e3%82%b3%e3%83%bc%e3%83%89%e3%81%ae%e3%83%86%e3%82%b9%e3%83%88%e3%81%a7%e3%81%99".toUpperCase(),
+            "URLエンコードのテストです".urlEncoded
+        )
     }
 
     @Test
-    fun testIntegerValue() {
-        assertEquals(" 111/222".integerValue, 111)
-        assertEquals("111".integerValue, 111)
-        assertEquals("222.000".integerValue, 222)
-        assertEquals("-333".integerValue, -333)
-        assertEquals("+444".integerValue, 444)
-        assertEquals("ー555".integerValue, 0)
-        assertEquals("＋666".integerValue, 0)
-        assertEquals("   777".integerValue, 777)
-        assertEquals("\n\n888".integerValue, 888)
-        assertEquals(" 999 000".integerValue, 999)
-        assertEquals("   +111   ".integerValue, 111)
-        assertEquals("   -222   ".integerValue, -222)
-        assertEquals("3E+2".integerValue, 3)
-        assertEquals(" ".integerValue, 0)
+    fun testUrlDecoded() {
+        assertEquals("こんにちは", "%e3%81%93%e3%82%93%e3%81%ab%e3%81%a1%e3%81%af".urlDecoded)
+        assertEquals(
+            "URLエンコードのテストです",
+            "URL%e3%82%a8%e3%83%b3%e3%82%b3%e3%83%bc%e3%83%89%e3%81%ae%e3%83%86%e3%82%b9%e3%83%88%e3%81%a7%e3%81%99".urlDecoded
+        )
     }
 }

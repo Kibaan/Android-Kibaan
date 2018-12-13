@@ -1,3 +1,5 @@
+@file:Suppress("NonAsciiCharacters", "TestFunctionName")
+
 package kibaan.android.extension
 
 import org.junit.Assert.assertEquals
@@ -231,6 +233,7 @@ class DateExtTest {
         assertEquals(10, second)
     }
 
+    @Test
     fun testCountSeconds_nextDay() {
         val fromDate = Dates.create(string = "201810101200", format = "yyyyMMddHHmm") ?: return
         val toDate = fromDate.dayAdded(1)

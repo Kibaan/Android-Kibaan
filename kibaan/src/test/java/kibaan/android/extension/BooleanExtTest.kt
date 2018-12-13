@@ -1,5 +1,6 @@
 package kibaan.android.extension
 
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Test
 
@@ -23,6 +24,13 @@ class BooleanExtTest {
         assertFalse(bool.isTrue)
     }
 
+    @Test
+    fun testToggled() {
+        assertEquals(false, true.toggled())
+        assertEquals(true, false.toggled())
+    }
+
+    @Suppress("ForEachParameterNotUsed")
     @Test
     fun testRandom() {
 

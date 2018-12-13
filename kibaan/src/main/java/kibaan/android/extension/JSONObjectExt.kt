@@ -20,8 +20,9 @@ fun JSONObject.getIntOrNull(name: String): Int? {
         null
     } else {
         try {
-            val str = getString(name)
-            return if (str.contains(".")) {
+            val jsonObject = get(name)
+            val str = jsonObject as? String?
+            return if (str?.contains(".").isTrue) {
                 null
             } else {
                 return getInt(name)

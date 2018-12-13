@@ -6,6 +6,31 @@ import org.junit.Test
 class IntExtTest {
 
     @Test
+    fun testIntStringValueNull() {
+        val value: Int? = null
+         assertEquals("", value.stringValue)
+    }
+
+    @Test
+    fun testLongStringValue() {
+        val value: Long? = 12345
+        assertEquals("12345", value.stringValue)
+    }
+
+    @Test
+    fun testLongStringValueNull() {
+        val value: Long? = null
+        assertEquals("", value.stringValue)
+    }
+
+    @Test
+    fun testIntStringValue() {
+        val value: Int? = 12345
+        assertEquals("12345", value.stringValue)
+    }
+
+    @Suppress("ForEachParameterNotUsed")
+    @Test
     fun testRandom() {
         val min = -3
         val max = 3
@@ -21,6 +46,7 @@ class IntExtTest {
         assertEquals(1, random)
     }
 
+    @Suppress("ForEachParameterNotUsed")
     @Test
     fun testRandomFill() {
         var hasZero = false

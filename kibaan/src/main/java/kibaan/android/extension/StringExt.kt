@@ -1,3 +1,5 @@
+@file:Suppress("SpellCheckingInspection")
+
 package kibaan.android.extension
 
 import kibaan.android.framework.SmartActivity
@@ -119,9 +121,12 @@ val String.longValue: Long
  */
 fun String.split(length: Int): List<String> {
     val array = mutableListOf<String>()
+    if (length <= 0) {
+        return array
+    }
     var i = 0
     while (i < this.length) {
-        val str = substring(i, i + length)
+        val str = substring(from = i, length = length)
         if (str != null) {
             array.append(str)
         }
@@ -170,7 +175,7 @@ fun String.enclosed(left: String, right: String): String? {
         if (index != -1) {
             endIndex = index
         }
-        return this.substring(startIndex + 1, endIndex)
+        return this.substring(from = startIndex + 1, length = endIndex - startIndex - 1)
     }
     return null
 }
@@ -247,6 +252,7 @@ val String.signedNumberFormat: String
  * 指定した桁まで文字列の右側を特定の文字で埋める
  * 指定桁を超えている場合は何もしない
  */
+@Suppress("RedundantLambdaArrow")
 fun String.rightPadded(size: Int, spacer: String = " "): String {
     var result = this
     val add = size - count
@@ -263,6 +269,7 @@ fun String.rightPadded(size: Int, spacer: String = " "): String {
  * 指定した桁まで文字列の左側を特定の文字で埋める
  * 指定桁を超えている場合は何もしない
  */
+@Suppress("RedundantLambdaArrow")
 fun String.leftPadded(size: Int, spacer: String = " "): String {
     var result = this
     val add = size - count
