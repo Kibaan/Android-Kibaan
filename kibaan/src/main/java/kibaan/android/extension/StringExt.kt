@@ -2,7 +2,6 @@ package kibaan.android.extension
 
 import kibaan.android.framework.SmartActivity
 import kibaan.android.ios.*
-import java.lang.StringBuilder
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.security.MessageDigest
@@ -91,7 +90,23 @@ val String.floatValue: CGFloat
  * 文字列をIntに変換する。数値でない場合は0になる
  */
 val String.integerValue: Int
-    get() = toIntOrNull() ?: 0
+    get() {
+        val value = toIntOrNull()
+        if (value != null) {
+            return value
+        }
+        val trimValue = trim()
+        val hasPrefix = trimValue.hasPrefix("-") || trimValue.hasPrefix("+")
+        var number = ""
+        for ((index, char) in trimValue.withIndex()) {
+            if (char.isDigit() || (index == 0 && hasPrefix)) {
+                number += char
+            } else {
+                break
+            }
+        }
+        return number.toIntOrNull() ?: 0
+    }
 
 /**
  * 文字列をLongに変換する。数値出ない場合は0になる

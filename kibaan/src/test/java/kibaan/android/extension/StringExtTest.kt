@@ -321,6 +321,7 @@ class StringExtTest {
 
     @Test
     fun testIntegerValue() {
+        assertEquals(" 111/222".integerValue, 111)
         assertEquals("111".integerValue, 111)
         assertEquals("222.000".integerValue, 222)
         assertEquals("-333".integerValue, -333)
@@ -333,5 +334,6 @@ class StringExtTest {
         assertEquals("   +111   ".integerValue, 111)
         assertEquals("   -222   ".integerValue, -222)
         assertEquals("3E+2".integerValue, 3)
+        assertEquals(" ".integerValue, 0)
     }
 }
