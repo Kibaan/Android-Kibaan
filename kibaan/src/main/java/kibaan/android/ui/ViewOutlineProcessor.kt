@@ -52,6 +52,7 @@ class ViewOutlineProcessor(val view: View) {
         set(value) {
             field = value
             borderPaint.color = value.intValue
+            view.invalidate()
 
         }
     /** 枠線の太さ */
@@ -59,6 +60,7 @@ class ViewOutlineProcessor(val view: View) {
         set(value) {
             field = value
             borderPaint.strokeWidth = value.toFloat()
+            view.invalidate()
         }
     /** 枠線描画用の[Paint] */
     private var borderPaint = Paint()
