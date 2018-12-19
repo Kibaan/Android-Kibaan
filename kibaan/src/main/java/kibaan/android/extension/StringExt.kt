@@ -120,20 +120,60 @@ val String.longValue: Long
  * 指定した文字数ごとに区切った配列を返す
  */
 fun String.split(length: Int): List<String> {
-    val array = mutableListOf<String>()
-    if (length <= 0) {
-        return array
+    return splitFromLeft(length)
+}
+
+/**
+ * 文字列の左側から指定した文字数ごとに区切った配列を返す
+ */
+@Suppress("NAME_SHADOWING")
+fun String.splitFromLeft(length: Int): List<String> {
+    if (isEmpty) {
+        return listOf("")
     }
+    val array: MutableList<String> = mutableListOf()
     var i = 0
-    while (i < this.length) {
+    while (i < this.count) {
         val str = substring(from = i, length = length)
         if (str != null) {
             array.append(str)
+        } else {
+            val str = substringFrom(from = i)
+            if (str != null) {
+                array.append(str)
+            }
         }
         i += length
     }
     return array
 }
+
+/**
+ * 文字列の右側から指定した文字数ごとに区切った配列を返す
+ */
+@Suppress("NAME_SHADOWING")
+fun String.splitFromRight(length: Int): List<String> {
+    if (isEmpty) {
+        return listOf("")
+    }
+    val array: MutableList<String> = mutableListOf()
+    var i = 0
+    while (i < this.count) {
+        val from = this.count - (i + length)
+        val str = substring(from = from, length = length)
+        if (str != null) {
+            array.append(str)
+        } else {
+            val str = substringTo(to = from + length)
+            if (str != null) {
+                array.append(str)
+            }
+        }
+        i += length
+    }
+    return array.reversed()
+}
+
 
 /**
  * 引数のいずれかの文字列で始まる場合はtrue

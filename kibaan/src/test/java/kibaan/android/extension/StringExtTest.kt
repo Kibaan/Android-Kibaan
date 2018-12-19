@@ -259,17 +259,6 @@ class StringExtTest {
     // region -> Others
 
     @Test
-    fun testSplit() {
-        assertEquals(listOf("111", "222", "333"), "111222333".split(3))
-        assertEquals(listOf("111", "222", "333"), "11122233344".split(3))
-        assertEquals(listOf("11", "12", "22", "33", "34"), "11122233344".split(2))
-        assertEquals(listOf("1", "2", "3"), "123".split(1))
-        assertEquals(listOf<String>(), "".split(1))
-        assertEquals(listOf<String>(), "11122233344".split(0))
-        assertEquals(listOf<String>(), "11122233344".split(-1))
-    }
-
-    @Test
     fun testHasAnyPrefix() {
         assertTrue("+123".hasAnyPrefix(listOf("+")))
         assertTrue("+123".hasAnyPrefix(listOf("-", "+")))
@@ -403,6 +392,78 @@ class StringExtTest {
         assertEquals("123".rightPadded(size = 6), "123   ")
         assertEquals("123".rightPadded(size = 6, spacer = "0"), "123000")
         assertEquals("1234567".rightPadded(size = 6), "1234567")
+    }
+
+    // endregion
+
+    // region -> Split(Left)
+
+    @Test
+    fun testSplitLeftSimple() {
+        val result = "123456789".splitFromLeft(length = 3)
+        assertEquals(3, result.size)
+        assertEquals("123", result[0])
+        assertEquals("456", result[1])
+        assertEquals("789", result[2])
+    }
+
+    @Test
+    fun testSplitLeftShortOne() {
+        val result = "12".splitFromLeft(length = 3)
+        assertEquals(1, result.size)
+        assertEquals("12", result[0])
+    }
+
+    @Test
+    fun testSplitLeftShortMulti() {
+        val result = "AAAABBBBCC".splitFromLeft(length = 4)
+        assertEquals(3, result.size)
+        assertEquals("AAAA", result[0])
+        assertEquals("BBBB", result[1])
+        assertEquals("CC", result[2])
+    }
+
+    @Test
+    fun testSplitLeftBlank() {
+        val result = "".splitFromLeft(length = 4)
+        assertEquals(1, result.size)
+        assertEquals("", result[0])
+    }
+
+    // endregion
+
+    // region -> Split(Right)
+
+    @Test
+    fun testSplitRightSimple() {
+        val result = "123456789".splitFromRight(length = 3)
+        assertEquals(3, result.size)
+        assertEquals("123", result[0])
+        assertEquals("456", result[1])
+        assertEquals("789", result[2])
+    }
+
+    @Test
+    fun testSplitRightShortOne() {
+        val result = "12".splitFromRight(length = 3)
+        assertEquals(1, result.size)
+        assertEquals("12", result[0])
+    }
+
+    @Test
+    fun testSplitRightShortMulti() {
+        val result = "AAAABBBBCC".splitFromRight(length = 4)
+        assertEquals(3, result.size)
+        assertEquals("AA", result[0])
+        assertEquals("AABB", result[1])
+        assertEquals("BBCC", result[2])
+    }
+
+    @Test
+    fun testSplitRightBlank() {
+        val result = "".splitFromRight(length = 4)
+        assertEquals(1, result.size)
+        assertEquals("", result[0])
     }
 
     // endregion
