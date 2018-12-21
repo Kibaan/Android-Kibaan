@@ -140,6 +140,12 @@ open class SegmentedButton : UIStackView {
             return null
         }
 
+    /**
+     * 選択されているボタンのタイトル
+     */
+    val selectedTitle: String?
+        get() = buttons.firstOrNull { it.isSelected }?.currentTitle
+
     /// ボタンに紐づく値の一覧
     val values: List<String>
         get() = buttonGroup.values
