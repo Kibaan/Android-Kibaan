@@ -14,43 +14,24 @@
         android:scaleType="fitCenter"
     />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guide_horizontal_center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5"/>
-
-    <kibaan.android.ios.UIButton
-        android:id="@+id/set_image_test_button"
-        android:layout_width="0dp" android:layout_height="50dp"
-        app:layout_constraintBottom_toTopOf="@id/data_binding_test_button"
-        app:layout_constraintLeft_toLeftOf="@id/data_binding_test_button"
-        app:layout_constraintRight_toRightOf="@id/guide_horizontal_center"
-        android:layout_marginBottom="10dp"
-    />
+    <kibaan.android.ui.SmartLabel
+            android:id="@+id/sample_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello"/>
 
     <kibaan.android.ui.SmartButton
-        android:id="@+id/set_image_state_change_button"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:iconImage="@drawable/checkmark"
-        app:iconScale="h:0.5"
-        app:layout_constraintTop_toTopOf="@id/set_image_test_button"
-        app:layout_constraintBottom_toBottomOf="@id/set_image_test_button"
-        app:layout_constraintRight_toRightOf="@id/data_binding_test_button"
-        app:layout_constraintLeft_toRightOf="@id/set_image_test_button"/>
-
-    <kibaan.android.ui.SmartButton
-        android:id="@+id/data_binding_test_button"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:layout_marginBottom="10dp"
-        android:background="#F98855"
-        android:text="バインディング確認"
-        app:layout_constraintBottom_toTopOf="@id/connection_button"
-        app:layout_constraintLeft_toLeftOf="@id/table_button"
-        app:layout_constraintRight_toRightOf="@id/table_button"
+            android:id="@+id/count_up_button"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:background="#DD8855"
+            android:text="カウントアップ"
+            android:textColor="@android:color/white"
+            app:cornerRadius="15dp"
+            app:layout_constraintBottom_toTopOf="@id/connection_button"
+            app:layout_constraintLeft_toLeftOf="@id/table_button"
+            app:layout_constraintRight_toRightOf="@id/table_button"
     />
 
     <kibaan.android.ui.SmartButton
