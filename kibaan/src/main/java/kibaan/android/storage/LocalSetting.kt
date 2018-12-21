@@ -21,7 +21,7 @@ import kotlin.reflect.KClass
  */
 open class LocalSetting {
     var items: MutableMap<String, String?> = mutableMapOf()
-    var fileName: String
+    val fileName: String
 
     val context: Context?
         get() = SmartActivity.sharedOrNull
@@ -62,7 +62,7 @@ open class LocalSetting {
             while (keys.hasNext()) {
                 val key = keys.next()
                 var item: String? = null
-                if (jsonObject.isNull(key)) {
+                if (!jsonObject.isNull(key)) {
                     try {
                         item = jsonObject.getString(key)
                     } catch (e: Exception){
