@@ -56,6 +56,10 @@ open class SegmentedButton : UIStackView {
      */
     private var tapHandler: ((String) -> Unit)? = null
     /**
+     * タップ時の処理（タップ前の選択値付き）
+     */
+    private var tapHandlerWithOldValue: ((String?, String) -> Unit)? = null
+    /**
      * スタイル
      */
     open var segmentType by didSet(SegmentType.PLAIN) {
@@ -191,9 +195,10 @@ open class SegmentedButton : UIStackView {
     // region -> Action
 
     fun actionSelect(button: UIButton) {
+        val oldValue = buttonGroup.selectedValue
         buttonGroup.select(button = button)
         setSelectedButtonBold()
-        executeCallback()
+        executeCallback(oldValue = oldValue)
     }
 
     // endregion
@@ -230,6 +235,20 @@ open class SegmentedButton : UIStackView {
     fun onSelected(callback: (String, Int) -> Unit) {
         tapHandler = { value ->
             callback(value, this.selectedIndex ?: 0)
+        }
+    }
+
+    /**
+     * ボタン選択時の処理を設定する（選択前の値が取得可能）
+     */
+    fun <T : Enum<*>> onSelectedWithOldValue(type: KClass<T>, callback: (T?, T, Int) -> Unit) {
+        tapHandlerWithOldValue = { oldValue, value ->
+            val enumValue = EnumUtils.getEnumValue(type, value)
+
+            if (enumValue != null) {
+                val oldEnumValue = EnumUtils.getEnumValue(type, oldValue)
+                callback(oldEnumValue, enumValue, this.selectedIndex ?: 0)
+            }
         }
     }
 
@@ -305,10 +324,11 @@ open class SegmentedButton : UIStackView {
     fun <T : Enum<T>> select(value: T, needCallback: Boolean = false) {
         val button = buttonGroup.get(value.name)
         if (button != null && button.isEnabled) {
+            val oldValue = buttonGroup.selectedValue
             buttonGroup.select(button = button)
             setSelectedButtonBold()
             if (needCallback) {
-                executeCallback()
+                executeCallback(oldValue = oldValue)
             }
         }
     }
@@ -319,10 +339,11 @@ open class SegmentedButton : UIStackView {
     fun select(string: String, needCallback: Boolean = false) {
         val button = buttonGroup.get(string)
         if (button != null && button.isEnabled) {
+            val oldValue = buttonGroup.selectedValue
             buttonGroup.select(button)
             setSelectedButtonBold()
             if (needCallback) {
-                executeCallback()
+                executeCallback(oldValue = oldValue)
             }
         }
     }
@@ -333,10 +354,11 @@ open class SegmentedButton : UIStackView {
     fun select(index: Int, needCallback: Boolean = false) {
         val button = buttons[index]
         if (button.isEnabled) {
+            val oldValue = buttonGroup.selectedValue
             buttonGroup.select(button = button)
             setSelectedButtonBold()
             if (needCallback) {
-                executeCallback()
+                executeCallback(oldValue = oldValue)
             }
         }
     }
@@ -381,10 +403,11 @@ open class SegmentedButton : UIStackView {
      * 選択状態を解除する
      */
     fun clearSelection(needCallback: Boolean = false) {
+        val oldValue = buttonGroup.selectedValue
         buttonGroup.selectedValue = null
         setSelectedButtonBold()
         if (needCallback) {
-            executeCallback()
+            executeCallback(oldValue = oldValue)
         }
     }
 
@@ -519,10 +542,11 @@ open class SegmentedButton : UIStackView {
     /**
      * コールバックを実行する
      */
-    private fun executeCallback() {
-        val value = buttonGroup.selectedValue
-        if (value != null) {
-            tapHandler?.invoke(value)
+    private fun executeCallback(oldValue: String?) {
+        val newValue = buttonGroup.selectedValue
+        if (newValue != null) {
+            tapHandler?.invoke(newValue)
+            tapHandlerWithOldValue?.invoke(oldValue, newValue)
         }
     }
 
