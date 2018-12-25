@@ -11,6 +11,11 @@ fun Boolean.toggled(): Boolean {
     return !this
 }
 
+val Boolean.stringValue: String
+    get() {
+        return toString()
+    }
+
 object Bool {
     /**
      * ランダムなBool値を取得する

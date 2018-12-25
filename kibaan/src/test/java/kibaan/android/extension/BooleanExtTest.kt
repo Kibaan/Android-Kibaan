@@ -30,6 +30,12 @@ class BooleanExtTest {
         assertEquals(true, false.toggled())
     }
 
+    @Test
+    fun testStringValue() {
+        assertEquals("false", false.stringValue)
+        assertEquals("true", true.stringValue)
+    }
+
     @Suppress("ForEachParameterNotUsed")
     @Test
     fun testRandom() {
