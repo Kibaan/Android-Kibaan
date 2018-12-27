@@ -5,9 +5,7 @@ import kibaan.android.ios.TimeInterval
 import kibaan.android.ios.first
 import okhttp3.*
 import java.io.IOException
-import java.lang.Exception
 import java.util.concurrent.TimeUnit
-
 
 class HTTPConnectorImpl: HTTPConnector {
 
@@ -20,14 +18,25 @@ class HTTPConnectorImpl: HTTPConnector {
     override var timeoutIntervalForResource: TimeInterval = 60.0
     override var isCancelled: Boolean = false
 
+    private class CookieJarImpl: CookieJar {
+
+        override fun saveFromResponse(url: HttpUrl, cookies: MutableList<Cookie>) {
+            HTTPCookieStorage.shared.setCookies(url, cookies)
+        }
+
+        override fun loadForRequest(url: HttpUrl): MutableList<Cookie> {
+            return HTTPCookieStorage.shared.getCookies(url).toMutableList()
+        }
+    }
+
     override fun execute(request: Request, completionHandler: (ByteArray?, HTTPURLResponse?, Exception?) -> Unit) {
         isCancelled = false
 
         val client = httpClient.newBuilder()
                 .connectTimeout(timeoutIntervalForRequest.toLong(), TimeUnit.SECONDS)
                 .readTimeout(timeoutIntervalForResource.toLong(), TimeUnit.SECONDS)
+                .cookieJar(CookieJarImpl())
                 .build()
-
 
         // リクエスト作成
         val requestBuilder = okhttp3.Request.Builder()
