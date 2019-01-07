@@ -7,7 +7,7 @@ import kibaan.android.valueobject.KeyValue
 /**
  * key=valueの&つなぎ形式のクエリ
  */
-open class Query {
+open class URLQuery {
 
     open val stringValue: String
         get() = keyValues.map {
@@ -21,7 +21,7 @@ open class Query {
 
     var keyValues: MutableList<KeyValue> = mutableListOf()
 
-    constructor() {}
+    constructor()
 
     constructor(string: String?) {
         val string = string?.trim() ?: return
@@ -35,6 +35,10 @@ open class Query {
                 KeyValue(key = key, value = value)
             }
             .toMutableList()
+    }
+
+    constructor(vararg elements: Pair<String, String?>) {
+        this.keyValues = elements.map { KeyValue(it.first, it.second) }.toMutableList()
     }
 
     constructor(keyValues: List<KeyValue>) {
@@ -54,4 +58,17 @@ open class Query {
             keyValues.append(keyValue)
         }
     }
+
+
+    fun stringValueCustomEncoded(encoder: (String) -> String): String {
+        return keyValues.map {
+            var item = encoder(it.key)
+            val value = it.value
+            if (value != null) {
+                item += "=${encoder(value)}"
+            }
+            item
+        }.joined(separator = "&")
+    }
+
 }
