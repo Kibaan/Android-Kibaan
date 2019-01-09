@@ -28,9 +28,6 @@ class CollectionExtTest {
         assertArrayEquals(arrayOf("A", "B", "C", "D"), list.toTypedArray())
         assertEquals(list.count, 4)
 
-        list.remove(listOf("A", "C"))
-        assertArrayEquals(arrayOf("B", "D"), list.toTypedArray())
-
         list.removeAll()
         assertEquals(list.count, 0)
     }
@@ -82,5 +79,4 @@ class CollectionExtTest {
 
         assertEquals(3, count)
     }
-
 }

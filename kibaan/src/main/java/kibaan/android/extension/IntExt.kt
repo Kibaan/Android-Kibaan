@@ -3,6 +3,9 @@ package kibaan.android.extension
 import kibaan.android.framework.SmartActivity
 import java.util.*
 
+/**
+ * 数値を文字列に変換して返す
+ */
 val Int?.stringValue: String
     get() {
         if (this == null) {
@@ -11,6 +14,9 @@ val Int?.stringValue: String
         return this.toString()
     }
 
+/**
+ * 数値を文字列に変換して返す
+ */
 val Long?.stringValue: String
     get() {
         if (this == null) {

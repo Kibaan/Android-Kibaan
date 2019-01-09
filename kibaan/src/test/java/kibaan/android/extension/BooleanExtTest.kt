@@ -1,7 +1,6 @@
 package kibaan.android.extension
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
+import org.junit.Assert.*
 import org.junit.Test
 
 class BooleanExtTest {
@@ -9,7 +8,7 @@ class BooleanExtTest {
     @Test
     fun testOptionalTrue() {
         val bool: Boolean? = true
-        assert(bool.isTrue)
+        assertTrue(bool.isTrue)
     }
 
     @Test
@@ -43,7 +42,7 @@ class BooleanExtTest {
         var hasTrue = false
         var hasFalse = false
 
-        (0..50).forEach {
+        (0..30).forEach {
             if (Bool.random()) {
                 hasTrue = true
             } else {

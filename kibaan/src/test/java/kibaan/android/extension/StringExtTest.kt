@@ -256,6 +256,42 @@ class StringExtTest {
 
     // endregion
 
+    // region -> Split
+
+    @Test
+    fun testSplit() {
+        val result = "123456789".split(3)
+        assertEquals(3, result.size)
+        assertEquals("123", result[0])
+        assertEquals("456", result[1])
+        assertEquals("789", result[2])
+    }
+
+    @Test
+    fun testSplitShortOne() {
+        val result = "12".splitFromLeft(3)
+        assertEquals(1, result.size)
+        assertEquals("12", result[0])
+    }
+
+    @Test
+    fun testSplitMulti() {
+        val result = "AAAABBBBCC".split(4)
+        assertEquals(3, result.size)
+        assertEquals("AAAA", result[0])
+        assertEquals("BBBB", result[1])
+        assertEquals("CC", result[2])
+    }
+
+    @Test
+    fun testSplitBlank() {
+        val result = "".split(length = 4)
+        assertEquals(1, result.size)
+        assertEquals("", result[0])
+    }
+
+    // endregion
+
     // region -> Others
 
     @Test
