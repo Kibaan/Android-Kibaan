@@ -197,4 +197,93 @@
         android:layout_marginTop="10dp"
         app:layout_constraintRight_toRightOf="@id/button10"/>
 
+    <kibaan.android.ui.EllipseButton
+        android:id="@+id/circle_button"
+        android:layout_width="40dp"
+        android:layout_height="0dp"
+        android:background="#FF0000"
+        app:borderWidth="1dp"
+        app:borderColor="@android:color/white"
+        app:layout_constraintDimensionRatio="1:1"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/set_image_button"
+        app:layout_constraintLeft_toLeftOf="@id/set_image_button"
+        android:layout_marginTop="10dp"
+        app:cornerRadius="25dp"
+        android:textSize="7dp"
+        android:text="円\n枠線有\n背景有"
+    />
+
+    <kibaan.android.ui.EllipseButton
+        android:id="@+id/circle_button_2"
+        android:layout_width="40dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toRightOf="@id/circle_button"
+        app:layout_constraintTop_toTopOf="@id/circle_button"
+        app:layout_constraintDimensionRatio="1:1"
+        android:background="@android:color/transparent"
+        android:textColor="@android:color/white"
+        android:layout_marginLeft="4dp"
+        android:text="円\n枠線有\n背景無"
+        android:textSize="7dp"
+        app:borderWidth="1dp"
+        app:borderColor="@android:color/white"
+    />
+
+    <kibaan.android.ui.EllipseButton
+        android:layout_width="40dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toRightOf="@id/circle_button_2"
+        app:layout_constraintTop_toTopOf="@id/circle_button_2"
+        app:layout_constraintDimensionRatio="1:1"
+        android:background="#0055FF"
+        android:textColor="@android:color/white"
+        android:layout_marginLeft="4dp"
+        android:text="円\n枠線無\n背景有"
+        android:textSize="7dp"
+    />
+
+    <kibaan.android.ui.EllipseButton
+        android:id="@+id/ellipse_button"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:background="#FF0000"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/set_image_change_button"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toLeftOf="@id/set_image_change_button"
+        android:textSize="7dp"
+        app:borderWidth="1dp"
+        app:borderColor="@android:color/white"
+        android:text="楕円\n枠線有\n背景有"
+    />
+
+    <kibaan.android.ui.EllipseButton
+        android:id="@+id/ellipse_button_2"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        app:layout_constraintLeft_toRightOf="@id/ellipse_button"
+        app:layout_constraintTop_toTopOf="@id/ellipse_button"
+        android:textSize="7dp"
+        android:text="楕円\n枠線有\n背景無"
+        android:layout_marginLeft="4dp"
+        android:textColor="@android:color/white"
+        app:borderWidth="1dp"
+        app:borderColor="@android:color/white"
+        android:background="@android:color/transparent"
+    />
+
+    <kibaan.android.ui.EllipseButton
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        app:layout_constraintLeft_toRightOf="@id/ellipse_button_2"
+        app:layout_constraintTop_toTopOf="@id/ellipse_button_2"
+        android:textSize="7dp"
+        android:text="楕円\n枠線無\n背景有"
+        android:layout_marginLeft="4dp"
+        android:textColor="@android:color/white"
+        android:background="#0055FF"
+    />
+
+
 </android.support.constraint.ConstraintLayout>

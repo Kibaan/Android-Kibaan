@@ -31,21 +31,8 @@ class ViewOutlineProcessor(val view: View) {
     var radius: Int = 0
         set(value) {
             field = value
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                if (0 < radius) {
-                    view.outlineProvider = object : ViewOutlineProvider() {
-                        override fun getOutline(view: View, outline: Outline) {
-                            outline.setRoundRect(0, 0, view.width, view.height, radius.toFloat())
-                        }
-                    }
-                    view.clipToOutline = true
-                } else {
-                    view.outlineProvider = null
-                    view.clipToOutline = false
-                }
-            } else {
-                view.invalidate()
-            }
+            updateOutlineProvider()
+            view.invalidate()
         }
     /** 枠線の色 */
     var borderColor: UIColor = UIColor(Color.TRANSPARENT)
@@ -62,6 +49,13 @@ class ViewOutlineProcessor(val view: View) {
             borderPaint.strokeWidth = value.toFloat()
             view.invalidate()
         }
+    /** ボタンの形を楕円にするか */
+    var isEllipse: Boolean = false
+        set(value) {
+            field = value
+            updateOutlineProvider()
+            view.invalidate()
+        }
     /** 枠線描画用の[Paint] */
     private var borderPaint = Paint()
     /** APILevel21未満用にクリップ処理をする為の[Bitmap] */
@@ -70,7 +64,7 @@ class ViewOutlineProcessor(val view: View) {
     private val canUsedOutlineProvider: Boolean = Build.VERSION_CODES.LOLLIPOP <= Build.VERSION.SDK_INT
     /** 独自でのアウトライン処理が必要かどうか */
     val needsOutlineProcessing: Boolean
-        get() = !canUsedOutlineProvider && (0 < radius || 0.0 < borderWidth)
+        get() = (!canUsedOutlineProvider && (0 < radius || 0.0 < borderWidth)) || isEllipse
 
     // endregion
 
@@ -79,6 +73,26 @@ class ViewOutlineProcessor(val view: View) {
     init {
         borderPaint.isAntiAlias = true
         borderPaint.style = Paint.Style.STROKE
+    }
+
+    // endregion
+
+    // region -> Other
+
+    private fun updateOutlineProvider() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (0 < radius && !isEllipse) {
+                view.outlineProvider = object : ViewOutlineProvider() {
+                    override fun getOutline(view: View, outline: Outline) {
+                        outline.setRoundRect(0, 0, view.width, view.height, radius.toFloat())
+                    }
+                }
+                view.clipToOutline = true
+            } else {
+                view.outlineProvider = null
+                view.clipToOutline = false
+            }
+        }
     }
 
     // endregion
@@ -110,11 +124,14 @@ class ViewOutlineProcessor(val view: View) {
 
     private fun clipRoundedRect(canvas: Canvas) {
         val path = Path()
+        val rect = RectF(0.0f, 0.0f, canvas.width.toFloat(), canvas.height.toFloat())
+        val direction = Path.Direction.CW
         path.fillType = Path.FillType.INVERSE_EVEN_ODD
-        path.addRoundRect(
-            RectF(0.0f, 0.0f, canvas.width.toFloat(), canvas.height.toFloat()),
-            radius.toFloat(), radius.toFloat(), Path.Direction.CW
-        )
+        if (isEllipse) {
+            path.addOval(rect, direction)
+        } else {
+            path.addRoundRect(rect, radius.toFloat(), radius.toFloat(), direction)
+        }
         canvas.drawPath(path, clearPaint)
     }
 
@@ -125,9 +142,13 @@ class ViewOutlineProcessor(val view: View) {
             val borderWidth = borderWidth
             val halfWidth: Float = borderWidth.toFloat() / 2
             val rect = RectF(halfWidth, halfWidth, (canvas.width - halfWidth), (canvas.height - halfWidth))
-            val rx = if (0 < radius) radius.toFloat() else 0.0f
-            val ry = if (0 < radius) radius.toFloat() else 0.0f
-            canvas.drawRoundRect(rect, rx, ry, borderPaint)
+            if (isEllipse) {
+                canvas.drawOval(rect, borderPaint)
+            } else {
+                val rx = if (0 < radius) radius.toFloat() else 0.0f
+                val ry = if (0 < radius) radius.toFloat() else 0.0f
+                canvas.drawRoundRect(rect, rx, ry, borderPaint)
+            }
         }
     }
 
@@ -150,6 +171,11 @@ interface ViewOutlineProcessable {
         get() = viewOutlineProcessor.borderWidth
         set(value) {
             viewOutlineProcessor.borderWidth = value ?: 0.0
+        }
+    var isEllipse: Boolean
+        get() = viewOutlineProcessor.isEllipse
+        set(value) {
+            viewOutlineProcessor.isEllipse = value
         }
 }
 
