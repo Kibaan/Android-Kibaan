@@ -32,6 +32,12 @@ class StringExtTest {
 
     @Test
     fun testRemoveLast() {
+        assertEquals("AB", "ABC".removeLast())
+        assertEquals("1.2", "1.23".removeLast())
+    }
+
+    @Test
+    fun testRemoveLastSuffix() {
         assertEquals("1", "123".removeLast("23"))
     }
 
@@ -79,6 +85,14 @@ class StringExtTest {
     }
 
     @Test
+    fun testCount() {
+        var src = "ABC"
+        assertEquals(3, src.count)
+        src = "123456789"
+        assertEquals(9, src.count)
+    }
+
+    @Test
     fun tesRange() {
         val src = "ABC"
         val range = src.range("BC")
@@ -87,6 +101,14 @@ class StringExtTest {
 
         assertEquals(1, range?.first)
         assertEquals(3, range?.last)
+    }
+
+    @Test
+    fun testHashValue() {
+        var src = "ABC"
+        assertEquals(hashCode(), src.hashValue)
+        src = "DDD"
+        assertEquals(hashCode(), src.hashValue)
     }
 
 

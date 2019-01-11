@@ -370,14 +370,23 @@ fun String?.emptyConverted(emptyMark: String): String {
     return emptyMark
 }
 
+/**
+ * SHA-1形式のハッシュ値を返す
+ */
 fun String.sha1(): String {
     return this.shaString("SHA-1")
 }
 
+/**
+ * SHA-256形式のハッシュ値を返す
+ */
 fun String.sha256(): String {
     return this.shaString("SHA-256")
 }
 
+/**
+ * 指定されたタイプに対応する形式でハッシュ値を返す
+ */
 fun String.shaString(type: String): String {
     val hexChars = "0123456789abcdef"
     val bytes = MessageDigest.getInstance(type).digest(this.toByteArray())
@@ -391,8 +400,14 @@ fun String.shaString(type: String): String {
     return result.toString()
 }
 
+/**
+ * URLエンコードされた文字列を取得する
+ */
 val String.urlEncoded: String
     get() = URLEncoder.encode(this, "UTF-8")
 
+/**
+ * URLデコードされた文字列を取得する
+ */
 val String.urlDecoded: String
     get() = URLDecoder.decode(this, "UTF-8")

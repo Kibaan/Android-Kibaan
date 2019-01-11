@@ -8,6 +8,9 @@ enum class Base64EncodingOptions {
     ;
 }
 
+/**
+ * Base64方式でエンコードした文字列を取得する
+ */
 fun ByteArray.base64EncodedString(options: Array<Base64EncodingOptions> = arrayOf()): String {
 
     var flags = if (options.contains(Base64EncodingOptions.lineLength76Characters)) {

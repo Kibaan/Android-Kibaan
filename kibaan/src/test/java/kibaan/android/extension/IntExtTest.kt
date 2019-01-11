@@ -61,4 +61,9 @@ class IntExtTest {
         }
         assert(hasZero && hasOne)
     }
+
+    @Test
+    fun testLocalizedString() {
+        assertEquals("Context is null", 100.localizedString)
+    }
 }
