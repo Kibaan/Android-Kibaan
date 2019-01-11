@@ -106,9 +106,9 @@ class StringExtTest {
     @Test
     fun testHashValue() {
         var src = "ABC"
-        assertEquals(hashCode(), src.hashValue)
+        assertEquals(src.hashCode(), src.hashValue)
         src = "DDD"
-        assertEquals(hashCode(), src.hashValue)
+        assertEquals(src.hashCode(), src.hashValue)
     }
 
 
