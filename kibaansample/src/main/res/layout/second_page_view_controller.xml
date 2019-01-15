@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <kibaan.android.ui.SmartLabel
+            android:id="@+id/title_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:text="SecondPageViewController"
+            android:textStyle="bold"
+            android:textSize="24dp"
+            android:layout_marginBottom="10dp"/>
+
+        <kibaan.android.ui.SmartButton
+            android:id="@+id/add_sub_screen_first_button"
+            android:layout_width="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_height="30dp"
+            android:textColor="@android:color/white"
+            android:background="#335599"
+            android:layout_marginBottom="10dp"
+            android:text="addSubScreen(FirstPageViewController)"
+            android:textAllCaps="false"
+            app:cornerRadius="15dp"/>
+
+        <kibaan.android.ui.SmartButton
+            android:id="@+id/add_sub_screen_second_button"
+            android:layout_width="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_height="30dp"
+            android:textColor="@android:color/white"
+            android:background="#DD6600"
+            android:layout_marginBottom="10dp"
+            android:text="addSubScreen(SecondPageViewController)"
+            android:textAllCaps="false"
+            app:cornerRadius="15dp"/>
+
+        <kibaan.android.ui.SmartButton
+            android:id="@+id/remove_sub_screen_button"
+            android:layout_width="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_height="30dp"
+            android:textColor="@android:color/white"
+            android:background="#669922"
+            android:text="removeSubScreen"
+            android:textAllCaps="false"
+            android:layout_marginBottom="10dp"
+            app:cornerRadius="15dp"/>
+
+        <kibaan.android.ui.SmartButton
+            android:id="@+id/remove_sub_screen_target_button"
+            android:layout_width="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_height="30dp"
+            android:textColor="@android:color/white"
+            android:background="#992222"
+            android:text="removeSubScreen(to = FirstPageViewController::class)"
+            android:textAllCaps="false"
+            android:layout_marginBottom="10dp"
+            app:cornerRadius="15dp"/>
+
+        <kibaan.android.ui.SmartButton
+            android:id="@+id/remove_all_sub_screen_button"
+            android:layout_width="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_height="30dp"
+            android:textColor="@android:color/white"
+            android:background="#222299"
+            android:layout_marginBottom="10dp"
+            android:text="removeAllSubScreen"
+            android:textAllCaps="false"
+            app:cornerRadius="15dp"/>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

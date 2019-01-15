@@ -15,6 +15,7 @@ import kibaan.android.sample.screen.sub.SubViewController
 import kibaan.android.sample.screen.table.SampleTableViewController
 import kibaan.android.framework.ScreenService
 import kibaan.android.sample.model.AppSetting
+import kibaan.android.sample.screen.page.FirstPageViewController
 import kibaan.android.ui.SmartButton
 import kibaan.android.ui.SmartLabel
 import kibaan.android.util.Log
@@ -34,6 +35,11 @@ class TopViewController : BaseViewController() {
 
     private fun updateLabel() {
         sampleLabel.text = AppSetting.shared.sampleText
+    }
+
+    @IBAction(R.id.page_button)
+    fun actionPageButton(sender: View) {
+        ScreenService.shared.addSubScreen(FirstPageViewController::class)
     }
 
     @IBAction(R.id.count_up_button)

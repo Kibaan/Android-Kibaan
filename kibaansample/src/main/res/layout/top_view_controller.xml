@@ -15,23 +15,36 @@
     />
 
     <kibaan.android.ui.SmartLabel
-            android:id="@+id/sample_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello"/>
+        android:id="@+id/sample_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello"/>
 
     <kibaan.android.ui.SmartButton
-            android:id="@+id/count_up_button"
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_marginBottom="10dp"
-            android:background="#DD8855"
-            android:text="カウントアップ"
-            android:textColor="@android:color/white"
-            app:cornerRadius="15dp"
-            app:layout_constraintBottom_toTopOf="@id/connection_button"
-            app:layout_constraintLeft_toLeftOf="@id/table_button"
-            app:layout_constraintRight_toRightOf="@id/table_button"
+        android:id="@+id/page_button"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:background="#229933"
+        android:text="画面遷移確認画面へ"
+        android:textColor="@android:color/white"
+        app:cornerRadius="15dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintLeft_toLeftOf="@id/table_button"
+        app:layout_constraintRight_toRightOf="@id/table_button"
+        app:layout_constraintBottom_toTopOf="@id/count_up_button"/>
+
+    <kibaan.android.ui.SmartButton
+        android:id="@+id/count_up_button"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="10dp"
+        android:background="#DD8855"
+        android:text="カウントアップ"
+        android:textColor="@android:color/white"
+        app:cornerRadius="15dp"
+        app:layout_constraintBottom_toTopOf="@id/connection_button"
+        app:layout_constraintLeft_toLeftOf="@id/table_button"
+        app:layout_constraintRight_toRightOf="@id/table_button"
     />
 
     <kibaan.android.ui.SmartButton
