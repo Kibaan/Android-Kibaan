@@ -40,6 +40,8 @@ class ScreenService {
             activity?.rootContainer?.backgroundColor = value
         }
 
+    var defaultTransitionAnimation: TransitionAnimation? = TransitionAnimation.coverVertical
+
     private var screenStack: MutableList<BaseViewController> = mutableListOf()
     private var screenIndicator: ScreenIndicator? = null
     val foregroundController: BaseViewController? get() = screenStack.lastOrNull()
@@ -96,43 +98,103 @@ class ScreenService {
         viewController.enter()
     }
 
-    fun <T : BaseViewController> addSubScreen(type: KClass<T>, nibName: String? = null, id: String? = null, cache: Boolean = true, prepare: ((T) -> Unit)? = null): T? {
+    fun <T : BaseViewController> addSubScreen(type: KClass<T>, nibName: String? = null, id: String? = null, cache: Boolean = true, transitionType: TransitionType = TransitionType.normal, prepare: ((T) -> Unit)? = null): T? {
         foregroundController?.leave()
         val controller = ViewControllerCache.get(type, layoutName = nibName, id = id, cache = cache)
         screenStack.add(controller)
         activity?.rootContainer?.addSubview(controller.view)
+
+        val isNormal = transitionType == TransitionType.normal
+        controller.transitionAnimation = if (isNormal) defaultTransitionAnimation else transitionType.animation
+        controller.transitionAnimation?.animator?.animateIn(controller.view)
+
         prepare?.invoke(controller)
         controller.added()
         controller.enter()
         return controller
     }
 
-    fun removeSubScreen(executeStart: Boolean = true, targetType: KClass<out BaseViewController>? = null) {
+
+    fun removeSubScreen(executeStart: Boolean = true, completion: (() -> Unit)? = null) {
+        if (screenStack.size <= 1) {
+            return
+        }
         foregroundController?.leave()
-        while (true) {
-            var removed: BaseViewController? = null
-            if (1 < screenStack.size) {
-                removed = screenStack.removeLast()
-                removed?.view?.removeFromSuperview()
-                removed?.removed()
-            }
-            if (removed == null || targetType == null || removed::class == targetType) {
-                break
-            }
+        val removed = screenStack.removeLast() ?: return
+        removed.removed()
+
+        val finish: () -> Unit = {
+            removed.view.removeFromSuperview()
+            completion?.invoke()
+        }
+        if (removed.transitionAnimation != null) {
+            removed.transitionAnimation?.animator?.animateOut(removed.view, completion = finish)
+        } else {
+            finish()
         }
         if (executeStart) {
             screenStack.lastOrNull()?.enter()
         }
     }
 
-    fun removeAllSubScreen() {
+    fun removeSubScreen(executeStart: Boolean = true, to: KClass<out BaseViewController>, completion: (() -> Unit)? = null) {
+        if (screenStack.size <= 1) {
+            return
+        }
+        foregroundController?.leave()
+        val targetViewController = screenStack.lastOrNull { it::class == to }
+        val target = targetViewController ?: return
+        val lastViewController = screenStack.last()
+        if (target == lastViewController) {
+            return
+        }
+
+        for (viewController in screenStack.reversed()) {
+            if (screenStack.lastOrNull() == target) {
+                break
+            }
+            screenStack.removeLast()?.removed()
+            if (viewController != lastViewController) {
+                viewController.view.removeFromSuperview()
+            }
+        }
+        val finish: () -> Unit = {
+            lastViewController.view.removeFromSuperview()
+            completion?.invoke()
+        }
+        if (lastViewController.transitionAnimation != null) {
+            lastViewController.transitionAnimation?.animator?.animateOut(lastViewController.view, completion = finish)
+        } else {
+            finish()
+        }
+        if (executeStart) {
+            screenStack.lastOrNull()?.enter()
+        }
+    }
+
+    fun removeAllSubScreen(completion: (() -> Unit)? = null) {
+        if (screenStack.size <= 1) {
+            return
+        }
         foregroundController?.leave()
         foregroundController?.foregroundController?.removeOverlay()
+
+        val lastViewController = screenStack.last()
         while (1 < screenStack.size) {
             val removed = screenStack.removeLast()
-            removed?.removeOverlay()
-            removed?.view?.removeFromSuperview()
             removed?.removed()
+            if (removed != lastViewController) {
+                removed?.view?.removeFromSuperview()
+            }
+        }
+        val finish: () -> Unit = {
+            lastViewController.view.removeFromSuperview()
+            completion?.invoke()
+        }
+        if (lastViewController.transitionAnimation != null) {
+            lastViewController.transitionAnimation?.animator?.animateOut(lastViewController.view, completion = finish)
+        } else {
+            finish()
         }
         screenStack.firstOrNull()?.enter()
     }

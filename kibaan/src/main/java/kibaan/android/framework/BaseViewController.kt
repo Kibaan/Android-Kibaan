@@ -39,6 +39,9 @@ open class BaseViewController(layoutName: String? = null) : UIViewController(lay
     var owner: BaseViewController? = null
     /** 画面表示中かどうか */
     var isForeground: Boolean = false
+    /** 画面遷移アニメーション */
+    var transitionAnimation: TransitionAnimation? = null
+
 
     /** オーバーレイの基準Z-index */
     private var overlayFloatingHeight: Float = 10.0f
