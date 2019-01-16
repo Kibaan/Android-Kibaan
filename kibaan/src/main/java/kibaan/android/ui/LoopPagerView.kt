@@ -30,6 +30,12 @@ open class LoopPagerView : ViewPager {
 
     var onTouchEvent: ((MotionEvent?) -> Boolean)? = null
 
+    var pageIndex: Int
+        get() = toPagePosition(currentItem)
+        set(value) {
+            changePage(value, animated = false)
+        }
+
     constructor(context: Context) : super(context) {
         initialize(context)
     }
@@ -91,6 +97,22 @@ open class LoopPagerView : ViewPager {
             pageChangeAction?.invoke(pageIndex)
         }
         setCurrentItem(position, animated)
+    }
+
+    fun next(animated: Boolean = true) {
+        var index = pageIndex + 1
+        if (pageViews.size - 1 < index) {
+            index = 0
+        }
+        changePage(pageIndex = index, animated = animated)
+    }
+
+    fun back(animated: Boolean = true) {
+        var index = pageIndex - 1
+        if (index < 0) {
+            index = pageViews.size - 1
+        }
+        changePage(pageIndex = index, animated = animated)
     }
 
     private fun toRealPosition(position: Int): Int {
