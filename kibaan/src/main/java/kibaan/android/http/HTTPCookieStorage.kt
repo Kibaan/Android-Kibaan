@@ -24,6 +24,7 @@ class HTTPCookieStorage {
 
     // region -> Function
 
+    @Synchronized
     fun setCookies(url: HttpUrl, cookies: MutableList<Cookie>) {
         val targetList = cookieMap[url.host()] ?: mutableListOf()
         cookies.forEach { cookie ->
@@ -33,6 +34,7 @@ class HTTPCookieStorage {
         cookieMap[url.host()] = targetList
     }
 
+    @Synchronized
     fun getCookies(url: HttpUrl): List<Cookie> {
         val host = url.host()
         removeExpiredCookies(host)
@@ -46,12 +48,13 @@ class HTTPCookieStorage {
     }
 
     @Suppress("MemberVisibilityCanBePrivate")
-    fun removeExpiredCookies(host: String) {
+    private fun removeExpiredCookies(host: String) {
         val targetList = cookieMap[host] ?: return
         targetList.removeAll { it.hasExpired }
         cookieMap[host] = targetList
     }
 
+    @Synchronized
     fun clear() {
         cookieMap.removeAll()
     }
