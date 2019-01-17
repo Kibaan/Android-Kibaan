@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.View
 import kibaan.android.framework.BaseViewController
 import kibaan.android.framework.ScreenService
+import kibaan.android.framework.ViewControllerCache
 import kibaan.android.ios.IBAction
 import kibaan.android.ios.IBOutlet
 import kibaan.android.sample.R
@@ -37,15 +38,17 @@ class SecondPageViewController: BaseViewController() {
 
     @IBAction(R.id.add_sub_screen_first_button)
     fun actionAddSubScreen(sender: View) {
-        ScreenService.shared.addSubScreen(FirstPageViewController::class, id = "test_$count", prepare = {
-            it.count = count + 1
+        val nextCount = this.count + 1
+        ScreenService.shared.addSubScreen(FirstPageViewController::class, id = "test_$nextCount", prepare = {
+            it.count = nextCount
         })
     }
 
     @IBAction(R.id.add_sub_screen_second_button)
     fun actionAddSubScreenSecond(sender: View) {
-        ScreenService.shared.addSubScreen(SecondPageViewController::class, id = "test_$count", prepare = {
-            it.count = count + 1
+        val nextCount = this.count + 1
+        ScreenService.shared.addSubScreen(SecondPageViewController::class, id = "test_$nextCount", prepare = {
+            it.count = nextCount
         })
     }
 
@@ -56,7 +59,7 @@ class SecondPageViewController: BaseViewController() {
 
     @IBAction(R.id.remove_sub_screen_target_button)
     fun actionRemoveSubScreenTarget(sender: View) {
-        ScreenService.shared.removeSubScreen(to = FirstPageViewController::class)
+        ScreenService.shared.removeSubScreen(to = ViewControllerCache.get(FirstPageViewController::class, id = "test_0"))
     }
 
     @IBAction(R.id.remove_all_sub_screen_button)

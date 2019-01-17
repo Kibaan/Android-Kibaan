@@ -39,7 +39,7 @@ class TopViewController : BaseViewController() {
 
     @IBAction(R.id.page_button)
     fun actionPageButton(sender: View) {
-        ScreenService.shared.addSubScreen(FirstPageViewController::class)
+        ScreenService.shared.addSubScreen(FirstPageViewController::class, id = "test_0")
     }
 
     @IBAction(R.id.count_up_button)

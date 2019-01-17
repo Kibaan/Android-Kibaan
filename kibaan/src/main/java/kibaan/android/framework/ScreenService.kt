@@ -121,10 +121,9 @@ class ScreenService {
         }
         foregroundController?.leave()
         val removed = screenStack.removeLast() ?: return
-        removed.removed()
-
         val finish: () -> Unit = {
             removed.view.removeFromSuperview()
+            removed.removed()
             completion?.invoke()
         }
         if (removed.transitionAnimation != null) {
@@ -137,29 +136,35 @@ class ScreenService {
         }
     }
 
-    fun removeSubScreen(executeStart: Boolean = true, to: KClass<out BaseViewController>, completion: (() -> Unit)? = null) {
+    fun removeSubScreen(executeStart: Boolean = true, to: BaseViewController, completion: (() -> Unit)? = null) {
         if (screenStack.size <= 1) {
             return
         }
         foregroundController?.leave()
-        val targetViewController = screenStack.lastOrNull { it::class == to }
-        val target = targetViewController ?: return
-        val lastViewController = screenStack.last()
-        if (target == lastViewController) {
+
+        if (!screenStack.contains(to)) {
             return
         }
-
+        val lastViewController = screenStack.last()
+        if (to === lastViewController) {
+            return
+        }
+        val removedViewControllers: MutableList<BaseViewController?> = mutableListOf()
         for (viewController in screenStack.reversed()) {
-            if (screenStack.lastOrNull() == target) {
+            if (screenStack.lastOrNull() === to) {
                 break
             }
-            screenStack.removeLast()?.removed()
+            val removed = screenStack.removeLast()
+            removedViewControllers.append(removed)
             if (viewController != lastViewController) {
                 viewController.view.removeFromSuperview()
             }
         }
         val finish: () -> Unit = {
             lastViewController.view.removeFromSuperview()
+            removedViewControllers.forEach {
+                it?.removed()
+            }
             completion?.invoke()
         }
         if (lastViewController.transitionAnimation != null) {
@@ -180,15 +185,19 @@ class ScreenService {
         foregroundController?.foregroundController?.removeOverlay()
 
         val lastViewController = screenStack.last()
+        val removedViewControllers: MutableList<BaseViewController?> = mutableListOf()
         while (1 < screenStack.size) {
             val removed = screenStack.removeLast()
-            removed?.removed()
+            removedViewControllers.append(removed)
             if (removed != lastViewController) {
                 removed?.view?.removeFromSuperview()
             }
         }
         val finish: () -> Unit = {
             lastViewController.view.removeFromSuperview()
+            removedViewControllers.forEach {
+                it?.removed()
+            }
             completion?.invoke()
         }
         if (lastViewController.transitionAnimation != null) {
