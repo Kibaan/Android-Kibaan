@@ -1,7 +1,6 @@
 package kibaan.android.ios
 
 import android.content.Context
-import android.graphics.Color
 import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.LinearLayout
@@ -16,78 +15,86 @@ class UIPageControl : LinearLayout {
 
     private var leftMargin = DeviceUtils.toDp(context, 60)
     private var buttonSize = DeviceUtils.toDp(context, 50)
-    private var normalButtonColor = UIColor(rgbValue = 0xDEDEDE)
-//    var button = EllipseButton(context)
-
-    //    private var selectedButtonColor = UIColor(rgbValue = 0x555555)
-    private var selectedButtonColor = UIColor.red
+    private var normalDefaultColor = UIColor(rgbValue = 0xDEDEDE)
+    private var selectedDefaultColor = UIColor(rgbValue = 0x555555)
 
     // endregion
 
     // region -> Variables
-
-    var onPageChanged: ((UIPageControl) -> Unit)? = null
-
-    // endregion
-
-    // region -> Constructor
-
-    constructor(context: Context) : super(context) {
-        setupPageControl(context)
-    }
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        setupPageControl(context, attrs)
-    }
-
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        setupPageControl(context, attrs)
-    }
-
-    private fun setupPageControl(context: Context, attrs: AttributeSet? = null) {
-        if (attrs != null) {
-            val array = context.obtainStyledAttributes(attrs, R.styleable.UIPageControl)
-            numberOfPages = array.getInt(R.styleable.UIPageControl_numberOfPages, numberOfPages)
-            currentPage = array.getInt(R.styleable.UIPageControl_currentPage, currentPage)
-            pageIndicatorTintColor = UIColor(array.getColor(R.styleable.UIPageControl_pageIndicatorTintColor, normalButtonColor.intValue))
-            currentPageIndicatorTintColor = UIColor(array.getColor(R.styleable.UIPageControl_currentPageIndicatorTintColor, selectedButtonColor.intValue))
-            array.recycle()
-        }
-    }
-    // endregion
 
     init {
         orientation = HORIZONTAL
         gravity = Gravity.CENTER
     }
 
-    /*numberOfPagesを呼ばないとbuttonを生成することができない*/
+    var onPageChanged: ((UIPageControl) -> Unit)? = null
+
+    /* numberOfPagesを呼ばないとbuttonを生成することができない */
+    /* PageControlのページ数を設定する */
     var numberOfPages: Int by didSet(0) {
         constructButtons()
     }
 
-    /*現在のページ*/
+    /* 現在のページ */
     var currentPage: Int by didSet(0) {
         (0 until childCount).forEach { index ->
             getChildAt(index).isSelected = currentPage == index
         }
     }
 
-    /*選択されていないページの色を設定する*/
-    var pageIndicatorTintColor: UIColor by didSet(normalButtonColor) {
+    /* 選択されていないページの色を設定する */
+    var pageIndicatorTintColor: UIColor by didSet(normalDefaultColor) {
         (0 until childCount).mapNotNull { getChildAt(it) as? SmartButton }.forEach {
             it.setBackgroundColor(pageIndicatorTintColor, UIControlState.normal)
         }
     }
 
-    /*選択されているページの色を設定する*/
+    /* 選択されているページの色を設定する */
     var currentPageIndicatorTintColor: UIColor by didSet(UIColor.clear) {
         (0 until childCount).mapNotNull { getChildAt(it) as? SmartButton }.forEach {
             it.setBackgroundColor(currentPageIndicatorTintColor, UIControlState.selected)
         }
     }
 
-    /*pageControlButtonを生成・設定する*/
+    // endregion
+
+    // region -> Constructor
+
+    constructor(context: Context) : super(context) {
+        readAttributes(context)
+    }
+
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+        readAttributes(context, attrs)
+    }
+
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        readAttributes(context, attrs)
+    }
+
+    private fun readAttributes(context: Context, attrs: AttributeSet? = null) {
+        if (attrs != null) {
+            val array = context.obtainStyledAttributes(attrs, R.styleable.UIPageControl)
+            numberOfPages = array.getInt(R.styleable.UIPageControl_numberOfPages, numberOfPages)
+            currentPage = array.getInt(R.styleable.UIPageControl_currentPage, currentPage)
+            pageIndicatorTintColor = UIColor(
+                array.getColor(
+                    R.styleable.UIPageControl_pageIndicatorTintColor,
+                    normalDefaultColor.intValue
+                )
+            )
+            currentPageIndicatorTintColor = UIColor(
+                array.getColor(
+                    R.styleable.UIPageControl_currentPageIndicatorTintColor,
+                    selectedDefaultColor.intValue
+                )
+            )
+            array.recycle()
+        }
+    }
+    // endregion
+
+    /* pageControlButtonを生成・設定する */
     private fun constructButtons() {
         removeAllViews()
         (0 until numberOfPages).forEach { offset ->
@@ -97,9 +104,9 @@ class UIPageControl : LinearLayout {
             layoutParams.setMargins(leftMargin, 0, 0, 0)
             button.layoutParams = layoutParams
             if (button.backgroundColor(forState = UIControlState.normal) == null) {
-                button.setBackgroundColor(normalButtonColor, forState = UIControlState.normal)
+                button.setBackgroundColor(normalDefaultColor, forState = UIControlState.normal)
             }
-            button.setBackgroundColor(selectedButtonColor, forState = UIControlState.selected)
+            button.setBackgroundColor(selectedDefaultColor, forState = UIControlState.selected)
             button.setOnClickListener {
                 currentPage = offset
                 onPageChanged?.invoke(this)
