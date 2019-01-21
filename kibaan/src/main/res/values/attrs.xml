@@ -144,4 +144,12 @@
         <attr name="segmentCornerRadius" format="dimension" />
     </declare-styleable>
 
+    <!-- UIPageControl -->
+    <declare-styleable name="UIPageControl">
+        <attr name="numberOfPages" format="integer" />
+        <attr name="currentPage" format="integer" />
+        <attr name="pageIndicatorTintColor" format="color" />
+        <attr name="currentPageIndicatorTintColor" format="color" />
+    </declare-styleable>
+
 </resources>
