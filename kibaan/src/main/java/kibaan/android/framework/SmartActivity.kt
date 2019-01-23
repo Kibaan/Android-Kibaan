@@ -1,8 +1,10 @@
 package kibaan.android.framework
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.MotionEvent
 import android.widget.FrameLayout
 import kibaan.android.ios.UIViewController
 import kibaan.android.ui.SmartContext
@@ -13,7 +15,8 @@ import kibaan.android.ui.SmartContext
 @SuppressLint("Registered")
 open class SmartActivity : AppCompatActivity() {
 
-    lateinit var rootContainer: FrameLayout
+    lateinit var rootContainer: RootFrameLayout
+    var isUserInteractionEnabled = true
 
     companion object {
         @SuppressLint("StaticFieldLeak")
@@ -28,7 +31,7 @@ open class SmartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         sInstance = this
-        rootContainer = FrameLayout(this)
+        rootContainer = RootFrameLayout(this)
         setContentView(rootContainer, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
 
         UIViewController.setActivity(this)
@@ -58,6 +61,9 @@ open class SmartActivity : AppCompatActivity() {
     // region -> Action
 
     override fun onBackPressed() {
+        if (!isUserInteractionEnabled) {
+            return
+        }
         if (!ScreenService.shared.goBack()) {
             finishProcess()
         }
@@ -68,4 +74,14 @@ open class SmartActivity : AppCompatActivity() {
     }
 
     // endregion
+
+    inner class RootFrameLayout(context: Context) : FrameLayout(context) {
+
+        override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+            if (!isUserInteractionEnabled) {
+                return true
+            }
+            return super.onInterceptTouchEvent(ev)
+        }
+    }
 }

@@ -98,16 +98,29 @@ class ScreenService {
         viewController.enter()
     }
 
-    fun <T : BaseViewController> addSubScreen(type: KClass<T>, nibName: String? = null, id: String? = null, cache: Boolean = true, transitionType: TransitionType = TransitionType.normal, prepare: ((T) -> Unit)? = null): T? {
+    fun <T : BaseViewController> addSubScreen(type: KClass<T>,
+                                              nibName: String? = null,
+                                              id: String? = null,
+                                              cache: Boolean = true,
+                                              transitionType: TransitionType = TransitionType.normal,
+                                              prepare: ((T) -> Unit)? = null): T? {
+        activity?.isUserInteractionEnabled = false
+
         foregroundController?.leave()
         val controller = ViewControllerCache.get(type, layoutName = nibName, id = id, cache = cache)
         screenStack.add(controller)
         activity?.rootContainer?.addSubview(controller.view)
 
+        val finish: () -> Unit = {
+            activity?.isUserInteractionEnabled = true
+        }
         val isNormal = transitionType == TransitionType.normal
         controller.transitionAnimation = if (isNormal) defaultTransitionAnimation else transitionType.animation
-        controller.transitionAnimation?.animator?.animateIn(controller.view)
-
+        if (controller.transitionAnimation != null) {
+            controller.transitionAnimation?.animator?.animateIn(controller.view, completion = finish)
+        } else {
+            finish.invoke()
+        }
         prepare?.invoke(controller)
         controller.added()
         controller.enter()
@@ -119,12 +132,14 @@ class ScreenService {
         if (screenStack.size <= 1) {
             return
         }
+        activity?.isUserInteractionEnabled = false
         foregroundController?.leave()
         val removed = screenStack.removeLast() ?: return
         val finish: () -> Unit = {
             removed.view.removeFromSuperview()
             removed.removed()
             completion?.invoke()
+            activity?.isUserInteractionEnabled = true
         }
         if (removed.transitionAnimation != null) {
             removed.transitionAnimation?.animator?.animateOut(removed.view, completion = finish)
@@ -137,18 +152,16 @@ class ScreenService {
     }
 
     fun removeSubScreen(executeStart: Boolean = true, to: BaseViewController, completion: (() -> Unit)? = null) {
-        if (screenStack.size <= 1) {
-            return
-        }
-        foregroundController?.leave()
-
-        if (!screenStack.contains(to)) {
+        if (screenStack.size <= 1 || !screenStack.contains(to)) {
             return
         }
         val lastViewController = screenStack.last()
         if (to === lastViewController) {
             return
         }
+        activity?.isUserInteractionEnabled = false
+        foregroundController?.leave()
+
         val removedViewControllers: MutableList<BaseViewController?> = mutableListOf()
         for (viewController in screenStack.reversed()) {
             if (screenStack.lastOrNull() === to) {
@@ -166,6 +179,7 @@ class ScreenService {
                 it?.removed()
             }
             completion?.invoke()
+            activity?.isUserInteractionEnabled = true
         }
         if (lastViewController.transitionAnimation != null) {
             lastViewController.transitionAnimation?.animator?.animateOut(lastViewController.view, completion = finish)
@@ -181,6 +195,7 @@ class ScreenService {
         if (screenStack.size <= 1) {
             return
         }
+        activity?.isUserInteractionEnabled = false
         foregroundController?.leave()
         foregroundController?.foregroundController?.removeOverlay()
 
@@ -199,6 +214,7 @@ class ScreenService {
                 it?.removed()
             }
             completion?.invoke()
+            activity?.isUserInteractionEnabled = true
         }
         if (lastViewController.transitionAnimation != null) {
             lastViewController.transitionAnimation?.animator?.animateOut(lastViewController.view, completion = finish)
