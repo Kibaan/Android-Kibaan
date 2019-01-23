@@ -2,12 +2,16 @@ package kibaan.android.framework
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MotionEvent
+import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.FrameLayout
 import kibaan.android.ios.UIViewController
 import kibaan.android.ui.SmartContext
+import kibaan.android.util.DeviceUtils
 
 /**
  * SMART基盤を使用する場合、MainのActivityに継承させる
@@ -32,11 +36,16 @@ open class SmartActivity : AppCompatActivity() {
 
         sInstance = this
         rootContainer = RootFrameLayout(this)
-        setContentView(rootContainer, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
+        setContentView(
+            rootContainer,
+            FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
+        )
 
         UIViewController.setActivity(this)
         ScreenService.setActivity(this)
         SmartContext.shared.setActivity(this)
+
+        addKeyboardVisibilityObserver()
     }
 
     override fun onResume() {
@@ -75,6 +84,32 @@ open class SmartActivity : AppCompatActivity() {
 
     // endregion
 
+    // region -> Keyboard
+
+    private fun addKeyboardVisibilityObserver() {
+        val activityRootView = findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
+        activityRootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+
+            private var wasVisible: Boolean = false
+            private var windowVisibleDisplayFrameRect = Rect()
+
+            override fun onGlobalLayout() {
+                activityRootView.getWindowVisibleDisplayFrame(windowVisibleDisplayFrameRect)
+                val heightDiff = activityRootView.rootView.height - windowVisibleDisplayFrameRect.height()
+                val isVisible = heightDiff > DeviceUtils.toPx(context = activityRootView.context, dp = 100)
+                if (isVisible == wasVisible) {
+                    return
+                }
+                wasVisible = isVisible
+                (currentFocus as? OnKeyboardVisibilityListener)?.onKeyboardVisibilityChanged(isVisible = isVisible)
+            }
+        })
+    }
+
+    // endregion
+
+    // region -> Inner class
+
     inner class RootFrameLayout(context: Context) : FrameLayout(context) {
 
         override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
@@ -84,4 +119,10 @@ open class SmartActivity : AppCompatActivity() {
             return super.onInterceptTouchEvent(ev)
         }
     }
+
+    // endregion
+}
+
+interface OnKeyboardVisibilityListener {
+    fun onKeyboardVisibilityChanged(isVisible: Boolean)
 }

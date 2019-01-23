@@ -12,7 +12,6 @@ import android.text.Spanned
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.util.TypedValue
-import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -20,9 +19,9 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import kibaan.android.AndroidUnique
 import kibaan.android.R
+import kibaan.android.framework.OnKeyboardVisibilityListener
 import kibaan.android.ios.*
 import kibaan.android.util.DeviceUtils
-
 
 interface UITextFieldDelegate {
     fun textFieldShouldReturn(textField: SmartTextField): Boolean {
@@ -247,7 +246,6 @@ class SmartTextField : RoundedConstraintLayout {
         }
         editText.isCursorVisible = false
         editText.clearFocus()
-        requestFocus()
         delegate?.textFieldDidEndEditing(this)
     }
 
@@ -357,6 +355,7 @@ class SmartTextField : RoundedConstraintLayout {
         }
     }
 
+    // TODO:判定無しでキーボードを閉じているため、他のTextFieldで表示したキーボードも閉じてしまう問題を抱えている
     fun resignFirstResponder(isTapEnter: Boolean = false) {
         val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
@@ -384,7 +383,7 @@ class SmartTextField : RoundedConstraintLayout {
     /**
      * カスタムのテキスト入力クラス
      */
-    class CustomEditText : AppCompatEditText {
+    class CustomEditText : AppCompatEditText, OnKeyboardVisibilityListener {
 
         // region -> Constructor
 
@@ -402,17 +401,12 @@ class SmartTextField : RoundedConstraintLayout {
 
         // endregion
 
-        // region -> Action
+        // region -> OnKeyboardVisibilityListener
 
-        /**
-         * キーボードを閉じたことを検知する為にoverrideしている
-         */
-        override fun onKeyPreIme(keyCode: Int, event: KeyEvent?): Boolean {
-            val isClose = event?.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK
-            if (isClose) {
+        override fun onKeyboardVisibilityChanged(isVisible: Boolean) {
+            if (!isVisible) {
                 onCloseKeyBoard?.invoke()
             }
-            return super.onKeyPreIme(keyCode, event)
         }
 
         // endregion
