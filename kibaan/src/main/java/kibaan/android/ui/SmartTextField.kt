@@ -61,7 +61,6 @@ class SmartTextField : RoundedConstraintLayout {
     var rightViewWidthPercent: Float? by didSet(null) {
         updateConstraintPercentWidth(rightParentView.id, rightViewWidthPercent)
     }
-    var onCleared: (() -> Unit)? = null
     var onTextFieldEditingChanged: ((AppCompatEditText) -> Unit)? = null
     var text: String?
         get() = editText.text.toString()
@@ -199,7 +198,6 @@ class SmartTextField : RoundedConstraintLayout {
             constraintSet.clone(this)
             constraintSet.setDimensionRatio(rightParentView.id, "1:1")
             constraintSet.applyTo(this)
-            rightView = makeClearButton(context)
         }
         setupEditTextListener()
     }
@@ -260,12 +258,6 @@ class SmartTextField : RoundedConstraintLayout {
 
     // endregion
 
-    // region -> Action
-
-    private fun actionClearButton() {
-        text = null
-        onCleared?.invoke()
-    }
 
     // endregion
 
@@ -318,18 +310,6 @@ class SmartTextField : RoundedConstraintLayout {
             constraintSet.constrainPercentWidth(rightParentView.id, percent)
         }
         constraintSet.applyTo(this)
-    }
-
-    private fun makeClearButton(context: Context): SmartButton {
-        clearButton = SmartButton(context)
-        clearButton.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-        clearButton.iconImage = BitmapFactory.decodeResource(resources, R.drawable.clear_icon)
-        clearButton.iconScaleString = "h:0.5"
-        clearButton.setOnClickListener {
-            actionClearButton()
-        }
-        clearButton.backgroundColor = UIColor.clear
-        return clearButton
     }
 
     @Suppress("NAME_SHADOWING")
