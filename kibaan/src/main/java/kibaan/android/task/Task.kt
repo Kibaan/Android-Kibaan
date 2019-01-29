@@ -8,6 +8,8 @@ open class Task {
 
     /** タスクの所有者 */
     var owner: TaskHolder? = null
+    /** タスクの一意キー */
+    var key: String? = null
     /** タスクの監視者 */
     var observers: MutableList<TaskObserver> = mutableListOf()
 
@@ -25,6 +27,7 @@ open class Task {
 
     constructor(owner: TaskHolder, key: String?) {
         this.owner = owner
+        this.key = key
         @Suppress("LeakingThis")
         owner.add(this, key = key)
     }
@@ -33,6 +36,11 @@ open class Task {
      * 開始
      */
     open fun start() {}
+
+    fun restart() {
+        owner?.add(this, key)
+        start()
+    }
 
     open fun cancel() {
         nextProcessTimer?.removeCallbacks(nextProcessTimerTask)
