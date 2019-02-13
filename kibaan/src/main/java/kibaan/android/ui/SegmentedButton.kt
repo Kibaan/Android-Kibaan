@@ -181,6 +181,9 @@ open class SegmentedButton : UIStackView {
             textSize = array.getDimensionPixelSize(R.styleable.SegmentedButton_android_textSize, textSize.toInt()).toDouble()
             names = array.getStringOrNull(R.styleable.SegmentedButton_names) ?: names
             segmentCornerRadius = array.getDimensionPixelOffset(R.styleable.SegmentedButton_segmentCornerRadius, segmentCornerRadius)
+            horizontalSpacing = array.getFloat(R.styleable.SegmentedButton_horizontalSpacing, horizontalSpacing.toFloat()).toDouble()
+            verticalSpacing = array.getFloat(R.styleable.SegmentedButton_verticalSpacing, verticalSpacing.toFloat()).toDouble()
+
             array.recycle()
         }
         constructSegments()

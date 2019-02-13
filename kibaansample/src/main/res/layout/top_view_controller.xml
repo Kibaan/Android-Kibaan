@@ -7,11 +7,24 @@
     android:background="@android:color/black">
 
     <ImageView
+        android:id="@+id/hadoken_image"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:background="#BBBBBB"
         android:src="@drawable/hadoken"
         android:scaleType="fitCenter"
+    />
+
+    <kibaan.android.ui.SegmentedButton
+        app:layout_constraintTop_toBottomOf="@id/hadoken_image"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        app:horizontalSpacing="10"
+        app:verticalSpacing="1"
+        app:names="あ,い,う,え,お,か"
+        app:rowSize="2"
+        app:columnSize="3"
+        android:background="#BBBBBB"
     />
 
     <kibaan.android.ui.SmartLabel
