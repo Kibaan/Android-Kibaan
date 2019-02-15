@@ -325,15 +325,7 @@ open class SegmentedButton : UIStackView {
      * 指定した値に紐づくボタンを選択する
      */
     fun <T : Enum<T>> select(value: T, needCallback: Boolean = false) {
-        val button = buttonGroup.get(value.name)
-        if (button != null && button.isEnabled) {
-            val oldValue = buttonGroup.selectedValue
-            buttonGroup.select(button = button)
-            setSelectedButtonBold()
-            if (needCallback) {
-                executeCallback(oldValue = oldValue)
-            }
-        }
+        select(value.name, needCallback)
     }
 
     /**
