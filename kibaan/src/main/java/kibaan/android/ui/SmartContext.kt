@@ -18,10 +18,10 @@ interface SmartFontProtocol {
     /** 指定されたフォントの文字サイズとフォントを変換して返す */
     fun convertFont(font: UIFont?): UIFont? {
         val font = font ?: return null
-        val fontManager = SmartContext.shared
-        val size = font.pointSize * (if (adjustsFontSizeForDevice) fontManager.screenScale else 1.0)
-        val convertedFont = fontManager.getFont(size = size, type = if (font.isBold) SmartContext.FontType.bold else SmartContext.FontType.regular)
-        return if (useGlobalFont && convertedFont != null) {
+        val context = SmartContext.shared
+        val size = font.pointSize * (if (adjustsFontSizeForDevice) context.screenScale else 1.0)
+        val convertedFont = context.getFont(size = size, type = if (font.isBold) SmartContext.FontType.bold else SmartContext.FontType.regular)
+        return if (context.isGlobalFontEnabled && useGlobalFont && convertedFont != null) {
             convertedFont
         } else {
             font.withSize(size)
@@ -42,7 +42,7 @@ class SmartContext {
     private val baseWidth: CGFloat = 360.0
 
     // endregion
-
+    var isGlobalFontEnabled = false
 
     companion object {
         val shared: SmartContext get() = SingletonContainer.get(SmartContext::class)
@@ -80,6 +80,7 @@ class SmartContext {
      */
     fun setFont(typeFace: Typeface, type: FontType = FontType.regular) {
         typeFaceMap[type] = typeFace
+        isGlobalFontEnabled = true
     }
 
     /**
