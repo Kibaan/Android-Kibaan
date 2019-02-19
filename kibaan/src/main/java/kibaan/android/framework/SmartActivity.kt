@@ -61,7 +61,7 @@ open class SmartActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         UIViewController.setActivity(null)
-        ViewControllerCache.clear()
+        ViewControllerCache.shared.clear()
         SingletonContainer.clear()
     }
 

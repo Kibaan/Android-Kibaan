@@ -8,7 +8,12 @@ import kotlin.reflect.KClass
  * ViewControllerをCacheする
  * Created by Yamamoto Keita on 2018/01/18.
  */
-object ViewControllerCache {
+class ViewControllerCache {
+    companion object {
+        val shared: ViewControllerCache
+            get() = SingletonContainer.get(ViewControllerCache::class)
+    }
+
     private var controllerMap: MutableMap<String, BaseViewController> = mutableMapOf()
 
     fun <T : BaseViewController> get(type: KClass<T>, layoutName: String? = null, id: String? = null, cache: Boolean = true): T {
@@ -58,5 +63,4 @@ object ViewControllerCache {
         controllerMap.removeAll()
         completion?.invoke()
     }
-
 }

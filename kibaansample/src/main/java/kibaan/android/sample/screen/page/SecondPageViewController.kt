@@ -59,7 +59,7 @@ class SecondPageViewController: BaseViewController() {
 
     @IBAction(R.id.remove_sub_screen_target_button)
     fun actionRemoveSubScreenTarget(sender: View) {
-        ScreenService.shared.removeSubScreen(to = ViewControllerCache.get(FirstPageViewController::class, id = "test_0"))
+        ScreenService.shared.removeSubScreen(to = ViewControllerCache.shared.get(FirstPageViewController::class, id = "test_0"))
     }
 
     @IBAction(R.id.remove_all_sub_screen_button)

@@ -18,9 +18,7 @@ class ScreenService {
     companion object {
         private var activity: SmartActivity? = null
         val shared: ScreenService
-            get() = SingletonContainer.get(
-                ScreenService::class
-            )
+            get() = SingletonContainer.get(ScreenService::class)
 
         fun setActivity(activity: SmartActivity?) {
             Companion.activity = activity
@@ -74,7 +72,7 @@ class ScreenService {
     }
 
     fun <T : BaseViewController> setRoot(type: KClass<T>, prepare: ((T) -> Unit)? = null): T {
-        val controller = ViewControllerCache.get(type)
+        val controller = ViewControllerCache.shared.get(type)
         if (rootViewController == controller) {
             return controller
         }
@@ -107,7 +105,7 @@ class ScreenService {
         activity?.isUserInteractionEnabled = false
 
         foregroundController?.leave()
-        val controller = ViewControllerCache.get(type, layoutName = nibName, id = id, cache = cache)
+        val controller = ViewControllerCache.shared.get(type, layoutName = nibName, id = id, cache = cache)
         screenStack.add(controller)
         activity?.rootContainer?.addSubview(controller.view)
 

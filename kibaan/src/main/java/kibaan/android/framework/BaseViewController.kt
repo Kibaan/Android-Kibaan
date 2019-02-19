@@ -150,7 +150,7 @@ open class BaseViewController(layoutName: String? = null) : UIViewController(lay
      */
     fun <T : BaseViewController> addNextScreen(type: KClass<T>, targetView: View, id: String? = null, cache: Boolean = true, animated: Boolean = true, prepare: ((T) -> Unit)? = null): T? {
         checkTargetView(targetView)
-        val controller = ViewControllerCache.get(type, id = id, cache = cache)
+        val controller = ViewControllerCache.shared.get(type, id = id, cache = cache)
         val parentView = targetView.superview
         if (parentView == null || nextScreens.lastOrNull() == controller) {
             return null
@@ -248,7 +248,7 @@ open class BaseViewController(layoutName: String? = null) : UIViewController(lay
      * ViewControllerを上に乗せる
      */
     fun <T : BaseViewController> addOverlay(type: KClass<T>, prepare: ((T) -> Unit)? = null): T? {
-        val controller = ViewControllerCache.get(type)
+        val controller = ViewControllerCache.shared.get(type)
         controller.owner = this
         overlays.add(controller)
         view.addView(controller.view, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
