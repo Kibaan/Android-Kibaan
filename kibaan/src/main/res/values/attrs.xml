@@ -144,6 +144,11 @@
         <attr name="segmentCornerRadius" format="dimension" />
         <attr name="horizontalSpacing"  format="float" />
         <attr name="verticalSpacing"  format="float" />
+        <attr name="normalButtonBackgroundColor" format="color" />
+        <attr name="selectedButtonBackgroundColor" format="color" />
+        <attr name="normalButtonTextColor" format="color" />
+        <attr name="selectedButtonTextColor" format="color" />
+        <attr name="disabledButtonTextColor" format="color" />
     </declare-styleable>
 
     <!-- UIPageControl -->
