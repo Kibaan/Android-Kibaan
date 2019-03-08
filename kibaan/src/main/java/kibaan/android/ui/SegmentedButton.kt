@@ -124,6 +124,36 @@ open class SegmentedButton : UIStackView {
         if (!ViewCompat.isAttachedToWindow(this)) return@didSet
         constructSegments()
     }
+    /**
+     * 非選択状態のボタン背景色
+     */
+    @IBInspectable open var normalButtonBackgroundColor: UIColor by didSet(UIColor.lightGray) {
+        constructSegments()
+    }
+    /**
+     * 選択状態のボタン背景色
+     */
+    @IBInspectable open var selectedButtonBackgroundColor: UIColor by didSet(UIColor(rgbValue = 0x0679FF)) {
+        constructSegments()
+    }
+    /**
+     * 非選択状態のボタン文字色
+     */
+    @IBInspectable open var normalButtonTextColor: UIColor by didSet(UIColor.white) {
+        constructSegments()
+    }
+    /**
+     * 選択状態のボタン文字色
+     */
+    @IBInspectable open var selectedButtonTextColor: UIColor by didSet(UIColor.white) {
+        constructSegments()
+    }
+    /**
+     * 非活性状態のボタン文字色
+     */
+    @IBInspectable open var disabledButtonTextColor: UIColor by didSet(UIColor.lightGray) {
+        constructSegments()
+    }
 
     var buttonCustomizer: ((SmartButton)->Unit)? = null
 
@@ -183,7 +213,11 @@ open class SegmentedButton : UIStackView {
             segmentCornerRadius = array.getDimensionPixelOffset(R.styleable.SegmentedButton_segmentCornerRadius, segmentCornerRadius)
             horizontalSpacing = array.getFloat(R.styleable.SegmentedButton_horizontalSpacing, horizontalSpacing.toFloat()).toDouble()
             verticalSpacing = array.getFloat(R.styleable.SegmentedButton_verticalSpacing, verticalSpacing.toFloat()).toDouble()
-
+            normalButtonBackgroundColor = UIColor(array.getColor(R.styleable.SegmentedButton_normalButtonBackgroundColor, normalButtonBackgroundColor.intValue))
+            selectedButtonBackgroundColor = UIColor(array.getColor(R.styleable.SegmentedButton_selectedButtonBackgroundColor, selectedButtonBackgroundColor.intValue))
+            normalButtonTextColor = UIColor(array.getColor(R.styleable.SegmentedButton_normalButtonTextColor, normalButtonTextColor.intValue))
+            selectedButtonTextColor = UIColor(array.getColor(R.styleable.SegmentedButton_selectedButtonTextColor, selectedButtonTextColor.intValue))
+            disabledButtonTextColor = UIColor(array.getColor(R.styleable.SegmentedButton_disabledButtonTextColor, disabledButtonTextColor.intValue))
             array.recycle()
         }
         constructSegments()
@@ -505,9 +539,11 @@ open class SegmentedButton : UIStackView {
         val rightMargin = if (index < columnSize - 1) horizontalSpacing.toInt() else 0
         params.setMargins(0, 0, rightMargin, 0)
         button.layoutParams = params
-        button.setBackgroundResource(R.drawable.segment_button_default_background)
-        button.setTitleColor(UIColor.white, forState = UIControlState.normal)
-        button.setTitleColor(UIColor.lightGray, forState = UIControlState.disabled)
+        button.setBackgroundColor(normalButtonBackgroundColor, forState = UIControlState.normal)
+        button.setBackgroundColor(selectedButtonBackgroundColor, forState = UIControlState.selected)
+        button.setTitleColor(normalButtonTextColor, forState = UIControlState.normal)
+        button.setTitleColor(selectedButtonTextColor, forState = UIControlState.selected)
+        button.setTitleColor(disabledButtonTextColor, forState = UIControlState.disabled)
         button.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize.toFloat())
         button.adjustsFontSizeForWidth = true
         button.setOnClickListener {
