@@ -44,6 +44,9 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    // JDK10でアーカイブビルドするためには下記が必要だが、別ライブラリの依存性と競合してエラーになる場合があったため、いったん除外する
+//    implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
+
     implementation 'com.android.support:appcompat-v7:28.0.0'
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.json:json:20180130'
