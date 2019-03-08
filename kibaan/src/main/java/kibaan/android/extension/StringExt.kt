@@ -411,3 +411,9 @@ val String.urlEncoded: String
  */
 val String.urlDecoded: String
     get() = URLDecoder.decode(this, "UTF-8")
+
+/**
+ * NSDecimalNumberを取得する
+ */
+val String.decimalNumber: NSDecimalNumber
+    get() = NSDecimalNumber(string = this)
