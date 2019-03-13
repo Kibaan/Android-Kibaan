@@ -57,7 +57,7 @@ open class Task {
         nextProcessDelaySec = delaySec
     }
 
-    fun end() {
+    open fun end() {
         observers.forEach {
             it.onEnd(task = this)
         }
