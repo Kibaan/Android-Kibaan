@@ -78,7 +78,7 @@ open class BaseViewController(layoutName: String? = null) : UIViewController(lay
      * 画面がスクリーンに追加されたときの処理
      */
     open fun onAddedToScreen() {
-        foregroundSubControllers.forEach { it.added() }
+        subControllers.forEach { it.added() }
     }
 
     /**
@@ -102,7 +102,7 @@ open class BaseViewController(layoutName: String? = null) : UIViewController(lay
      * 画面がスクリーンから取り除かれたときの処理
      */
     open fun onRemovedFromScreen() {
-        foregroundSubControllers.forEach { it.removed() }
+        subControllers.forEach { it.removed() }
     }
 
     fun addSubController(controller: BaseViewController) {
