@@ -67,9 +67,13 @@ fun View.isDescendant(of: View): Boolean {
 
 // region -> ViewGroup
 
-fun ViewGroup.addSubview(view: View) {
+fun ViewGroup.addSubview(view: View, params: ViewGroup.LayoutParams? = null) {
     view.removeFromSuperview()
-    addView(view)
+    if (params != null) {
+        addView(view, params)
+    } else {
+        addView(view)
+    }
 }
 
 // endregion

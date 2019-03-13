@@ -251,7 +251,7 @@ open class BaseViewController(layoutName: String? = null) : UIViewController(lay
         val controller = ViewControllerCache.shared.get(type)
         controller.owner = this
         overlays.add(controller)
-        view.addView(controller.view, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+        view.addSubview(controller.view, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
         if (Build.VERSION_CODES.LOLLIPOP <= Build.VERSION.SDK_INT) {
             controller.view.z = overlayFloatingHeight * overlays.count
         }
