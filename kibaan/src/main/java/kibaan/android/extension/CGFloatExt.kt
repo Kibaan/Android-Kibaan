@@ -10,6 +10,12 @@ import kibaan.android.ios.description
 val CGFloat.stringValue: String
     get() = description
 
+val CGFloat.doubleValue: Double
+    get() = this
+
+val CGFloat.decimalNumber: NSDecimalNumber
+    get() = NSDecimalNumber(value = this)
+
 /**
  * 数値を指定した小数桁で四捨五入した文字列を返す
  */
