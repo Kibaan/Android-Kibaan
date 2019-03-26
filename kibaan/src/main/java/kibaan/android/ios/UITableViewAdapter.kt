@@ -31,19 +31,20 @@ class UITableViewAdapter(private var tableView: UITableView) : RecyclerView.Adap
     private val hasTableHeader: Boolean get() = tableView.tableHeaderView != null
     /** テーブルフッターがあるか */
     private val hasTableFooter: Boolean get() = tableView.tableFooterView != null
+    /** 並び替え元位置 */
+    var fromPos: Int? = null
+    /** 並び替え先位置 */
+    var toPos: Int? = null
     /** 並び替え機能を実装する際のヘルパー */
     private var itemTouchHelper: ItemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
-
-        var fromPos: Int? = null
-        var toPos: Int? = null
 
         override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
             return makeFlag(ItemTouchHelper.ACTION_STATE_DRAG, ItemTouchHelper.DOWN or ItemTouchHelper.UP)
         }
 
         override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-            val from = viewHolder.adapterPosition ?: return true
-            val to = target.adapterPosition ?: return true
+            val from = viewHolder.adapterPosition
+            val to = target.adapterPosition
             notifyItemMoved(from, to)
             return true
         }
@@ -53,15 +54,15 @@ class UITableViewAdapter(private var tableView: UITableView) : RecyclerView.Adap
             if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
                 viewHolder?.itemView?.alpha = 0.8f
             } else if (actionState == ItemTouchHelper.ACTION_STATE_IDLE) {
-                val fromPos = this.fromPos
-                val toPos = this.toPos
+                val fromPos = this@UITableViewAdapter.fromPos
+                val toPos = this@UITableViewAdapter.toPos
                 if (fromPos != null && toPos != null) {
                     val sourceIndexPath = indexPathBy(fromPos) ?: return
                     val destinationIndexPath = indexPathBy(toPos) ?: return
                     tableView.dataSource?.moveRow(tableView, sourceIndexPath, destinationIndexPath)
                 }
-                this.fromPos = null
-                this.toPos = null
+                this@UITableViewAdapter.fromPos = null
+                this@UITableViewAdapter.toPos = null
             }
         }
 
@@ -76,10 +77,10 @@ class UITableViewAdapter(private var tableView: UITableView) : RecyclerView.Adap
 
         override fun onMoved(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, fromPos: Int, target: RecyclerView.ViewHolder, toPos: Int, x: Int, y: Int) {
             super.onMoved(recyclerView, viewHolder, fromPos, target, toPos, x, y)
-            if (this.fromPos == null) {
-                this.fromPos = fromPos
+            if (this@UITableViewAdapter.fromPos == null) {
+                this@UITableViewAdapter.fromPos = fromPos
             }
-            this.toPos = toPos
+            this@UITableViewAdapter.toPos = toPos
         }
 
         override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
@@ -152,10 +153,23 @@ class UITableViewAdapter(private var tableView: UITableView) : RecyclerView.Adap
         }
     }
 
+    private fun getRealPosition(position: Int): Int {
+        val fromPos = this.fromPos ?: return position
+        val toPos = this.toPos ?: return position
+        if (fromPos < toPos && fromPos <= position && position < toPos) {
+            return position + 1
+        } else if (toPos < fromPos && toPos < position && position <= fromPos) {
+            return position - 1
+        }
+        return position
+    }
+
     /**
      * セルが画面に表示される際に呼ばれる処理
      */
+    @Suppress("NAME_SHADOWING")
     override fun onBindViewHolder(holder: UITableViewHolder, position: Int) {
+        val position = getRealPosition(position)
         val indexPath = indexPathBy(position) ?: return
         val cellType = indexPath.cellType
         when (cellType) {
@@ -273,8 +287,8 @@ class UITableViewAdapter(private var tableView: UITableView) : RecyclerView.Adap
         val sectionCount = tableView.dataSource?.numberOfSection(tableView) ?: 1
         (0 until sectionCount).forEach {
             val rowCount = (tableView.dataSource?.numberOfRows(tableView, section = it) ?: 0)
-            val hasSectionHeader = hasHeaderCountOfSection(section = it)
-            val hasSectionFooter = hasFooterCountOfSection(section = it)
+            val hasSectionHeader = hasHeaderOfSection(section = it)
+            val hasSectionFooter = hasFooterOfSection(section = it)
             val sectionInfo = SectionInfo(it, hasSectionHeader, hasSectionFooter, rowCount, startPosition)
             list.add(sectionInfo)
             startPosition = sectionInfo.endPosition + 1
@@ -286,19 +300,19 @@ class UITableViewAdapter(private var tableView: UITableView) : RecyclerView.Adap
     }
 
     /**
-     * 指定された[section]内のヘッダー数を返す
+     * 指定された[section]にヘッダーがあるかどうかを返す
      */
-    private fun hasHeaderCountOfSection(section: Int): Boolean {
+    private fun hasHeaderOfSection(section: Int): Boolean {
         val view = tableView.delegate?.viewForHeaderInSection(tableView, section = section)
         val viewHeight = tableView.delegate?.heightForHeaderInSection(tableView, section = section)
         // TODO:sectionHeaderHeightを追加
-        return (view != null || (viewHeight != CGFloat.leastNormalMagnitude && viewHeight != UITableViewAutomaticDimension))
+        return (view != null || (viewHeight != null && viewHeight != CGFloat.leastNormalMagnitude && viewHeight != UITableViewAutomaticDimension))
     }
 
     /**
-     * 指定された[section]内のフッター数を返す
+     * 指定された[section]にフッターがあるかどうかを返す
      */
-    private fun hasFooterCountOfSection(section: Int): Boolean {
+    private fun hasFooterOfSection(section: Int): Boolean {
         val view = tableView.delegate?.viewForFooterInSection(tableView, section = section)
         var viewHeight = tableView.sectionFooterHeight ?: Double.leastNormalMagnitude
         val heightOfSection = tableView.delegate?.heightForFooterInSection(tableView, section = section)
