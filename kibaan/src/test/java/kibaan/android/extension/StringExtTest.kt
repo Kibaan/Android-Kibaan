@@ -205,6 +205,86 @@ class StringExtTest {
 
     // endregion
 
+    // region -> withPrefix
+
+    @Test
+    fun testWithPrefix_001() {
+        val str = "1234"
+        assertEquals("+1234", str.withPrefix("+"))
+        assertEquals("51234", str.withPrefix("5"))
+        assertEquals("1234", str.withPrefix(""))
+        assertEquals("1234", str.withPrefix(null))
+    }
+
+    @Test
+    fun testWithPrefix_002() {
+        val str: String? = "1234"
+        assertEquals("+1234", str?.withPrefix("+"))
+        assertEquals("51234", str?.withPrefix("5"))
+        assertEquals("1234", str?.withPrefix(""))
+        assertEquals("1234", str?.withPrefix(null))
+    }
+
+    @Test
+    fun testWithPrefix_003() {
+        val str: String? = ""
+        assertEquals("+", str?.withPrefix("+"))
+        assertEquals("5", str?.withPrefix("5"))
+        assertEquals("", str?.withPrefix(""))
+        assertEquals("", str?.withPrefix(null))
+    }
+
+    @Test
+    fun testWithPrefix_004() {
+        val str: String? = null
+        assertEquals(null, str?.withPrefix("+"))
+        assertEquals(null, str?.withPrefix("5"))
+        assertEquals(null, str?.withPrefix(""))
+        assertEquals(null, str?.withPrefix(null))
+    }
+
+    // endregion
+
+    // region -> withSuffix
+
+    @Test
+    fun testWithSuffix_001() {
+        val str = "1234"
+        assertEquals("1234+", str.withSuffix("+"))
+        assertEquals("12345", str.withSuffix("5"))
+        assertEquals("1234", str.withSuffix(""))
+        assertEquals("1234", str.withSuffix(null))
+    }
+
+    @Test
+    fun testWithSuffix_002() {
+        val str: String? = "1234"
+        assertEquals("1234+", str?.withSuffix("+"))
+        assertEquals("12345", str?.withSuffix("5"))
+        assertEquals("1234", str?.withSuffix(""))
+        assertEquals("1234", str?.withSuffix(null))
+    }
+
+    @Test
+    fun testWithSuffix_003() {
+        val str: String? = ""
+        assertEquals("+", str?.withSuffix("+"))
+        assertEquals("5", str?.withSuffix("5"))
+        assertEquals("", str?.withSuffix(""))
+        assertEquals("", str?.withSuffix(null))
+    }
+
+    @Test
+    fun testWithSuffix_004() {
+        val str: String? = null
+        assertEquals(null, str?.withSuffix("+"))
+        assertEquals(null, str?.withSuffix("5"))
+        assertEquals(null, str?.withSuffix(""))
+        assertEquals(null, str?.withSuffix(null))
+    }
+
+    // endregion
+
     // region -> xxxxValue
 
     @Test

@@ -77,6 +77,24 @@ fun String.removeAll(items: List<String>): String {
 }
 
 /**
+ * 指定した文字列を先頭に付けて返す
+ */
+@Suppress("NAME_SHADOWING")
+fun String.withPrefix(prefix: String?) : String {
+    val prefix = prefix ?: return this
+    return prefix + this
+}
+
+/**
+ * 指定した文字列を末尾に付けて返す
+ */
+@Suppress("NAME_SHADOWING")
+fun String.withSuffix(suffix: String?) : String {
+    val suffix = suffix ?: return this
+    return this + suffix
+}
+
+/**
  * 文字列をDoubleに変換する。数値でない場合は0になる
  */
 val String.doubleValue: Double
