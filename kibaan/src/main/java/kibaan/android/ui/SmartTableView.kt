@@ -1,6 +1,7 @@
 package kibaan.android.ui
 
 import android.content.Context
+import android.support.v4.widget.SwipeRefreshLayout
 import android.util.AttributeSet
 import kibaan.android.ios.TargetCheck
 import kibaan.android.ios.UITableView
@@ -10,6 +11,9 @@ import kotlin.reflect.KClass
 open class SmartTableView : UITableView {
 
     // region -> Variables
+
+    /** PullToRefresh用のレイアウト（外から設定される前提） */
+    var swipeRefreshLayout: SwipeRefreshLayout? = null
 
     // endregion
 
@@ -47,6 +51,22 @@ open class SmartTableView : UITableView {
         } else {
             recyclerView.scrollToPosition(0)
         }
+    }
+
+    // endregion
+
+    // region -> Refresh Control
+
+    fun addRefreshControl(swipeRefreshLayout: SwipeRefreshLayout, onPullToRefresh: (() -> Unit)? = null) {
+        this.swipeRefreshLayout = swipeRefreshLayout
+        swipeRefreshLayout.isEnabled = onPullToRefresh != null
+        swipeRefreshLayout.setOnRefreshListener {
+            onPullToRefresh?.invoke()
+        }
+    }
+
+    fun endRefreshing() {
+        swipeRefreshLayout?.isRefreshing = false
     }
 
     // endregion

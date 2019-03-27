@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
+import android.support.v4.widget.SwipeRefreshLayout
 import android.util.AttributeSet
 import android.widget.ScrollView
 import kibaan.android.R
@@ -60,6 +61,9 @@ class SmartScrollView : ScrollView {
 
     @Suppress("MemberVisibilityCanBePrivate")
     var indicatorSize: CGSize? = null
+
+    /** PullToRefresh用のレイアウト（外から設定される前提） */
+    var swipeRefreshLayout: SwipeRefreshLayout? = null
 
     // endregion
 
@@ -146,8 +150,24 @@ class SmartScrollView : ScrollView {
         if (animated) {
             smoothScrollTo(0, 0)
         } else {
-            scrollTo(0,0)
+            scrollTo(0, 0)
         }
+    }
+
+    // endregion
+
+    // region -> Refresh Control
+
+    fun addRefreshControl(swipeRefreshLayout: SwipeRefreshLayout, onPullToRefresh: (() -> Unit)? = null) {
+        this.swipeRefreshLayout = swipeRefreshLayout
+        swipeRefreshLayout.isEnabled = onPullToRefresh != null
+        swipeRefreshLayout.setOnRefreshListener {
+            onPullToRefresh?.invoke()
+        }
+    }
+
+    fun endRefreshing() {
+        swipeRefreshLayout?.isRefreshing = false
     }
 
     // endregion

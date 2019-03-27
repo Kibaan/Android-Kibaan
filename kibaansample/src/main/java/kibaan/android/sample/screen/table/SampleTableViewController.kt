@@ -1,5 +1,6 @@
 package kibaan.android.sample.screen.table
 
+import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
 import kibaan.android.framework.BaseViewController
 import kibaan.android.extension.stringValue
@@ -7,6 +8,7 @@ import kibaan.android.ios.*
 import kibaan.android.sample.R
 import kibaan.android.ui.SmartTableView
 import kibaan.android.ui.SmartTextView
+import kibaan.android.util.AlertUtils
 
 /**
  * UITableView関連の動作をチェックする為のコントローラ
@@ -19,6 +21,7 @@ class SampleTableViewController : BaseViewController(), UITableViewDataSource, U
 
     @IBOutlet(R.id.count_text) lateinit var countText: SmartTextView
     @IBOutlet(R.id.table_view) lateinit var tableView: SmartTableView
+    @IBOutlet(R.id.swipe_refresh_layout) lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     // endregion
 
@@ -32,6 +35,11 @@ class SampleTableViewController : BaseViewController(), UITableViewDataSource, U
         tableView.registerCellClass(SampleTableViewCell::class)
         tableView.rowHeight = 44.0
         tableView.estimatedRowHeight = tableView.rowHeight
+        tableView.swipeRefreshLayout = swipeRefreshLayout
+        tableView.addRefreshControl(swipeRefreshLayout) {
+            AlertUtils.show("Success", "PullToRefresh!!")
+            tableView.endRefreshing()
+        }
     }
 
     override fun onEnterForeground() {
