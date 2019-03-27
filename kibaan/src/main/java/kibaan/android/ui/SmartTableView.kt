@@ -33,4 +33,21 @@ open class SmartTableView : UITableView {
         val resourceId = resourceId(type)
         register(resourceId, type, isTargetIndex)
     }
+
+    // region -> Support
+
+    /**
+     * スクロール位置を初期化する
+     *
+     * @param animated アニメーションの有無
+     */
+    fun resetScrollOffset(animated: Boolean = false) {
+        if (animated) {
+            recyclerView.smoothScrollToPosition(0)
+        } else {
+            recyclerView.scrollToPosition(0)
+        }
+    }
+
+    // endregion
 }

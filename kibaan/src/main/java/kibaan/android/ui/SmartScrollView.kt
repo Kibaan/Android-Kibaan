@@ -134,4 +134,21 @@ class SmartScrollView : ScrollView {
     }
 
     // endregion
+
+    // region -> Support
+
+    /**
+     * スクロール位置を初期化する
+     *
+     * @param animated アニメーションの有無
+     */
+    fun resetScrollOffset(animated: Boolean = false) {
+        if (animated) {
+            smoothScrollTo(0, 0)
+        } else {
+            scrollTo(0,0)
+        }
+    }
+
+    // endregion
 }
