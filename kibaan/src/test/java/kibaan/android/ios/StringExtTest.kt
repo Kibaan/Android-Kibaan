@@ -20,6 +20,15 @@ class StringExtTest {
     }
 
     @Test
+    fun testSplit() {
+        val word = "東京海上  日本   "
+        val words = word.split(separator = " ")
+        assertEquals(2, words.count)
+        assertEquals("東京海上", words[0])
+        assertEquals("日本", words[1])
+    }
+
+    @Test
     fun testPrefixSuffix() {
         val src = "PX_123456.SX"
 
