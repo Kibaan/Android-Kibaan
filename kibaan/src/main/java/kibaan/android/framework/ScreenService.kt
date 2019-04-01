@@ -18,7 +18,7 @@ class ScreenService {
     companion object {
         private var activity: SmartActivity? = null
         val shared: ScreenService
-            get() = SingletonContainer.get(ScreenService::class)
+            get() = SingletonContainer.shared.get(ScreenService::class)
 
         fun setActivity(activity: SmartActivity?) {
             Companion.activity = activity

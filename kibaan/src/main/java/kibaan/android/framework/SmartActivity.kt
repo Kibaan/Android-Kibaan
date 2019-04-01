@@ -21,6 +21,8 @@ open class SmartActivity : AppCompatActivity() {
 
     lateinit var rootContainer: RootFrameLayout
     var isUserInteractionEnabled = true
+    // SingletonContainerのインスタンスがActivityが生きているうちに破棄されないよう保持する
+    var singletonContainer: SingletonContainer? = null
 
     companion object {
         @SuppressLint("StaticFieldLeak")
@@ -34,6 +36,7 @@ open class SmartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        singletonContainer = SingletonContainer.shared
         sInstance = this
         rootContainer = RootFrameLayout(this)
         setContentView(
@@ -62,7 +65,7 @@ open class SmartActivity : AppCompatActivity() {
         super.onDestroy()
         UIViewController.setActivity(null)
         ViewControllerCache.shared.clear()
-        SingletonContainer.clear()
+        SingletonContainer.shared.clear()
     }
 
     // endregion

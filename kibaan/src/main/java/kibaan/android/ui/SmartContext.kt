@@ -45,7 +45,7 @@ class SmartContext {
     var isGlobalFontEnabled = false
 
     companion object {
-        val shared: SmartContext get() = SingletonContainer.get(SmartContext::class)
+        val shared: SmartContext get() = SingletonContainer.shared.get(SmartContext::class)
     }
 
     fun setActivity(activity: SmartActivity?) {

@@ -6,7 +6,7 @@ import kibaan.android.storage.LocalSetting
 class AppSetting: LocalSetting() {
 
     companion object {
-        val shared: AppSetting get() = SingletonContainer.get(AppSetting::class)
+        val shared: AppSetting get() = SingletonContainer.shared.get(AppSetting::class)
     }
 
     var sampleText: String?
