@@ -6,7 +6,11 @@ import kotlin.reflect.KClass
 /**
  * シングルトンのインスタンスを保持する
  */
-object SingletonContainer {
+class SingletonContainer {
+
+    companion object {
+        var shared = SingletonContainer()
+    }
 
     var map: MutableMap<KClass<*>, Any> = mutableMapOf()
 

@@ -11,7 +11,7 @@ import kotlin.reflect.KClass
 class ViewControllerCache {
     companion object {
         val shared: ViewControllerCache
-            get() = SingletonContainer.get(ViewControllerCache::class)
+            get() = SingletonContainer.shared.get(ViewControllerCache::class)
     }
 
     private var controllerMap: MutableMap<String, BaseViewController> = mutableMapOf()

@@ -11,7 +11,7 @@ class HTTPCookieStorage {
     // region -> Shared
 
     companion object {
-        val shared: HTTPCookieStorage get() = SingletonContainer.get(HTTPCookieStorage::class)
+        val shared: HTTPCookieStorage get() = SingletonContainer.shared.get(HTTPCookieStorage::class)
     }
 
     // endregion
