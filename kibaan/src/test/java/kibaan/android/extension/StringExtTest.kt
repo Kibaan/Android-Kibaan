@@ -497,6 +497,11 @@ class StringExtTest {
     }
 
     @Test
+    fun testNumberFormat_017() {
+        assertEquals("".signedNumberFormat, "")
+    }
+
+    @Test
     fun testPadLeft() {
         assertEquals("123".leftPadded(size = 6), "   123")
         assertEquals("123".leftPadded(size = 6, spacer = "0"), "000123")

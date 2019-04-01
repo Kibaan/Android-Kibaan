@@ -257,7 +257,7 @@ val String.numberFormat: String
             text = text.removePrefix("-")
         }
 
-        val numbers = text.split(".")
+        val numbers = text.components(".")
         val number = numbers[0]
         val decimal = if (1 < numbers.count) numbers[1] else null
 

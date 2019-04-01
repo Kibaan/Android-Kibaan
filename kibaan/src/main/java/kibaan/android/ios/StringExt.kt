@@ -18,13 +18,13 @@ fun String.data(using: Charset): ByteArray {
  * 指定された文字で分割された文字列からの部分文字列を含む配列を返す
  */
 fun String.components(separatedBy: String): List<String> {
-    return split(separatedBy, ignoreCase = false, limit = 0)
+    return split(separatedBy)
 }
 
 /**
  * 指定された文字で分割された文字列からの部分文字列を含む配列を空文字を除去した上で返す
  */
-fun String.split(separator: String): List<String> {
+fun String.splitWithoutEmpty(separator: String): List<String> {
     return split(separator, ignoreCase = false, limit = 0).filter { !it.isEmpty }
 }
 

@@ -20,9 +20,9 @@ class StringExtTest {
     }
 
     @Test
-    fun testSplit() {
+    fun testSplitWithoutEmpty() {
         val word = "東京海上  日本   "
-        val words = word.split(separator = " ")
+        val words = word.splitWithoutEmpty(separator = " ")
         assertEquals(2, words.count)
         assertEquals("東京海上", words[0])
         assertEquals("日本", words[1])
