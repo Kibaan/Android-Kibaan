@@ -22,11 +22,11 @@ sealed class HTTPTaskError : Exception() {
     val description: String
         get() {
             return when (this) {
-                invalidURL -> "URLが不正です"
-                network -> "オフライン、タイムアウトなどの通信エラー"
-                statusCode -> "HTTPステータスコードが既定ではないエラー"
-                parse -> "レスポンスデータのパースに失敗"
-                invalidResponse -> "レスポンスデータの内容がエラー"
+                invalidURL -> "リクエストするURLが不正です。"
+                network -> "通信エラーが発生しました。 通信環境が不安定か、接続先が誤っている可能性があります。"
+                statusCode -> "HTTPステータスコードが不正です。"
+                parse -> "レスポンスデータのパースに失敗しました。"
+                invalidResponse -> "レスポンスデータのバリデーションエラーです。"
             }
         }
 }
