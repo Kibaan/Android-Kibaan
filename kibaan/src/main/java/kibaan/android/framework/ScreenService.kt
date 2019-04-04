@@ -48,10 +48,6 @@ class ScreenService {
     private var rootViewController: UIViewController? = null
         set(value) {
             if (field != value) {
-                val lastController = field
-                if (lastController is BaseViewController) {
-                    lastController.leave()
-                }
 
                 field = value
 
