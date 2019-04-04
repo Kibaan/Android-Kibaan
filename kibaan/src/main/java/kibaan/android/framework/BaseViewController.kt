@@ -27,6 +27,8 @@ open class BaseViewController(layoutName: String? = null) : UIViewController(lay
     var taskHolder = TaskHolder()
     /** 上に乗せたオーバーレイ画面 */
     private var overlays = mutableListOf<BaseViewController>()
+    /** オーバーレイ画面が乗っているか */
+    val hasOverlay: Boolean get() = !overlays.isEmpty()
     /** スライド表示させた画面リスト */
     private var nextScreens = mutableListOf<BaseViewController>()
     /** スライド表示させた画面のビュー */
@@ -250,8 +252,8 @@ open class BaseViewController(layoutName: String? = null) : UIViewController(lay
     /**
      * ViewControllerを上に乗せる
      */
-    fun <T : BaseViewController> addOverlay(type: KClass<T>, prepare: ((T) -> Unit)? = null): T? {
-        val controller = ViewControllerCache.shared.get(type)
+    fun <T : BaseViewController> addOverlay(type: KClass<T>, id: String? = null, cache: Boolean = true, prepare: ((T) -> Unit)? = null): T? {
+        val controller = ViewControllerCache.shared.get(type, id = id, cache = cache)
         controller.owner = this
         overlays.add(controller)
         view.addSubview(controller.view, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
@@ -283,6 +285,20 @@ open class BaseViewController(layoutName: String? = null) : UIViewController(lay
             removed?.view?.removeFromSuperview()
             removed?.leave()
             removed?.removed()
+        }
+    }
+
+    /**
+     * 上に乗ったViewControllerを全て外す
+     */
+    open fun removeAllOverlay() {
+        val allOverlays = overlays.toMutableList()
+        allOverlays.reversed().forEach {
+            it.owner = null
+            it.view.removeFromSuperview()
+            it.leave()
+            it.removed()
+            this.overlays.remove(element = it)
         }
     }
 

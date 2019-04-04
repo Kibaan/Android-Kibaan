@@ -195,7 +195,7 @@ class ScreenService {
         }
         activity?.isUserInteractionEnabled = false
         foregroundController?.leave()
-        foregroundController?.foregroundController?.removeOverlay()
+        foregroundController?.foregroundController?.removeAllOverlay()
 
         val lastViewController = screenStack.last()
         val removedViewControllers: MutableList<BaseViewController?> = mutableListOf()
