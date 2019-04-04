@@ -37,6 +37,8 @@ open class BaseViewController(layoutName: String? = null) : UIViewController(lay
     var nextScreenAnimationDuration: Long = 300
     /** オーバーレイ画面のオーナー */
     var owner: BaseViewController? = null
+    /** スライド表示させた画面の遷移のルート */
+    var navigationRootController: BaseViewController? = null
     /** 画面表示中かどうか */
     var isForeground: Boolean = false
     /** 画面遷移アニメーション */
@@ -72,6 +74,7 @@ open class BaseViewController(layoutName: String? = null) : UIViewController(lay
      */
     fun removed() {
         onRemovedFromScreen()
+        navigationRootController = null
     }
 
     /**
@@ -155,7 +158,7 @@ open class BaseViewController(layoutName: String? = null) : UIViewController(lay
         if (parentView == null || nextScreens.lastOrNull() == controller) {
             return null
         }
-        controller.owner = this
+        controller.navigationRootController = this
         val prevView = nextScreens.lastOrNull()?.view ?: targetView
 
         leave()
