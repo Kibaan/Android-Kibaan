@@ -43,9 +43,10 @@ class ScreenService {
     private var screenStack: MutableList<SmartViewController> = mutableListOf()
     private var screenIndicator: ScreenIndicator? = null
     val foregroundController: SmartViewController? get() = screenStack.lastOrNull()
+    val rootViewController: SmartViewController? get() = screenStack.firstOrNull()
 
     @AndroidUnique
-    private var rootViewController: UIViewController? = null
+    private var activityRootViewController: UIViewController? = null
         set(value) {
             if (field != value) {
 
@@ -69,7 +70,7 @@ class ScreenService {
 
     fun <T : SmartViewController> setRoot(type: KClass<T>, prepare: ((T) -> Unit)? = null): T {
         val controller = ViewControllerCache.shared.get(type)
-        if (rootViewController == controller) {
+        if (activityRootViewController == controller) {
             return controller
         }
         screenStack.forEach {
@@ -83,9 +84,9 @@ class ScreenService {
     }
 
     fun <T : SmartViewController> setRootViewController(viewController: T, prepare: ((T) -> Unit)? = null) {
-        val oldRootViewController = rootViewController as? SmartViewController
+        val oldRootViewController = activityRootViewController as? SmartViewController
         oldRootViewController?.leave()
-        rootViewController = viewController
+        activityRootViewController = viewController
         oldRootViewController?.removed()
         prepare?.invoke(viewController)
         viewController.added()
