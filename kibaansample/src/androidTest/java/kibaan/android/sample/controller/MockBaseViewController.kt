@@ -1,8 +1,8 @@
 package kibaan.android.sample.controller
 
-import kibaan.android.framework.BaseViewController
+import kibaan.android.framework.SmartViewController
 
-open class MockBaseViewController : BaseViewController() {
+open class MockBaseViewController : SmartViewController() {
 
     // region -> Variables
 

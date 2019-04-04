@@ -2,7 +2,7 @@ package kibaan.android.sample.screen.table
 
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
-import kibaan.android.framework.BaseViewController
+import kibaan.android.framework.SmartViewController
 import kibaan.android.extension.stringValue
 import kibaan.android.ios.*
 import kibaan.android.sample.R
@@ -13,7 +13,7 @@ import kibaan.android.util.AlertUtils
 /**
  * UITableView関連の動作をチェックする為のコントローラ
  */
-class SampleTableViewController : BaseViewController(), UITableViewDataSource, UITableViewDelegate {
+class SampleTableViewController : SmartViewController(), UITableViewDataSource, UITableViewDelegate {
 
     var count = 0
 

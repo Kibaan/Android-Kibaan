@@ -1,7 +1,7 @@
 package kibaan.android.sample.screen.connection
 
 import android.view.View
-import kibaan.android.framework.BaseViewController
+import kibaan.android.framework.SmartViewController
 import kibaan.android.extension.integerValue
 import kibaan.android.extension.stringValue
 import kibaan.android.ios.IBAction
@@ -14,7 +14,7 @@ import kibaan.android.ui.SmartLabel
 /**
  * 通信関連確認用のビューコントローラ
  */
-class ConnectionViewController : BaseViewController() {
+class ConnectionViewController : SmartViewController() {
 
     // region -> Outlets
 

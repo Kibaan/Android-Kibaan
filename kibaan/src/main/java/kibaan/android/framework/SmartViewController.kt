@@ -13,24 +13,24 @@ import kotlin.reflect.KClass
  * Created by Yamamoto Keita on 2018/01/18.
  */
 
-open class BaseViewController(layoutName: String? = null) : UIViewController(layoutName) {
+open class SmartViewController(layoutName: String? = null) : UIViewController(layoutName) {
 
     /** 同クラスのインスタンスが複数存在する場合に識別するためのID */
     var viewID: String = ""
     /** 子のViewController */
-    private var subControllers = mutableListOf<BaseViewController>()
+    private var subControllers = mutableListOf<SmartViewController>()
     /** 表示中の子ViewControllerの配列 */
-    open val foregroundSubControllers: List<BaseViewController> get() = listOf()
+    open val foregroundSubControllers: List<SmartViewController> get() = listOf()
     /** 表示中のViewController */
-    val foregroundController: BaseViewController get() = nextScreens.lastOrNull() ?: this
+    val foregroundController: SmartViewController get() = nextScreens.lastOrNull() ?: this
     /** 紐づくタスクのコンテナ */
     var taskHolder = TaskHolder()
     /** 上に乗せたオーバーレイ画面 */
-    private var overlays = mutableListOf<BaseViewController>()
+    private var overlays = mutableListOf<SmartViewController>()
     /** オーバーレイ画面が乗っているか */
     val hasOverlay: Boolean get() = !overlays.isEmpty()
     /** スライド表示させた画面リスト */
-    private var nextScreens = mutableListOf<BaseViewController>()
+    private var nextScreens = mutableListOf<SmartViewController>()
     /** スライド表示させた画面のビュー */
     private var nextScreenViews: List<View> = mutableListOf()
     /** スライド表示させる画面を追加する対象のビュー */
@@ -38,9 +38,9 @@ open class BaseViewController(layoutName: String? = null) : UIViewController(lay
     /** スライドアニメーション時間 */
     var nextScreenAnimationDuration: Long = 300
     /** オーバーレイ画面のオーナー */
-    var owner: BaseViewController? = null
+    var owner: SmartViewController? = null
     /** スライド表示させた画面の遷移のルート */
-    var navigationRootController: BaseViewController? = null
+    var navigationRootController: SmartViewController? = null
     /** 画面表示中かどうか */
     var isForeground: Boolean = false
     /** 画面遷移アニメーション */
@@ -110,12 +110,12 @@ open class BaseViewController(layoutName: String? = null) : UIViewController(lay
         subControllers.forEach { it.removed() }
     }
 
-    fun addSubController(controller: BaseViewController) {
+    fun addSubController(controller: SmartViewController) {
         controller.owner = this
         subControllers.append(controller)
     }
 
-    fun addSubControllers(controllers: List<BaseViewController>) {
+    fun addSubControllers(controllers: List<SmartViewController>) {
         subControllers.forEach { it.owner = this }
         subControllers.append(contentsOf = controllers)
     }
@@ -146,14 +146,14 @@ open class BaseViewController(layoutName: String? = null) : UIViewController(lay
     /**
      * ViewControllerをスライド表示させる（targetView指定なし）
      */
-    fun <T : BaseViewController> addNextScreen(type: KClass<T>, id: String? = null, cache: Boolean = true, animated: Boolean = true, prepare: ((T) -> Unit)? = null): T? {
+    fun <T : SmartViewController> addNextScreen(type: KClass<T>, id: String? = null, cache: Boolean = true, animated: Boolean = true, prepare: ((T) -> Unit)? = null): T? {
         return addNextScreen(type, targetView = nextScreenTargetView, id = id, cache = cache, animated = animated, prepare = prepare)
     }
 
     /**
      * ViewControllerをスライド表示させる（targetView指定あり）
      */
-    fun <T : BaseViewController> addNextScreen(type: KClass<T>, targetView: View, id: String? = null, cache: Boolean = true, animated: Boolean = true, prepare: ((T) -> Unit)? = null): T? {
+    fun <T : SmartViewController> addNextScreen(type: KClass<T>, targetView: View, id: String? = null, cache: Boolean = true, animated: Boolean = true, prepare: ((T) -> Unit)? = null): T? {
         checkTargetView(targetView)
         val controller = ViewControllerCache.shared.get(type, id = id, cache = cache)
         val parentView = targetView.superview
@@ -252,7 +252,7 @@ open class BaseViewController(layoutName: String? = null) : UIViewController(lay
     /**
      * ViewControllerを上に乗せる
      */
-    fun <T : BaseViewController> addOverlay(type: KClass<T>, id: String? = null, cache: Boolean = true, prepare: ((T) -> Unit)? = null): T? {
+    fun <T : SmartViewController> addOverlay(type: KClass<T>, id: String? = null, cache: Boolean = true, prepare: ((T) -> Unit)? = null): T? {
         val controller = ViewControllerCache.shared.get(type, id = id, cache = cache)
         controller.owner = this
         overlays.add(controller)
@@ -269,9 +269,9 @@ open class BaseViewController(layoutName: String? = null) : UIViewController(lay
     /**
      * 上に乗ったViewControllerを外す
      */
-    fun removeOverlay(target: KClass<out BaseViewController>? = null) {
+    fun removeOverlay(target: KClass<out SmartViewController>? = null) {
         if (0 < overlays.size) {
-            var removed: BaseViewController? = null
+            var removed: SmartViewController? = null
             val target = target
             if (target != null) {
                 val index = overlays.indexOrNull { it::class == target }

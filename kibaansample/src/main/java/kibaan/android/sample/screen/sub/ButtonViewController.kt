@@ -1,7 +1,7 @@
 package kibaan.android.sample.screen.sub
 
 import android.view.View
-import kibaan.android.framework.BaseViewController
+import kibaan.android.framework.SmartViewController
 import kibaan.android.ios.IBAction
 import kibaan.android.ios.IBOutlet
 import kibaan.android.ios.UIControlState
@@ -12,7 +12,7 @@ import kibaan.android.ui.SmartButton
 /**
  * ボタン確認用画面
  */
-class ButtonViewController : BaseViewController() {
+class ButtonViewController : SmartViewController() {
 
     // region -> Outlets
 

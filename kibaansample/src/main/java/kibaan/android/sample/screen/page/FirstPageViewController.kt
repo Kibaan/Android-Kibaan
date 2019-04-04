@@ -2,7 +2,7 @@ package kibaan.android.sample.screen.page
 
 import android.annotation.SuppressLint
 import android.view.View
-import kibaan.android.framework.BaseViewController
+import kibaan.android.framework.SmartViewController
 import kibaan.android.framework.ScreenService
 import kibaan.android.framework.ViewControllerCache
 import kibaan.android.ios.IBAction
@@ -10,7 +10,7 @@ import kibaan.android.ios.IBOutlet
 import kibaan.android.sample.R
 import kibaan.android.ui.SmartLabel
 
-class FirstPageViewController: BaseViewController() {
+class FirstPageViewController: SmartViewController() {
 
     // region -> Outlets
 

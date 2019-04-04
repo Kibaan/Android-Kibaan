@@ -40,9 +40,9 @@ class ScreenService {
 
     var defaultTransitionAnimation: TransitionAnimation? = TransitionAnimation.coverVertical
 
-    private var screenStack: MutableList<BaseViewController> = mutableListOf()
+    private var screenStack: MutableList<SmartViewController> = mutableListOf()
     private var screenIndicator: ScreenIndicator? = null
-    val foregroundController: BaseViewController? get() = screenStack.lastOrNull()
+    val foregroundController: SmartViewController? get() = screenStack.lastOrNull()
 
     @AndroidUnique
     private var rootViewController: UIViewController? = null
@@ -67,7 +67,7 @@ class ScreenService {
         screenIndicator = ScreenIndicator(context)
     }
 
-    fun <T : BaseViewController> setRoot(type: KClass<T>, prepare: ((T) -> Unit)? = null): T {
+    fun <T : SmartViewController> setRoot(type: KClass<T>, prepare: ((T) -> Unit)? = null): T {
         val controller = ViewControllerCache.shared.get(type)
         if (rootViewController == controller) {
             return controller
@@ -82,8 +82,8 @@ class ScreenService {
         return controller
     }
 
-    fun <T : BaseViewController> setRootViewController(viewController: T, prepare: ((T) -> Unit)? = null) {
-        val oldRootViewController = rootViewController as? BaseViewController
+    fun <T : SmartViewController> setRootViewController(viewController: T, prepare: ((T) -> Unit)? = null) {
+        val oldRootViewController = rootViewController as? SmartViewController
         oldRootViewController?.leave()
         rootViewController = viewController
         oldRootViewController?.removed()
@@ -92,12 +92,12 @@ class ScreenService {
         viewController.enter()
     }
 
-    fun <T : BaseViewController> addSubScreen(type: KClass<T>,
-                                              nibName: String? = null,
-                                              id: String? = null,
-                                              cache: Boolean = true,
-                                              transitionType: TransitionType = TransitionType.normal,
-                                              prepare: ((T) -> Unit)? = null): T? {
+    fun <T : SmartViewController> addSubScreen(type: KClass<T>,
+                                               nibName: String? = null,
+                                               id: String? = null,
+                                               cache: Boolean = true,
+                                               transitionType: TransitionType = TransitionType.normal,
+                                               prepare: ((T) -> Unit)? = null): T? {
         activity?.isUserInteractionEnabled = false
 
         foregroundController?.leave()
@@ -145,7 +145,7 @@ class ScreenService {
         }
     }
 
-    fun removeSubScreen(executeStart: Boolean = true, to: BaseViewController, completion: (() -> Unit)? = null) {
+    fun removeSubScreen(executeStart: Boolean = true, to: SmartViewController, completion: (() -> Unit)? = null) {
         if (screenStack.size <= 1 || !screenStack.contains(to)) {
             return
         }
@@ -156,7 +156,7 @@ class ScreenService {
         activity?.isUserInteractionEnabled = false
         foregroundController?.leave()
 
-        val removedViewControllers: MutableList<BaseViewController?> = mutableListOf()
+        val removedViewControllers: MutableList<SmartViewController?> = mutableListOf()
         for (viewController in screenStack.reversed()) {
             if (screenStack.lastOrNull() === to) {
                 break
@@ -194,7 +194,7 @@ class ScreenService {
         foregroundController?.foregroundController?.removeAllOverlay()
 
         val lastViewController = screenStack.last()
-        val removedViewControllers: MutableList<BaseViewController?> = mutableListOf()
+        val removedViewControllers: MutableList<SmartViewController?> = mutableListOf()
         while (1 < screenStack.size) {
             val removed = screenStack.removeLast()
             removedViewControllers.append(removed)

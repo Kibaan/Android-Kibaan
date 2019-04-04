@@ -3,11 +3,9 @@ package kibaan.android.sample.screen.top
 import android.view.View
 import kibaan.android.extension.integerValue
 import kibaan.android.extension.stringValue
-import kibaan.android.framework.BaseViewController
+import kibaan.android.framework.SmartViewController
 import kibaan.android.ios.IBAction
 import kibaan.android.ios.IBOutlet
-import kibaan.android.ios.UIButton
-import kibaan.android.ios.UIControlState
 import kibaan.android.sample.R
 import kibaan.android.sample.screen.connection.ConnectionViewController
 import kibaan.android.sample.screen.sub.ButtonViewController
@@ -16,14 +14,13 @@ import kibaan.android.sample.screen.table.SampleTableViewController
 import kibaan.android.framework.ScreenService
 import kibaan.android.sample.model.AppSetting
 import kibaan.android.sample.screen.page.FirstPageViewController
-import kibaan.android.ui.SmartButton
 import kibaan.android.ui.SmartLabel
 import kibaan.android.util.Log
 
 /**
  * トップ画面
  */
-class TopViewController : BaseViewController() {
+class TopViewController : SmartViewController() {
 
     @IBOutlet(R.id.sample_label) lateinit var sampleLabel: SmartLabel
 

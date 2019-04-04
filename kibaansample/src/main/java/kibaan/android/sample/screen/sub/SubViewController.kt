@@ -2,7 +2,7 @@ package kibaan.android.sample.screen.sub
 
 import android.os.Handler
 import android.view.View
-import kibaan.android.framework.BaseViewController
+import kibaan.android.framework.SmartViewController
 import kibaan.android.framework.ScreenService
 import kibaan.android.extension.stringValue
 import kibaan.android.ios.IBAction
@@ -17,7 +17,7 @@ import kibaan.android.ui.SmartTextView
 /**
  * サブ画面
  */
-class SubViewController : BaseViewController() {
+class SubViewController : SmartViewController() {
 
     val handler = Handler()
 

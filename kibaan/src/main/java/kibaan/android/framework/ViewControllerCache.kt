@@ -14,9 +14,9 @@ class ViewControllerCache {
             get() = SingletonContainer.shared.get(ViewControllerCache::class)
     }
 
-    private var controllerMap: MutableMap<String, BaseViewController> = mutableMapOf()
+    private var controllerMap: MutableMap<String, SmartViewController> = mutableMapOf()
 
-    fun <T : BaseViewController> get(type: KClass<T>, layoutName: String? = null, id: String? = null, cache: Boolean = true): T {
+    fun <T : SmartViewController> get(type: KClass<T>, layoutName: String? = null, id: String? = null, cache: Boolean = true): T {
         var controllerKey = type.java.name
         val suffix = if (id != null) ".$id" else ""
         controllerKey += suffix
@@ -32,20 +32,20 @@ class ViewControllerCache {
         return controller as T
     }
 
-    fun <T : BaseViewController> create(type: KClass<T>, layoutName: String? = null, id: String? = null): T {
+    fun <T : SmartViewController> create(type: KClass<T>, layoutName: String? = null, id: String? = null): T {
         val controller: T = if (layoutName != null) {
             type.java.getConstructor(String::class.java).newInstance(layoutName)
         } else {
             type.java.newInstance()
         }
-        val baseViewController = controller as? BaseViewController
+        val baseViewController = controller as? SmartViewController
         if (baseViewController != null && id != null) {
             baseViewController.viewID = id
         }
         return controller
     }
 
-    fun <T : BaseViewController> getCache(type: KClass<T>, id: String? = null): T? {
+    fun <T : SmartViewController> getCache(type: KClass<T>, id: String? = null): T? {
         var controllerKey = type.java.name
         val suffix = if (id != null) ".$id" else ""
         controllerKey += suffix
