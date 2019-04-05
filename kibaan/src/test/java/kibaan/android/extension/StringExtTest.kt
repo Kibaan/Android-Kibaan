@@ -593,9 +593,15 @@ class StringExtTest {
 
     @Test
     fun testSnakeCase() {
-        assertEquals("StringUtilsTests".toSnakeCase(), "string_utils_tests")
-        assertEquals("AAABBBCCC".toSnakeCase(), "aaabbbccc")
-        assertEquals("abcDefGhiJk123".toSnakeCase(), "abc_def_ghi_jk123")
+        assertEquals("string_utils_tests", "StringUtilsTests".toSnakeCase())
+        assertEquals("string_utils_tests", "stringUtilsTests".toSnakeCase())
+        assertEquals("abc", "ABC".toSnakeCase())
+        assertEquals("abc", "abc".toSnakeCase())
+        assertEquals("html_parser", "html_parser".toSnakeCase())
+        assertEquals("html_parser", "HTMLParser".toSnakeCase())
+        assertEquals("ht_ml_parser", "HTMlParser".toSnakeCase())
+        assertEquals("html_parser_x", "HTMLParserX".toSnakeCase())
+        assertEquals("html_parser_xx", "HTMLParserXX".toSnakeCase())
     }
 
     // endregion

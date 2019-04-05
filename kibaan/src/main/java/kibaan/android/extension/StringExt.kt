@@ -12,12 +12,21 @@ import java.security.MessageDigest
  * スネークケースに変換する
  */
 fun String.toSnakeCase(): String {
-    var canGoNextBlock = false
-    return map {
-        val separator = if (canGoNextBlock && it.isUpperCase()) "_" else ""
-        canGoNextBlock = it.isLowerCase()
-        separator + it.toLowerCase()
-    }.joinToString("")
+    val builder = StringBuilder()
+    val charArray = toCharArray()
+    for (i in 0 until count) {
+        val char = charArray[i]
+        if (i == 0) {
+            builder.append(char.toLowerCase())
+            continue
+        }
+
+        val isBeforeCharLowerCase = charArray[i - 1].isLowerCase()
+        val isNextCharLowerCase = if (i + 1 < count) charArray[i + 1].isLowerCase() else false
+        val separator = if (char.isUpperCase() && (isBeforeCharLowerCase || isNextCharLowerCase)) "_" else ""
+        builder.append(separator + char.toLowerCase())
+    }
+    return builder.toString()
 }
 
 /**
@@ -80,7 +89,7 @@ fun String.removeAll(items: List<String>): String {
  * 指定した文字列を先頭に付けて返す
  */
 @Suppress("NAME_SHADOWING")
-fun String.withPrefix(prefix: String?) : String {
+fun String.withPrefix(prefix: String?): String {
     val prefix = prefix ?: return this
     return prefix + this
 }
@@ -89,7 +98,7 @@ fun String.withPrefix(prefix: String?) : String {
  * 指定した文字列を末尾に付けて返す
  */
 @Suppress("NAME_SHADOWING")
-fun String.withSuffix(suffix: String?) : String {
+fun String.withSuffix(suffix: String?): String {
     val suffix = suffix ?: return this
     return this + suffix
 }
