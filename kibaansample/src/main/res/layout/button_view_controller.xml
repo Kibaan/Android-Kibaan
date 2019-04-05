@@ -285,5 +285,19 @@
         android:background="#0055FF"
     />
 
+    <kibaan.android.ios.UIButton
+        android:id="@+id/text_color_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="文字色変更"
+        app:defaultTextColor="#555555"
+        app:highlightedTextColor="#FF0000"
+        app:selectedTextColor="#00FF00"
+        app:layout_constraintTop_toBottomOf="@id/circle_button"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+    />
+
 
 </android.support.constraint.ConstraintLayout>

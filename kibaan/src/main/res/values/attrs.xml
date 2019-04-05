@@ -66,6 +66,14 @@
         <attr name="android:textStyle" />
     </declare-styleable>
 
+    <!-- UIButton -->
+    <declare-styleable name="UIButton">
+        <attr name="defaultTextColor" format="color" />
+        <attr name="highlightedTextColor" format="color" />
+        <attr name="selectedTextColor" format="color" />
+        <attr name="disabledTextColor" format="color" />
+    </declare-styleable>
+
     <!-- SmartButton -->
     <declare-styleable name="SmartButton">
         <attr name="isUserInteractionEnabled" />

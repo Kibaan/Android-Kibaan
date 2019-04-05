@@ -7,6 +7,8 @@ import android.support.annotation.DrawableRes
 import android.support.v7.widget.AppCompatButton
 import android.util.AttributeSet
 import android.util.TypedValue
+import kibaan.android.R
+import kibaan.android.extension.getUIColorOrNull
 import kibaan.android.util.min
 
 /**
@@ -85,9 +87,31 @@ open class UIButton : AppCompatButton {
 
     // endregion
 
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context) : super(context) {
+        setupUIButton(context)
+    }
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+        setupUIButton(context, attrs)
+    }
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        setupUIButton(context, attrs)
+    }
+
+    // region -> Initializer
+
+    private fun setupUIButton(context: Context, attrs: AttributeSet? = null) {
+        // プロパティの読み込み
+        if (attrs != null) {
+            val array = context.obtainStyledAttributes(attrs, R.styleable.UIButton)
+            defaultTextColor = array.getUIColorOrNull(R.styleable.UIButton_defaultTextColor)
+            highlightedTextColor = array.getUIColorOrNull(R.styleable.UIButton_highlightedTextColor)
+            selectedTextColor = array.getUIColorOrNull(R.styleable.UIButton_selectedTextColor)
+            disabledTextColor = array.getUIColorOrNull(R.styleable.UIButton_disabledTextColor)
+            array.recycle()
+        }
+    }
+
+    // endregion
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
