@@ -41,7 +41,7 @@ abstract class HTTPTask : Task {
     open val isResponseLogEnabled: Boolean get() = false
 
     @AndroidUnique
-    private val handler = Handler()
+    val handler = Handler()
 
     constructor() : super()
     constructor(owner: TaskHolder, key: String?) : super(owner, key)
@@ -86,9 +86,7 @@ abstract class HTTPTask : Task {
         httpConnector.timeoutIntervalForResource = timeoutIntervalForResource
 
         httpConnector.execute(request, completionHandler = {data, response, error ->
-            handler.post {
-                complete(data, response, error)
-            }
+            complete(data, response, error)
         })
 
         updateIndicator(referenceCount = 1)
@@ -124,9 +122,11 @@ abstract class HTTPTask : Task {
             handleResponseData(data = data, response = response)
 
         } finally {
-            updateIndicator(referenceCount = -1)
-            finishHandler?.invoke()
-            end()
+            handler.post {
+                updateIndicator(referenceCount = -1)
+                finishHandler?.invoke()
+                end()
+            }
         }
     }
 

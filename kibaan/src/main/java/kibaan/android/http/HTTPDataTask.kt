@@ -39,21 +39,31 @@ abstract class HTTPDataTask<DataType : Any> : HTTPTask {
         try {
             result = parseResponse(data, response = response)
         } catch (e: Exception) {
-            handleError(HTTPTaskError.parse, result = null, error = e, response = response, data = data)
+            handler.post {
+                handleError(HTTPTaskError.parse, result = null, error = e, response = response, data = data)
+            }
             return
         }
 
         if (isValidResponse(result)) {
-            preProcessOnComplete(result)
-            successHandler?.invoke(result)
-            postProcessOnComplete(result)
-
-            complete()
-            next()
+            handler.post {
+                handleValidResponse(result = result)
+            }
         } else {
-            handleError(HTTPTaskError.invalidResponse, result = result, response = response, data = data)
+            handler.post {
+                handleError(HTTPTaskError.invalidResponse, result = result, response = response, data = data)
+            }
         }
     }
+
+    fun handleValidResponse(result: DataType) {
+        preProcessOnComplete(result)
+        successHandler?.invoke(result)
+        postProcessOnComplete(result)
+        complete()
+        next()
+    }
+
 
     override fun handleConnectionError(type: HTTPTaskError, error: Exception?, response: HTTPURLResponse?, data: ByteArray?) {
         super.handleConnectionError(type, error = error, response = response, data = data)
