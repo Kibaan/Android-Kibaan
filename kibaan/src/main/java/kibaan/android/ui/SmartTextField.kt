@@ -32,11 +32,14 @@ interface UITextFieldDelegate {
         return false
     }
 
+    fun textFieldDidBeginEditing(textField: SmartTextField) {
+    }
+
     fun textFieldDidEndEditing(textField: SmartTextField) {
     }
 }
 
-class SmartTextField : RoundedConstraintLayout {
+open class SmartTextField : RoundedConstraintLayout {
 
     // region -> Variables
 
@@ -218,7 +221,9 @@ class SmartTextField : RoundedConstraintLayout {
         editText.setOnTouchListener { _, motionEvent ->
             if (motionEvent?.action == MotionEvent.ACTION_UP && isEnabled) {
                 editText.isCursorVisible = true
-                delegate?.textFieldShouldBeginEditing(this) ?: isEnabled
+                if (delegate?.textFieldShouldBeginEditing(this) ?: isEnabled) {
+                    delegate?.textFieldDidBeginEditing(this)
+                }
             }
             false
         }

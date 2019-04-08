@@ -15,7 +15,7 @@ import kibaan.android.AndroidUnique
 import kibaan.android.ios.UIColor
 import java.util.regex.Pattern
 
-class LinkLabel : SmartLabel {
+open class LinkLabel : SmartLabel {
 
     // region -> Inner Class
 

@@ -13,7 +13,7 @@ import kibaan.android.ios.IBInspectable
 import kibaan.android.ios.didSet
 import kibaan.android.ios.frame
 
-class SmartScrollView : ScrollView {
+open class SmartScrollView : ScrollView {
 
     // region -> Constructor
 

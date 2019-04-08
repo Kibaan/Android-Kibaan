@@ -19,7 +19,7 @@ import kibaan.android.ios.removeFromSuperview
 import kibaan.android.util.DeviceUtils
 import kotlin.math.min
 
-class ToastPopup : AppCompatTextView {
+open class ToastPopup : AppCompatTextView {
 
     // region -> Constants
 

@@ -3,7 +3,7 @@ package kibaan.android.ui
 import android.content.Context
 import android.util.AttributeSet
 
-class EllipseButton : SmartButton {
+open class EllipseButton : SmartButton {
 
     // region -> Constructor
 
