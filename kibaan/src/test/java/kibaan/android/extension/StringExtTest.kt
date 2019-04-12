@@ -293,8 +293,25 @@ class StringExtTest {
         assertEquals(12345.0, "12345".doubleValue, 0.0)
         assertEquals(-1.54, "-1.54".doubleValue, 0.0)
         assertEquals(2.9584, "+2.9584".doubleValue, 0.0)
-        assertEquals(0.0, "29.94.24".doubleValue, 0.0)
+        assertEquals(29.94, "29.94.24".doubleValue, 0.0)
         assertEquals(0.0, "abc".doubleValue, 0.0)
+
+        assertEquals(29.94, "29.94.24".doubleValue, 0.0)
+        assertEquals(31.93, "31.93%".doubleValue, 0.0)
+        assertEquals(39.79, "39.79%39".doubleValue, 0.0)
+        assertEquals(0.0, "ー29.01".doubleValue, 0.0)
+        assertEquals(0.0, "＋39.79".doubleValue, 0.0)
+        assertEquals(777.2, "   777.2".doubleValue, 0.0)
+        assertEquals(999.3, " 999.3 000".doubleValue, 0.0)
+        assertEquals(111.4, "   +111.4   ".doubleValue, 0.0)
+        assertEquals(-222.5, "   -222.5   ".doubleValue, 0.0)
+        assertEquals(300.0, "3E+2".doubleValue, 0.0)
+        assertEquals(0.0, " ".doubleValue, 0.0)
+        assertEquals(0.293, ".293".doubleValue, 0.0)
+        assertEquals(0.293, ".293.5".doubleValue, 0.0)
+
+        // 以下のパターンのみiOS版と異なる
+        assertEquals(888.1, "\n\n888.1".doubleValue, 0.0)
     }
 
     @Test
@@ -317,12 +334,15 @@ class StringExtTest {
         assertEquals("ー555".integerValue, 0)
         assertEquals("＋666".integerValue, 0)
         assertEquals("   777".integerValue, 777)
-        assertEquals("\n\n888".integerValue, 888)
+
         assertEquals(" 999 000".integerValue, 999)
         assertEquals("   +111   ".integerValue, 111)
         assertEquals("   -222   ".integerValue, -222)
         assertEquals("3E+2".integerValue, 3)
         assertEquals(" ".integerValue, 0)
+
+        // 以下のパターンのみiOS版と異なる
+        assertEquals("\n\n888".integerValue, 888)
     }
 
     @Test

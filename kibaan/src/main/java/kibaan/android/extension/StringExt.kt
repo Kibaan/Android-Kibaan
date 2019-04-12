@@ -107,13 +107,32 @@ fun String.withSuffix(suffix: String?): String {
  * 文字列をDoubleに変換する。数値でない場合は0になる
  */
 val String.doubleValue: Double
-    get() = toDoubleOrNull() ?: 0.0
+    get() {
+        val value = toDoubleOrNull()
+        if (value != null) {
+            return value
+        }
+        val trimValue = trim()
+        val hasPrefix = trimValue.hasPrefix("-") || trimValue.hasPrefix("+")
+        var number = ""
+        var dotFound = false
+        for ((index, char) in trimValue.withIndex()) {
+            val isFirstDot = char == '.' && !dotFound
+            dotFound = dotFound || isFirstDot
+            if (char.isDigit() || isFirstDot || (index == 0 && hasPrefix)) {
+                number += char
+            } else {
+                break
+            }
+        }
+        return number.toDoubleOrNull() ?: 0.0
+    }
 
 /**
  * 文字列をCGFloatに変換する。数値でない場合は0になる
  */
 val String.floatValue: CGFloat
-    get() = toDoubleOrNull() ?: 0.0
+    get() = doubleValue
 
 /**
  * 文字列をIntに変換する。数値でない場合は0になる
