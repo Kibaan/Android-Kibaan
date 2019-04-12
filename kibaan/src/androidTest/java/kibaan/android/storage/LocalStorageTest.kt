@@ -11,7 +11,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class LocalSettingTest {
+class LocalStorageTest {
 
     private var appContext: Context = InstrumentationRegistry.getTargetContext()
 
@@ -19,7 +19,7 @@ class LocalSettingTest {
 
     @Test
     fun testString() {
-        val setting = LocalSetting()
+        val setting = LocalStorage()
         val value = "testify"
         setting.setString(key, value = value, willSave = false)
         val result = setting.getString(key, defaultValue = "")
@@ -28,7 +28,7 @@ class LocalSettingTest {
 
     @Test
     fun testStringArray() {
-        val setting = LocalSetting()
+        val setting = LocalStorage()
         val value = listOf("abc", "def", ",,", "\t")
         setting.setStringArray(key = key, value = value, willSave = false)
         val result = setting.getStringArray(key)
@@ -38,7 +38,7 @@ class LocalSettingTest {
 
     @Test
     fun testInt() {
-        val setting = LocalSetting()
+        val setting = LocalStorage()
         val value = 12345
         setting.setInt(key, value = value, willSave = false)
         val result = setting.getInt(key, defaultValue = 0)
@@ -47,7 +47,7 @@ class LocalSettingTest {
 
     @Test
     fun testBool() {
-        val setting = LocalSetting()
+        val setting = LocalStorage()
         setting.setBool("true", value = true, willSave = false)
         setting.setBool("false", value = false, willSave = false)
         assertEquals(setting.getBool("true"), true)
@@ -56,7 +56,7 @@ class LocalSettingTest {
 
     @Test
     fun testFloat() {
-        val setting = LocalSetting()
+        val setting = LocalStorage()
         val value: CGFloat = 12.345678
         setting.setFloat(key, value = value, decimalLength = 2, willSave = false)
         val result = setting.getFloat(key)
@@ -65,7 +65,7 @@ class LocalSettingTest {
 
     @Test
     fun testEnum() {
-        val setting = LocalSetting()
+        val setting = LocalStorage()
         val value: SampleEnum = SampleEnum.valueA
         setting.setEnum(key, value = value, willSave = false)
         val result = setting.getEnum(key, type = SampleEnum::class, defaultValue = SampleEnum.valueC)
@@ -74,7 +74,7 @@ class LocalSettingTest {
 
     @Test
     fun testEnumArray() {
-        val setting = LocalSetting()
+        val setting = LocalStorage()
         val value: List<SampleEnum> = listOf(SampleEnum.valueA, SampleEnum.valueB, SampleEnum.valueC)
         setting.setEnumArray(key, value = value, willSave = false)
         val result = setting.getEnumArray(key, type = SampleEnum::class)
@@ -84,7 +84,7 @@ class LocalSettingTest {
 
     @Test
     fun testEnumOrNilArray() {
-        val setting = LocalSetting()
+        val setting = LocalStorage()
         val value: List<SampleEnum?> = listOf(SampleEnum.valueA, SampleEnum.valueB, null, SampleEnum.valueC)
         setting.setEnumOrNilArray(key, value = value, willSave = false)
         val result = setting.getEnumOrNilArray(key, type = SampleEnum::class)
@@ -94,7 +94,7 @@ class LocalSettingTest {
 
     @Test
     fun testCodable() {
-        val setting = LocalSetting()
+        val setting = LocalStorage()
 
         val obj = SampleClass("foo", 23)
         setting.setCodable(key, value = obj, willSave = false)
@@ -107,7 +107,7 @@ class LocalSettingTest {
 
     @Test
     fun testCodableList() {
-        val setting = LocalSetting()
+        val setting = LocalStorage()
 
         val list = listOf(
                 SampleClass("foo", 1),
@@ -126,7 +126,7 @@ class LocalSettingTest {
 
     @Test
     fun testCodableStringMap() {
-        val setting = LocalSetting()
+        val setting = LocalStorage()
 
         val map = mapOf(
                 "foo" to "1",
@@ -144,7 +144,7 @@ class LocalSettingTest {
 
     @Test
     fun testCodableObjectMap() {
-        val setting = LocalSetting()
+        val setting = LocalStorage()
 
         val map: Map<String, SampleClass> = mapOf(
                 "aaa" to SampleClass("foo", 1),

@@ -1,9 +1,9 @@
 package kibaan.android.sample.model
 
 import kibaan.android.framework.SingletonContainer
-import kibaan.android.storage.LocalSetting
+import kibaan.android.storage.LocalStorage
 
-class AppSetting: LocalSetting() {
+class AppSetting: LocalStorage() {
 
     companion object {
         val shared: AppSetting get() = SingletonContainer.shared.get(AppSetting::class)

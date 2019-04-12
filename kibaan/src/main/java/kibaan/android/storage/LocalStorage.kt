@@ -19,7 +19,7 @@ import kotlin.reflect.KClass
 /**
  * 端末に保存するローカル設定
  */
-open class LocalSetting {
+open class LocalStorage {
     var items: MutableMap<String, String?> = mutableMapOf()
     val fileName: String
 
@@ -36,7 +36,7 @@ open class LocalSetting {
         loadItems()
     }
 
-    constructor(other: LocalSetting) {
+    constructor(other: LocalStorage) {
         fileName = other.fileName
         items = other.items.toMutableMap()
     }
@@ -94,7 +94,7 @@ open class LocalSetting {
         }
     }
 
-    fun overwriteItems(other: LocalSetting) {
+    fun overwriteItems(other: LocalStorage) {
         items = other.items.toMutableMap()
     }
 

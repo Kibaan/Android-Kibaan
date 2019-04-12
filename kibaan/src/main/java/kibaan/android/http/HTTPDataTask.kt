@@ -67,9 +67,10 @@ abstract class HTTPDataTask<DataType : Any> : HTTPTask {
 
     override fun handleConnectionError(type: HTTPTaskError, error: Exception?, response: HTTPURLResponse?, data: ByteArray?) {
         super.handleConnectionError(type, error = error, response = response, data = data)
-        handleError(type, result = null, response = response, data = data)
-
-        next()
+        handler.post {
+            handleError(type, result = null, response = response, data = data)
+            next()
+        }
     }
 
     open fun handleError(type: HTTPTaskError, result: DataType?, error: Exception? = null, response: HTTPURLResponse?, data: ByteArray?) {
