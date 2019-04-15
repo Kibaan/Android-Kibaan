@@ -22,7 +22,7 @@ open class LoopPagerView : ViewPager {
     private val pageViews: MutableList<View> = mutableListOf()
     private val pageFrames: MutableList<FrameLayout> = mutableListOf()
 
-    var pageChangeAction: ((Int) -> Unit)? = null
+    var pageChangeAction: ((Int, Int) -> Unit)? = null
 
     var loadedPagePosition: Int? = null
 
@@ -35,6 +35,7 @@ open class LoopPagerView : ViewPager {
         set(value) {
             changePage(value, animated = false)
         }
+    var oldPageIndex = 0
 
     constructor(context: Context) : super(context) {
         initialize(context)
@@ -52,6 +53,8 @@ open class LoopPagerView : ViewPager {
         addPageFrame()
 
         adapter = Adapter()
+
+        currentItem = 1
     }
 
     override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
@@ -94,7 +97,7 @@ open class LoopPagerView : ViewPager {
         val position = toRealPosition(pageIndex)
 
         if (currentItem == position) {
-            pageChangeAction?.invoke(pageIndex)
+            pageChangeAction?.invoke(oldPageIndex, pageIndex)
         }
         setCurrentItem(position, animated)
     }
@@ -157,7 +160,7 @@ open class LoopPagerView : ViewPager {
 
             val pagePosition = toPagePosition(position)
             if (pagePosition != loadedPagePosition) {
-                pageChangeAction?.invoke(pagePosition)
+                pageChangeAction?.invoke(oldPageIndex, pagePosition)
             }
             loadedPagePosition = null
 
@@ -165,6 +168,7 @@ open class LoopPagerView : ViewPager {
                 // 左右端の場合はループでページ移動するので、その際pageChangeActionが再度走らないよう、実行済みのpositionを保持しておく
                 loadedPagePosition = pagePosition
             }
+            oldPageIndex = pageIndex
         }
 
         override fun onPageScrollStateChanged(state: Int) {
