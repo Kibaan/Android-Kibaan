@@ -39,6 +39,8 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
 
     /** 横幅に合わせたフォントサイズ縮小前のフォントサイズ */
     private var rawTextSizePx: Float = textSize
+    /** 自動縮小設定前の最大表示ライン */
+    private var rawMaxLines: Int = maxLines
     /** 余白を考慮したテキストの表示領域 */
     private val textFrameWidth: Int get() = width - (paddingLeft + paddingRight)
     /** 描画済みかどうか */
@@ -47,7 +49,7 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
     var adjustsFontSizeForWidth: Boolean = false
         set(value) {
             field = value
-            maxLines = if (adjustsFontSizeForWidth) 1 else Int.MAX_VALUE
+            super.setMaxLines(if (adjustsFontSizeForWidth) 1 else rawMaxLines)
             resizeFontForWidth()
         }
     /** 太字かどうか */
@@ -242,6 +244,11 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
         rawTextSizePx = convertedFont.pointSize.toFloat()
         super.setTextSize(TypedValue.COMPLEX_UNIT_PX, convertedFont.pointSize.toFloat())
         typeface = convertedFont.typeface
+    }
+
+    override fun setMaxLines(maxLines: Int) {
+        super.setMaxLines(maxLines)
+        rawMaxLines = maxLines
     }
 
     // endregion
