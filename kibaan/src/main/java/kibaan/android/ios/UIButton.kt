@@ -25,6 +25,7 @@ open class UIButton : AppCompatButton {
     var adjustsFontSizeForWidth: Boolean = false
         set(value) {
             field = value
+            super.setMaxLines(if (adjustsFontSizeForWidth) 1 else rawMaxLines)
             resizeFontForWidth()
         }
 
@@ -54,8 +55,10 @@ open class UIButton : AppCompatButton {
 
     private var isLayoutCompleted = false
 
-    // 横幅に合わせたフォントサイズ縮小前のフォントサイズ
+    /** 横幅に合わせたフォントサイズ縮小前のフォントサイズ */
     var rawTextSizePx: Float = textSize
+    /** 自動縮小設定前の最大表示ライン */
+    private var rawMaxLines: Int = maxLines
 
     // region -> computed property
 
@@ -158,6 +161,11 @@ open class UIButton : AppCompatButton {
 
     fun setBackgroundImage(@DrawableRes imageId: Int, state: Int) {
         setImage(imageId, state)
+    }
+
+    override fun setMaxLines(maxLines: Int) {
+        super.setMaxLines(maxLines)
+        rawMaxLines = maxLines
     }
 
     /**
