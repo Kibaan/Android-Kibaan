@@ -1,21 +1,21 @@
 package kibaan.android.ui
 
 import android.content.Context
-import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.viewpager.widget.ViewPager
 import kibaan.android.ios.isHidden
 import kibaan.android.ios.removeFromSuperview
+import kibaan.android.ios.safeGet
 
 /**
  * ViewPagerを用いてViewをループさせる
  * Created by yamamoto on 2018/05/17.
  */
-open class LoopPagerView : androidx.viewpager.widget.ViewPager {
+open class LoopPagerView : ViewPager {
 
     private val TAG = javaClass.simpleName
 
@@ -82,7 +82,8 @@ open class LoopPagerView : androidx.viewpager.widget.ViewPager {
      */
     private fun addPageFrame() {
         val frame = FrameLayout(context)
-        frame.layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        frame.layoutParams =
+            FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT)
         pageFrames.add(frame)
     }
 
@@ -155,7 +156,7 @@ open class LoopPagerView : androidx.viewpager.widget.ViewPager {
     /**
      * OnPageChangeListener
      */
-    inner class PageChangeListener : androidx.viewpager.widget.ViewPager.OnPageChangeListener {
+    inner class PageChangeListener : ViewPager.OnPageChangeListener {
         override fun onPageSelected(position: Int) {
 
             val pagePosition = toPagePosition(position)
@@ -172,7 +173,7 @@ open class LoopPagerView : androidx.viewpager.widget.ViewPager {
         }
 
         override fun onPageScrollStateChanged(state: Int) {
-            if (state != androidx.viewpager.widget.ViewPager.SCROLL_STATE_IDLE) {
+            if (state != ViewPager.SCROLL_STATE_IDLE) {
                 return
             }
 
@@ -185,8 +186,8 @@ open class LoopPagerView : androidx.viewpager.widget.ViewPager {
         override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
             if (positionOffset == 0.0f) {
                 val frame = pageFrames[currentItem]
-                val page = pageViews[toPagePosition(currentItem)]
-                if (page.parent != frame) {
+                val page = pageViews.safeGet(toPagePosition(currentItem))
+                if (page != null && page.parent != frame) {
                     page.removeFromSuperview()
                     frame.addView(page)
                 }
@@ -226,8 +227,8 @@ open class LoopPagerView : androidx.viewpager.widget.ViewPager {
                 container.addView(frame)
             }
 
-            val pageView = pageViews[toPagePosition(position)]
-            if (pageView.parent != frame) {
+            val pageView = pageViews.safeGet(toPagePosition(position))
+            if (pageView != null && pageView.parent != frame) {
                 pageView.removeFromSuperview()
                 pageView.isHidden = false // setSinglePageModeでhiddenにする場合があるため、念の為ここでhidden解除する
                 frame.addView(pageView)
