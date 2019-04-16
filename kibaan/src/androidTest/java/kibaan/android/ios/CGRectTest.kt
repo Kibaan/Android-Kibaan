@@ -1,8 +1,7 @@
 package kibaan.android.ios
 
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.runner.AndroidJUnit4
 import kibaan.android.extension.*
-import org.junit.Assert
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith

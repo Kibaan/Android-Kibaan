@@ -1,6 +1,6 @@
 package kibaan.android.sample.screen.table
 
-import android.support.v4.widget.SwipeRefreshLayout
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import android.view.View
 import kibaan.android.framework.SmartViewController
 import kibaan.android.extension.stringValue

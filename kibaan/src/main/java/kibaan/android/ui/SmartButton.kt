@@ -1,7 +1,7 @@
 package kibaan.android.ui
 
 import android.content.Context
-import android.databinding.BindingAdapter
+import androidx.databinding.BindingAdapter
 import android.graphics.*
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.StateListDrawable

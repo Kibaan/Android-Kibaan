@@ -5,7 +5,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Handler
-import android.support.v7.widget.AppCompatTextView
+import androidx.appcompat.widget.AppCompatTextView
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.*

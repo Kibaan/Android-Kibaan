@@ -1,7 +1,7 @@
 package kibaan.android.sample
 
-import android.support.test.rule.ActivityTestRule
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.rule.ActivityTestRule
+import androidx.test.runner.AndroidJUnit4
 import kibaan.android.extension.localizedString
 import kibaan.android.sample.screen.top.TopViewController
 import org.junit.Assert

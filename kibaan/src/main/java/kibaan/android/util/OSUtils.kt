@@ -8,7 +8,7 @@ import android.graphics.Rect
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
-import android.support.v4.app.NotificationManagerCompat
+import androidx.core.app.NotificationManagerCompat
 import android.view.View
 import kibaan.android.framework.SmartActivity
 import kibaan.android.extension.isTrue

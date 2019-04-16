@@ -3,8 +3,8 @@ package kibaan.android.ios
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.*
-import android.support.annotation.DrawableRes
-import android.support.v7.widget.AppCompatButton
+import androidx.annotation.DrawableRes
+import androidx.appcompat.widget.AppCompatButton
 import android.util.AttributeSet
 import android.util.TypedValue
 import kibaan.android.R

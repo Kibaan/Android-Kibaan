@@ -1,7 +1,7 @@
 package kibaan.android.sample.controller
 
-import android.support.test.rule.ActivityTestRule
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.rule.ActivityTestRule
+import androidx.test.runner.AndroidJUnit4
 import kibaan.android.framework.ScreenService
 import kibaan.android.framework.ViewControllerCache
 import kibaan.android.sample.MainActivity

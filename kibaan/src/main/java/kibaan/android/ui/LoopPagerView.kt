@@ -1,8 +1,8 @@
 package kibaan.android.ui
 
 import android.content.Context
-import android.support.v4.view.PagerAdapter
-import android.support.v4.view.ViewPager
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -15,7 +15,7 @@ import kibaan.android.ios.removeFromSuperview
  * ViewPagerを用いてViewをループさせる
  * Created by yamamoto on 2018/05/17.
  */
-open class LoopPagerView : ViewPager {
+open class LoopPagerView : androidx.viewpager.widget.ViewPager {
 
     private val TAG = javaClass.simpleName
 
@@ -155,7 +155,7 @@ open class LoopPagerView : ViewPager {
     /**
      * OnPageChangeListener
      */
-    inner class PageChangeListener : ViewPager.OnPageChangeListener {
+    inner class PageChangeListener : androidx.viewpager.widget.ViewPager.OnPageChangeListener {
         override fun onPageSelected(position: Int) {
 
             val pagePosition = toPagePosition(position)
@@ -172,7 +172,7 @@ open class LoopPagerView : ViewPager {
         }
 
         override fun onPageScrollStateChanged(state: Int) {
-            if (state != ViewPager.SCROLL_STATE_IDLE) {
+            if (state != androidx.viewpager.widget.ViewPager.SCROLL_STATE_IDLE) {
                 return
             }
 
@@ -207,7 +207,7 @@ open class LoopPagerView : ViewPager {
     /**
      * Adapter
      */
-    inner class Adapter : PagerAdapter() {
+    inner class Adapter : androidx.viewpager.widget.PagerAdapter() {
 
         /**
          * view: containerに追加されたview
