@@ -1,10 +1,10 @@
 package kibaan.android.sample.http
 
-import android.support.test.espresso.Espresso
-import android.support.test.espresso.IdlingRegistry
-import android.support.test.espresso.idling.CountingIdlingResource
-import android.support.test.rule.ActivityTestRule
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.idling.CountingIdlingResource
+import androidx.test.rule.ActivityTestRule
+import androidx.test.runner.AndroidJUnit4
 import kibaan.android.http.HTTPTask
 import kibaan.android.http.HTTPTextTask
 import kibaan.android.sample.MainActivity

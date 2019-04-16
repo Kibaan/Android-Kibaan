@@ -3,9 +3,9 @@ package kibaan.android.ios
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ItemTouchHelper
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -17,7 +17,7 @@ import kibaan.android.util.DeviceUtils
 import kibaan.android.R
 
 
-class UITableViewAdapter(private var tableView: UITableView) : RecyclerView.Adapter<UITableViewAdapter.UITableViewHolder>() {
+class UITableViewAdapter(private var tableView: UITableView) : androidx.recyclerview.widget.RecyclerView.Adapter<UITableViewAdapter.UITableViewHolder>() {
 
     // region -> Variables
 
@@ -38,18 +38,18 @@ class UITableViewAdapter(private var tableView: UITableView) : RecyclerView.Adap
     /** 並び替え機能を実装する際のヘルパー */
     private var itemTouchHelper: ItemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
 
-        override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+        override fun getMovementFlags(recyclerView: androidx.recyclerview.widget.RecyclerView, viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder): Int {
             return makeFlag(ItemTouchHelper.ACTION_STATE_DRAG, ItemTouchHelper.DOWN or ItemTouchHelper.UP)
         }
 
-        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+        override fun onMove(recyclerView: androidx.recyclerview.widget.RecyclerView, viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, target: androidx.recyclerview.widget.RecyclerView.ViewHolder): Boolean {
             val from = viewHolder.adapterPosition
             val to = target.adapterPosition
             notifyItemMoved(from, to)
             return true
         }
 
-        override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+        override fun onSelectedChanged(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder?, actionState: Int) {
             super.onSelectedChanged(viewHolder, actionState)
             if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
                 viewHolder?.itemView?.alpha = 0.8f
@@ -66,16 +66,16 @@ class UITableViewAdapter(private var tableView: UITableView) : RecyclerView.Adap
             }
         }
 
-        override fun canDropOver(recyclerView: RecyclerView, current: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+        override fun canDropOver(recyclerView: androidx.recyclerview.widget.RecyclerView, current: androidx.recyclerview.widget.RecyclerView.ViewHolder, target: androidx.recyclerview.widget.RecyclerView.ViewHolder): Boolean {
             // TODO:ViewTypeが複数ある場合に位置変更アニメーションが動作しない問題がある
             return current.itemViewType == target.itemViewType
         }
 
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        override fun onSwiped(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, direction: Int) {
             // do nothing.
         }
 
-        override fun onMoved(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, fromPos: Int, target: RecyclerView.ViewHolder, toPos: Int, x: Int, y: Int) {
+        override fun onMoved(recyclerView: androidx.recyclerview.widget.RecyclerView, viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, fromPos: Int, target: androidx.recyclerview.widget.RecyclerView.ViewHolder, toPos: Int, x: Int, y: Int) {
             super.onMoved(recyclerView, viewHolder, fromPos, target, toPos, x, y)
             if (this@UITableViewAdapter.fromPos == null) {
                 this@UITableViewAdapter.fromPos = fromPos
@@ -83,7 +83,7 @@ class UITableViewAdapter(private var tableView: UITableView) : RecyclerView.Adap
             this@UITableViewAdapter.toPos = toPos
         }
 
-        override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+        override fun clearView(recyclerView: androidx.recyclerview.widget.RecyclerView, viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder) {
             super.clearView(recyclerView, viewHolder)
             viewHolder.itemView.alpha = 1.0f
         }
@@ -270,7 +270,7 @@ class UITableViewAdapter(private var tableView: UITableView) : RecyclerView.Adap
         if (view?.layoutParams != null) {
             view.layoutParams?.height = pxHeight
         } else {
-            view?.layoutParams = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, pxHeight)
+            view?.layoutParams = androidx.recyclerview.widget.RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, pxHeight)
         }
     }
 
@@ -338,7 +338,7 @@ class UITableViewAdapter(private var tableView: UITableView) : RecyclerView.Adap
     // region -> Inner class
 
     @SuppressLint("ClickableViewAccessibility")
-    open class UITableViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    open class UITableViewHolder(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
 
         var draggableListener: UITableViewAdapter? = null
 

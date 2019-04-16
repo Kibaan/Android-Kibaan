@@ -1,6 +1,6 @@
 package kibaan.android.util
 
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import kibaan.android.framework.SmartActivity
 import kibaan.android.ios.append
 import kibaan.android.ios.removeAll

@@ -5,9 +5,9 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RectShape
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -31,7 +31,7 @@ open class UITableView : FrameLayout {
     @IBInspectable open var separatorColor: Int = Color.BLACK
         set(value) {
             field = value
-            (0 until recyclerView.itemDecorationCount).mapNotNull { recyclerView.getItemDecorationAt(it) as? DividerItemDecoration }.forEach {
+            (0 until recyclerView.itemDecorationCount).mapNotNull { recyclerView.getItemDecorationAt(it) as? androidx.recyclerview.widget.DividerItemDecoration }.forEach {
                 recyclerView.removeItemDecoration(it)
             }
             recyclerView.addItemDecoration(createDividerItemDecoration())
@@ -48,7 +48,7 @@ open class UITableView : FrameLayout {
     // region -> Variables
 
     /** 内包している[RecyclerView] */
-    val recyclerView: RecyclerView = RecyclerView(context)
+    val recyclerView: androidx.recyclerview.widget.RecyclerView = androidx.recyclerview.widget.RecyclerView(context)
     /** RecyclerView用のアダプタ */
     private val adapter: UITableViewAdapter? get() = recyclerView.adapter as? UITableViewAdapter
     /** 登録されている[CellInfo]のリスト */
@@ -87,7 +87,7 @@ open class UITableView : FrameLayout {
     /** 画面に表示されているセル一覧を返す */
     val visibleCells: List<UITableViewCell>
         get() {
-            val manager = (recyclerView.layoutManager as? LinearLayoutManager) ?: return listOf()
+            val manager = (recyclerView.layoutManager as? androidx.recyclerview.widget.LinearLayoutManager) ?: return listOf()
             val first = manager.findFirstVisibleItemPosition()
             val last = manager.findLastVisibleItemPosition()
             return (first..last).mapNotNull {
@@ -139,7 +139,7 @@ open class UITableView : FrameLayout {
         }
         addView(recyclerView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
         recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         recyclerView.adapter = UITableViewAdapter(this)
     }
 
@@ -147,8 +147,11 @@ open class UITableView : FrameLayout {
      * 罫線表示用のデコレーションアイテムを生成して返す
      * ※罫線の表示をカスタマイズしたい場合は[Override]して使用する
      */
-    open fun createDividerItemDecoration(): DividerItemDecoration {
-        val dividerItemDecoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+    open fun createDividerItemDecoration(): androidx.recyclerview.widget.DividerItemDecoration {
+        val dividerItemDecoration = androidx.recyclerview.widget.DividerItemDecoration(
+            context,
+            androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
+        )
         val shapeDrawable = ShapeDrawable(RectShape())
         shapeDrawable.intrinsicHeight = 1
         shapeDrawable.paint.color = separatorColor

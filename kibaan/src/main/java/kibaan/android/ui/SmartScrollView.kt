@@ -4,9 +4,9 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
-import android.support.v4.widget.SwipeRefreshLayout
 import android.util.AttributeSet
 import android.widget.ScrollView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kibaan.android.R
 import kibaan.android.ios.CGSize
 import kibaan.android.ios.IBInspectable

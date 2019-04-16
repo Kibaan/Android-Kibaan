@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.support.constraint.ConstraintSet
-import android.support.v7.widget.AppCompatEditText
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.appcompat.widget.AppCompatEditText
 import android.text.Editable
 import android.text.InputType
 import android.text.Spanned

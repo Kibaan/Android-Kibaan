@@ -1,8 +1,8 @@
 package kibaan.android.ui
 
 import android.content.Context
-import android.support.v4.widget.SwipeRefreshLayout
 import android.util.AttributeSet
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kibaan.android.ios.TargetCheck
 import kibaan.android.ios.UITableView
 import kibaan.android.ios.UITableViewCell

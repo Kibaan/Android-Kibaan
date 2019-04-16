@@ -1,8 +1,8 @@
 package kibaan.android.storage
 
 import android.content.Context
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.InstrumentationRegistry
+import androidx.test.runner.AndroidJUnit4
 import kibaan.android.ios.CGFloat
 import kibaan.android.ios.StringEnumDefault
 import kibaan.android.ios.enumerated
