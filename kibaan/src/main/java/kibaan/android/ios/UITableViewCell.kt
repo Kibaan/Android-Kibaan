@@ -24,7 +24,7 @@ open class UITableViewCell : LinearLayout {
             if (value != null) {
                 addView(value, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1.0f))
                 ButterKnife.bind(this, value)
-                onViewCreated()
+                awakeFromNib()
             }
         }
 
@@ -102,7 +102,7 @@ open class UITableViewCell : LinearLayout {
 
     open fun layoutSubViews() {}
 
-    open fun onViewCreated() {}
+    open fun awakeFromNib() {}
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         super.onLayout(changed, l, t, r, b)
