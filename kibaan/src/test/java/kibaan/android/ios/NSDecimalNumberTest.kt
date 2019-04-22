@@ -130,4 +130,9 @@ class NSDecimalNumberTest {
         assertFalse(NSDecimalNumber.zero >= (NSDecimalNumber.one))
     }
 
+    @Test
+    fun testDivide() {
+        assertEquals("0.33333333333333333333333333333333333333", NSDecimalNumber("1").dividing(NSDecimalNumber("3")).stringValue)
+    }
+
 }

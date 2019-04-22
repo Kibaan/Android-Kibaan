@@ -1,6 +1,8 @@
 package kibaan.android.ios
 
 import java.math.BigDecimal
+import java.math.MathContext
+import java.math.RoundingMode
 
 class NSDecimalNumber : Comparable<NSDecimalNumber> {
 
@@ -124,7 +126,7 @@ class NSDecimalNumber : Comparable<NSDecimalNumber> {
      */
     fun dividing(decimalNumber: NSDecimalNumber): NSDecimalNumber {
         val bigDecimal = bigDecimal ?: return this
-        return NSDecimalNumber(bigDecimal.divide(decimalNumber.bigDecimal))
+        return NSDecimalNumber(bigDecimal.divide(decimalNumber.bigDecimal, MathContext(38, RoundingMode.HALF_EVEN)))
     }
 
     /**
