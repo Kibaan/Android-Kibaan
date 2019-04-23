@@ -115,11 +115,10 @@
         <attr name="cornerRadius" />
         <attr name="borderColor" />
         <attr name="borderWidth" />
-        <attr name="paddingLeft" format="float" />
-        <attr name="paddingRight" format="float" />
         <attr name="left_view_width_percent" format="float" />
         <attr name="right_view_width_percent" format="float" />
         <attr name="showClearButton" format="boolean" />
+        <attr name="placeholder" format="string" />
         <attr name="android:hint" />
         <attr name="android:inputType" />
         <attr name="android:textSize" />

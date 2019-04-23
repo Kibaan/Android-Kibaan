@@ -22,16 +22,9 @@ import kibaan.android.util.Log
  */
 class TopViewController : SmartViewController() {
 
-    @IBOutlet(R.id.sample_label) lateinit var sampleLabel: SmartLabel
-
     override fun viewDidLoad() {
         super.viewDidLoad()
 
-        updateLabel()
-    }
-
-    private fun updateLabel() {
-        sampleLabel.text = AppSetting.shared.sampleText
     }
 
     @IBAction(R.id.page_button)
@@ -41,10 +34,6 @@ class TopViewController : SmartViewController() {
 
     @IBAction(R.id.count_up_button)
     fun actionCountUp(sender: View) {
-        val i = AppSetting.shared.sampleText?.integerValue ?: 0
-        AppSetting.shared.sampleText = (i + 1).stringValue
-
-        updateLabel()
     }
 
     @IBAction(R.id.connection_button)

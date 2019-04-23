@@ -19,6 +19,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import kibaan.android.AndroidUnique
 import kibaan.android.R
+import kibaan.android.extension.getStringOrNull
 import kibaan.android.framework.OnKeyboardVisibilityListener
 import kibaan.android.ios.*
 import kibaan.android.util.DeviceUtils
@@ -136,15 +137,6 @@ open class SmartTextField : RoundedConstraintLayout {
     // endregion
 
     // region -> IB Variables
-
-    @IBInspectable
-    private var paddingLeft: CGFloat by didSet(0.0) {
-        updatePadding()
-    }
-    @IBInspectable
-    private var paddingRight: CGFloat by didSet(0.0) {
-        updatePadding()
-    }
     @IBInspectable
     private var maxLength: Int? = null
 
@@ -179,11 +171,15 @@ open class SmartTextField : RoundedConstraintLayout {
 
         if (attrs != null) {
             val array = context.obtainStyledAttributes(attrs, R.styleable.SmartTextField)
-            paddingLeft = array.getFloat(R.styleable.SmartTextField_paddingLeft, 0.0f).toDouble()
-            paddingRight = array.getFloat(R.styleable.SmartTextField_paddingRight, 0.0f).toDouble()
             leftViewWidthPercent = array.getFloat(R.styleable.SmartTextField_left_view_width_percent, 0.0f)
             rightViewWidthPercent = array.getFloat(R.styleable.SmartTextField_right_view_width_percent, 0.0f)
             editText.hint = array.getString(R.styleable.SmartTextField_android_hint)
+            // placeholderがあればhintを上書き
+            val placeholder = array.getStringOrNull(R.styleable.SmartTextField_placeholder)
+            if (placeholder != null) {
+                editText.hint = placeholder
+            }
+
             if (array.hasValue(R.styleable.SmartTextField_android_inputType)) {
                 editText.inputType = array.getInt(R.styleable.SmartTextField_android_inputType, InputType.TYPE_CLASS_TEXT)
             }
@@ -258,7 +254,6 @@ open class SmartTextField : RoundedConstraintLayout {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        updatePadding()
     }
 
     // endregion
@@ -325,12 +320,6 @@ open class SmartTextField : RoundedConstraintLayout {
             constraintSet.constrainPercentWidth(targetId, value)
             constraintSet.applyTo(this)
         }
-    }
-
-    private fun updatePadding() {
-        val left = DeviceUtils.vminLength(context, paddingLeft).toInt()
-        val right = DeviceUtils.vminLength(context, paddingRight).toInt()
-        setPadding(left, 0, right, 0)
     }
 
     private fun addChildView(targetView: ViewGroup, childView: View?) {
