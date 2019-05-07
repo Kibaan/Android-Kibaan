@@ -5,10 +5,11 @@ import kibaan.android.ios.append
 /**
  * 順序を保持するDictionary
  */
-class ListDictionary(elements: Map<String, String>) {
-    var keyList: MutableList<String> = mutableListOf()
-    var dictionary: MutableMap<String, String> = mutableMapOf<String, String>()
-    val keys: List<String>
+class ListDictionary<Key, Value>(elements: Map<Key, Value>) {
+
+    private var keyList: MutableList<Key> = mutableListOf()
+    private var dictionary: MutableMap<Key, Value> = mutableMapOf()
+    val keys: List<Key>
         get() = keyList
 
     init {
@@ -18,11 +19,11 @@ class ListDictionary(elements: Map<String, String>) {
         }
     }
 
-    operator fun get(key: String): String? {
+    operator fun get(key: Key): Value? {
         return dictionary[key]
     }
 
-    operator fun get(index: Int): String? {
+    operator fun get(index: Int): Value? {
         return dictionary[keyList[index]]
     }
 }
