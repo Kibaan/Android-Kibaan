@@ -120,16 +120,43 @@ class StringExtTest {
         assertEquals(src.hashCode(), src.hashValue)
     }
 
+    val kanaMap = mapOf(
+        "あ" to "ア", "い" to "イ", "う" to "ウ", "え" to "エ", "お" to "オ",
+        "か" to "カ", "が" to "ガ",
+        "は" to "ハ", "ば" to "バ", "ぱ" to "パ",
+        "っ" to "ッ",
+        "ゃ" to "ャ", "ゅ" to "ュ", "ょ" to "ョ",
+        "ぁ" to "ァ", "ぃ" to "ィ", "ぅ" to "ゥ", "ぇ" to "ェ", "ぉ" to "ォ",
+        "ん" to "ン"
+    )
 
-//    fun String.size(font: UIFont): CGSize {
-//        val paint = Paint()
-//        paint.textSize = font.size.toFloat()
-//        // フォントの反映は未実装
-//        paint.isAntiAlias = true
-//
-//        val bounds = Rect()
-//        paint.getTextBounds(this, 0, this.length, bounds)
-//
-//        return CGSize(width = bounds.width().toDouble(), height = bounds.height().toDouble())
-//    }
+    @Test
+    fun testHiraganaToKatakana() {
+        kanaMap.forEach { hiragana, katakana ->
+            assertEquals(katakana, hiragana.applyingTransform(StringTransform.hiraganaToKatakana, reverse = false))
+        }
+    }
+
+    @Test
+    fun testKatakanaToHiragana() {
+        kanaMap.forEach { hiragana, katakana ->
+            assertEquals(hiragana, katakana.applyingTransform(StringTransform.hiraganaToKatakana, reverse = true))
+        }
+    }
+
+    @Test
+    fun testHiraganaToKatakanaNoEffect() {
+        assertEquals("ア", "ア".applyingTransform(StringTransform.hiraganaToKatakana, reverse = false))
+        assertEquals("あ", "あ".applyingTransform(StringTransform.hiraganaToKatakana, reverse = true))
+        assertEquals("龍", "龍".applyingTransform(StringTransform.hiraganaToKatakana, reverse = true))
+        assertEquals("", "".applyingTransform(StringTransform.hiraganaToKatakana, reverse = false))
+        assertEquals(" ", " ".applyingTransform(StringTransform.hiraganaToKatakana, reverse = false))
+        assertEquals("ー", "ー".applyingTransform(StringTransform.hiraganaToKatakana, reverse = false))
+    }
+
+    @Test
+    fun testHiraganaToKatakanaMulti() {
+        assertEquals("アカイオシャレ龍", "あかいオシャレ龍".applyingTransform(StringTransform.hiraganaToKatakana, reverse = false))
+        assertEquals("あかいおしゃれ龍", "あかいオシャレ龍".applyingTransform(StringTransform.hiraganaToKatakana, reverse = true))
+    }
 }

@@ -142,3 +142,38 @@ fun String.size(font: UIFont): CGSize {
 
     return CGSize(width = width.toDouble(), height = bounds.height().toDouble())
 }
+
+fun String.applyingTransform(transform: StringTransform, reverse: Boolean): String? {
+    return map { it.applyingTransform(transform, reverse) }.joinToString(separator = "")
+}
+
+fun Char.applyingTransform(transform: StringTransform, reverse: Boolean): Char {
+    return when(transform) {
+        StringTransform.hiraganaToKatakana -> hiraganaToKatakana(reverse)
+    }
+}
+
+fun Char.hiraganaToKatakana(reverse: Boolean): Char {
+    return if (reverse) {
+        if (isKatakana) {
+            this - 0x60 // katakana to hiragana
+        } else {
+            this
+        }
+    } else {
+        if (isHiragana) {
+            this + 0x60 // hiragana to katakana
+        } else {
+            this
+        }
+    }
+}
+val Char.isHiragana: Boolean
+    get() = this in '\u3040'..'\u309F'
+val Char.isKatakana: Boolean
+    get() = this in '\u30A0'..'\u30FF'
+
+enum class StringTransform {
+    hiraganaToKatakana
+    // all cases are not implemented
+}
