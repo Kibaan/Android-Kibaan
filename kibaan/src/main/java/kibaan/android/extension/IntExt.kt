@@ -1,6 +1,7 @@
 package kibaan.android.extension
 
 import kibaan.android.framework.SmartActivity
+import kibaan.android.ios.CGFloat
 import java.util.*
 
 /**
@@ -42,3 +43,9 @@ val Int.localizedString: String
         val context = SmartActivity.sharedOrNull ?: return "Context is null"
         return context.resources.getString(this)
     }
+
+/**
+ * CGFloatに変換して返す
+ */
+val Int.cgFloatValue: CGFloat
+    get() = this.toDouble()
