@@ -1,3 +1,5 @@
+@file:Suppress("SpellCheckingInspection")
+
 package kibaan.android.ios
 
 import kibaan.android.extension.hexString
@@ -120,43 +122,10 @@ class StringExtTest {
         assertEquals(src.hashCode(), src.hashValue)
     }
 
-    val kanaMap = mapOf(
-        "あ" to "ア", "い" to "イ", "う" to "ウ", "え" to "エ", "お" to "オ",
-        "か" to "カ", "が" to "ガ",
-        "は" to "ハ", "ば" to "バ", "ぱ" to "パ",
-        "っ" to "ッ",
-        "ゃ" to "ャ", "ゅ" to "ュ", "ょ" to "ョ",
-        "ぁ" to "ァ", "ぃ" to "ィ", "ぅ" to "ゥ", "ぇ" to "ェ", "ぉ" to "ォ",
-        "ん" to "ン"
-    )
-
     @Test
-    fun testHiraganaToKatakana() {
-        kanaMap.forEach { hiragana, katakana ->
-            assertEquals(katakana, hiragana.applyingTransform(StringTransform.hiraganaToKatakana, reverse = false))
-        }
-    }
-
-    @Test
-    fun testKatakanaToHiragana() {
-        kanaMap.forEach { hiragana, katakana ->
-            assertEquals(hiragana, katakana.applyingTransform(StringTransform.hiraganaToKatakana, reverse = true))
-        }
-    }
-
-    @Test
-    fun testHiraganaToKatakanaNoEffect() {
-        assertEquals("ア", "ア".applyingTransform(StringTransform.hiraganaToKatakana, reverse = false))
-        assertEquals("あ", "あ".applyingTransform(StringTransform.hiraganaToKatakana, reverse = true))
-        assertEquals("龍", "龍".applyingTransform(StringTransform.hiraganaToKatakana, reverse = true))
-        assertEquals("", "".applyingTransform(StringTransform.hiraganaToKatakana, reverse = false))
-        assertEquals(" ", " ".applyingTransform(StringTransform.hiraganaToKatakana, reverse = false))
-        assertEquals("ー", "ー".applyingTransform(StringTransform.hiraganaToKatakana, reverse = false))
-    }
-
-    @Test
-    fun testHiraganaToKatakanaMulti() {
+    fun testApplyingTransform() {
         assertEquals("アカイオシャレ龍", "あかいオシャレ龍".applyingTransform(StringTransform.hiraganaToKatakana, reverse = false))
         assertEquals("あかいおしゃれ龍", "あかいオシャレ龍".applyingTransform(StringTransform.hiraganaToKatakana, reverse = true))
     }
+
 }

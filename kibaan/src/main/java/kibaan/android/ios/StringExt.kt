@@ -2,10 +2,10 @@ package kibaan.android.ios
 
 import android.graphics.Paint
 import android.graphics.Rect
-import kibaan.android.extension.isEmpty
-import kibaan.android.extension.substringTo
+import kibaan.android.extension.*
 import java.net.URLDecoder
 import java.nio.charset.Charset
+import kotlin.text.substring
 
 /**
  * 指定されたCharsetでバイト配列に変換する
@@ -144,34 +144,18 @@ fun String.size(font: UIFont): CGSize {
 }
 
 fun String.applyingTransform(transform: StringTransform, reverse: Boolean): String? {
-    return map { it.applyingTransform(transform, reverse) }.joinToString(separator = "")
-}
-
-fun Char.applyingTransform(transform: StringTransform, reverse: Boolean): Char {
-    return when(transform) {
-        StringTransform.hiraganaToKatakana -> hiraganaToKatakana(reverse)
+    return when (transform) {
+        StringTransform.hiraganaToKatakana -> if (reverse) toHiragana() else toKatakana()
     }
 }
 
-fun Char.hiraganaToKatakana(reverse: Boolean): Char {
-    return if (reverse) {
-        if (isKatakana) {
-            this - 0x60 // katakana to hiragana
-        } else {
-            this
-        }
-    } else {
-        if (isHiragana) {
-            this + 0x60 // hiragana to katakana
-        } else {
-            this
-        }
-    }
+fun String.toHiragana(): String {
+    return map { it.toHiragana() }.joinToString(separator = "")
 }
-val Char.isHiragana: Boolean
-    get() = this in '\u3040'..'\u309F'
-val Char.isKatakana: Boolean
-    get() = this in '\u30A0'..'\u30FF'
+
+fun String.toKatakana(): String {
+    return map { it.toKatakana() }.joinToString(separator = "")
+}
 
 enum class StringTransform {
     hiraganaToKatakana

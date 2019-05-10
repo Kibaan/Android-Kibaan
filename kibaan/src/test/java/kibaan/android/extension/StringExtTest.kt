@@ -2,6 +2,8 @@
 
 package kibaan.android.extension
 
+import kibaan.android.ios.toHiragana
+import kibaan.android.ios.toKatakana
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -694,5 +696,69 @@ class StringExtTest {
             "URLエンコードのテストです",
             "URL%e3%82%a8%e3%83%b3%e3%82%b3%e3%83%bc%e3%83%89%e3%81%ae%e3%83%86%e3%82%b9%e3%83%88%e3%81%a7%e3%81%99".urlDecoded
         )
+    }
+
+    private val kanaMap = mapOf(
+        "あ" to "ア", "い" to "イ", "う" to "ウ", "え" to "エ", "お" to "オ",
+        "か" to "カ", "が" to "ガ",
+        "は" to "ハ", "ば" to "バ", "ぱ" to "パ",
+        "っ" to "ッ",
+        "ゃ" to "ャ", "ゅ" to "ュ", "ょ" to "ョ",
+        "ぁ" to "ァ", "ぃ" to "ィ", "ぅ" to "ゥ", "ぇ" to "ェ", "ぉ" to "ォ",
+        "ん" to "ン",
+        "ゔ" to "ヴ", "ゐ" to "ヰ", "ゑ" to "ヱ",
+        "ゕ" to "ヵ"
+    )
+
+    private val noEffectList = listOf(
+        "ヷ", "ヸ", "ヹ", "ヺ", "龍", " ", "・", "ー", "ヽ", "ヾ", ""
+    )
+
+    @Test
+    fun testHiraganaToKatakana() {
+        kanaMap.forEach { (hiragana, katakana) ->
+            assertEquals(katakana, hiragana.toKatakana())
+        }
+    }
+
+    @Test
+    fun testKatakanaToKatakana() {
+        kanaMap.forEach { (_, katakana) ->
+            assertEquals(katakana, katakana.toKatakana())
+        }
+    }
+
+    @Test
+    fun testKatakanaToHiragana() {
+        kanaMap.forEach { (hiragana, katakana) ->
+            assertEquals(hiragana, katakana.toHiragana())
+        }
+    }
+
+    @Test
+    fun testHiraganaToHiragana() {
+        kanaMap.forEach { (hiragana, _) ->
+            assertEquals(hiragana, hiragana.toHiragana())
+        }
+    }
+
+    @Test
+    fun testToKatakanaNoEffect() {
+        noEffectList.forEach {
+            assertEquals(it, it.toKatakana())
+        }
+    }
+
+    @Test
+    fun testToHiraganaNoEffect() {
+        noEffectList.forEach {
+            assertEquals(it, it.toHiragana())
+        }
+    }
+
+    @Test
+    fun testHiraganaToKatakanaMulti() {
+        assertEquals("アカイオシャレ龍", "あかいオシャレ龍".toKatakana())
+        assertEquals("あかいおしゃれ龍", "あかいオシャレ龍".toHiragana())
     }
 }
