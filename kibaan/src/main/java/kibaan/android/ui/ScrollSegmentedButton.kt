@@ -1,6 +1,11 @@
 package kibaan.android.ui
 
+import android.content.Context
+import android.graphics.Color
+import android.util.AttributeSet
 import android.widget.HorizontalScrollView
+import kibaan.android.R
+import kibaan.android.extension.getStringOrNull
 import kibaan.android.extension.height
 import kibaan.android.extension.width
 import kibaan.android.ios.*
@@ -12,8 +17,7 @@ import kotlin.math.abs
 /// - ループを考慮して1つダミーのボタンを作る（左右端どちらにも同じボタンが見える場合があるため）
 class ScrollSegmentedButton: HorizontalScrollView {
 
-    @IBInspectable
-    var textSize: CGFloat = 14.0
+    @IBInspectable var textSize: CGFloat = 14.0
     @IBInspectable var scrollButtonWidth: CGFloat = 100.0
     @IBInspectable var titlesText: String
         get() {
@@ -30,7 +34,8 @@ class ScrollSegmentedButton: HorizontalScrollView {
         }
     /// 実際に表示するボタンの横幅
     val buttonWidth: CGFloat
-        get() = if (isFitButtons) (frame.width / CGFloat(titles.size)) else scrollButtonWidth
+        get() = if (isFitButtons) (frame.width / titles.size) else scrollButtonWidth
+
     /// 選択中のインデックス
     var selectedIndex: Int?
         get() {
@@ -42,9 +47,8 @@ class ScrollSegmentedButton: HorizontalScrollView {
         set(value) {
             select(value, needsCallback = true)
         }
-    var titles: List<String> = listOf()
+    var titles: MutableList<String> = mutableListOf()
         set(newValue) {
-            val oldValue = field
             field = newValue
             updateButtonTitles()
         }
@@ -61,7 +65,7 @@ class ScrollSegmentedButton: HorizontalScrollView {
         get() = Int(frame.width / scrollButtonWidth)
     private/// ボタンが端末の横幅に収まるか
     val isFitButtons: Boolean
-        get() = CGFloat(titles.size) * scrollButtonWidth <= frame.width
+        get() = titles.size * scrollButtonWidth <= frame.width
     private/// 左端に表示しているボタン
     val leftEndButton: UIButton?
         get() = buttons.sorted(by = { lhs, rhs  ->
@@ -70,11 +74,26 @@ class ScrollSegmentedButton: HorizontalScrollView {
     private/// ボタンの見た目を更新する為の処理
     var buttonUpdater: ((UIButton, ButtonState) -> Unit)? = null
 
-    // MARK: - Life cycle
-    override public constructor(frame: CGRect) : super(frame = frame) {    commonInit()
+    constructor(context: Context) : super(context) {
+        setup(context)
+    }
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+        setup(context, attrs)
+    }
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        setup(context, attrs)
     }
 
-    public constructor(aDecoder: NSCoder) : super(coder = aDecoder) {    commonInit()
+    private fun setup(context: Context, attrs: AttributeSet? = null) {
+        // プロパティの読み込み
+        if (attrs != null) {
+            val array = context.obtainStyledAttributes(attrs, R.styleable.ScrollSegmentedButton)
+
+//            textSize = array.getDimensionPixelSize(R.styleable.ScrollSegmentedButton_android_textSize, textSize.toInt()).toDouble()
+            titlesText = array.getStringOrNull(R.styleable.ScrollSegmentedButton_titlesText) ?: titlesText
+
+            array.recycle()
+        }
     }
 
     fun commonInit() {
@@ -108,21 +127,19 @@ class ScrollSegmentedButton: HorizontalScrollView {
     }
 
     fun makeDefaultButton() : UIButton {
-        val button = SmartButton(frame = .zero)
+        val button = SmartButton(context)
         button.titleFont = UIFont.systemFont(ofSize = textSize)
-        button.setTitleColor(.lightGray, for = .normal)
-        button.setTitleColor(.white, for = .selected)
-        button.adjustsFontSizeToFitWidth = true
-        button.miniumScaleFactor = 0.5
+        button.setTitleColor(UIColor.lightGray, forState = UIControlState.normal)
+        button.setTitleColor(UIColor.white, forState = UIControlState.selected)
+        button.adjustsFontSizeForWidth = true
         return button
     }
 
     fun defaultButtonStateUpdater(button: UIButton, buttonState: ButtonState) {
         val pointSize = button.titleLabel?.font?.pointSize ?: return
         when (buttonState) {
-                .ButtonState.unselected
-            -> button.titleLabel?.font = UIFont.systemFont(ofSize = pointSize)
-            .selected -> button.titleLabel?.font = UIFont.boldSystemFont(ofSize = pointSize)
+            ButtonState.unselected -> button.titleLabel?.font = UIFont.systemFont(ofSize = pointSize)
+            ButtonState.selected -> button.titleLabel?.font = UIFont.boldSystemFont(ofSize = pointSize)
         }
     }
 
@@ -285,11 +302,20 @@ class ScrollSegmentedButton: HorizontalScrollView {
         val x1 = scrollButtonWidth * CGFloat(index) - (frame.width / 2) + (scrollButtonWidth / 2)
         val x2 = x1 + (scrollButtonWidth * CGFloat(titles.size))
         if (abs(contentOffset.x - x1) < abs(contentOffset.x - x2) && animated) {
-            setContentOffset(CGPoint(x = x1, y = 0), animated = animated)
+            setContentOffset(CGPoint(x = x1, y = 0.0), animated = animated)
         } else {
-            setContentOffset(CGPoint(x = x2, y = 0), animated = animated)
+            setContentOffset(CGPoint(x = x2, y = 0.0), animated = animated)
         }
     }
+
+    private fun setContentOffset(point: CGPoint, animated: Boolean) {
+        if (animated) {
+            smoothScrollTo(point.x.toInt(), point.y.toInt())
+        } else {
+            scrollTo(point.x.toInt(), point.y.toInt())
+        }
+    }
+
     public enum class ButtonState {
         unselected,
         selected
