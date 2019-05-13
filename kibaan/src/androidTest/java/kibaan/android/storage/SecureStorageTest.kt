@@ -23,6 +23,19 @@ class SecureStorageTest {
     }
 
     @Test
+    fun testSaveAndLoadNil() {
+        val secureStorage = SecureStorage(context = appContext)
+        val value = "abc"
+        val key = "password"
+
+        secureStorage.save(value, key = key)
+        assertEquals(value, secureStorage.load(key = key))
+
+        secureStorage.save(null, key = key)
+        assertNull(secureStorage.load(key = key))
+    }
+
+    @Test
     fun testDelete() {
         val secureStorage = SecureStorage(context = appContext)
         val value = "1fndaiufjdaifoi4129"

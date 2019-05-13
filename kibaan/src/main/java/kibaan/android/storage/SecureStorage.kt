@@ -86,13 +86,16 @@ class SecureStorage(private val context: Context, private val alias: String = co
      * 指定した[key]で[value]を保存する
      */
     fun save(value: String?, key: String): Boolean {
-        val bytes = value?.toByteArray(charset = Charsets.UTF_8) ?: return false
+        val bytes = value?.toByteArray(charset = Charsets.UTF_8)
         return saveBytes(bytes, key = key)
     }
 
     fun saveBytes(bytes: ByteArray?, key: String): Boolean {
-        val rawBytes = bytes ?: return false
-        val encrypted = encrypt(bytes = rawBytes)
+        if (bytes == null) {
+            return delete(key)
+        }
+
+        val encrypted = encrypt(bytes = bytes)
         if (encrypted != null) {
             saveToPrefs(Base64.encodeToString(encrypted, Base64.DEFAULT), key = key)
             return true
