@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewTreeObserver
 import android.widget.FrameLayout
 import android.widget.HorizontalScrollView
 import android.widget.RelativeLayout
@@ -33,7 +34,8 @@ class ScrollSegmentedButton: HorizontalScrollView {
         set(newValue) {
             val oldValue = field
             field = newValue
-            setup(buttonCount = buttonCount)
+            makeButtons(buttonCount = buttonCount, buttonMaker = buttonMaker ?: this::makeDefaultButton)
+            updateScrollSize()
         }
 
     /// 実際に表示するボタンの横幅
@@ -83,6 +85,8 @@ class ScrollSegmentedButton: HorizontalScrollView {
             lhs.frame.minX < rhs.frame.minX
         }).firstOrNull()
 
+    private var buttonMaker: (() -> UIButton)? = null
+
     /// ボタンの見た目を更新する為の処理
     private var buttonUpdater: ((UIButton, ButtonState) -> Unit)? = null
 
@@ -93,6 +97,19 @@ class ScrollSegmentedButton: HorizontalScrollView {
     val content = FrameLayout(context)
     // FrameLayoutの幅を伸ばすための支えのView
     private val horizontalSupportView = View(context)
+
+    private val layoutListener: ViewTreeObserver.OnGlobalLayoutListener = object : ViewTreeObserver.OnGlobalLayoutListener {
+        override fun onGlobalLayout() {
+//            // 選択状態が左端の場合に初回表示にスクロール位置の調整がうまく動作しない為、以下で少しスクロール位置をずらした状態にしている
+//            scrollX = pageWidth.toInt()
+//            moveToCenter(true)
+            viewTreeObserver?.removeOnGlobalLayoutListener(this)
+        }
+    }
+
+    init {
+        isHorizontalScrollBarEnabled = false
+    }
 
     constructor(context: Context) : super(context) {
         setup(context)
@@ -105,7 +122,9 @@ class ScrollSegmentedButton: HorizontalScrollView {
     }
 
     private fun setup(context: Context, attrs: AttributeSet? = null) {
-        content.backgroundColor = UIColor.blue
+        horizontalSupportView.layoutParams = LayoutParams(width, LayoutParams.MATCH_PARENT)
+        content.addView(horizontalSupportView)
+        addView(content, RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, MATCH_PARENT))
 
         // プロパティの読み込み
         if (attrs != null) {
@@ -120,13 +139,20 @@ class ScrollSegmentedButton: HorizontalScrollView {
 
             array.recycle()
         }
-
-        content.addView(horizontalSupportView, FrameLayout.LayoutParams(width, MATCH_PARENT))
-        addView(content, RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, MATCH_PARENT))
     }
 
-    init {
-        isHorizontalScrollBarEnabled = false
+    // MARK: - Initializer
+    fun setup(buttonCount: Int, buttonMaker: (() -> UIButton)? = null, buttonUpdater: ((UIButton, ButtonState) -> Unit)? = null) {
+        this.buttonMaker = buttonMaker
+        this.buttonUpdater = buttonUpdater
+        this.buttonCount = buttonCount
+    }
+
+    fun setup(titles: List<String>, buttonMaker: (() -> UIButton)? = null, buttonUpdater: ((UIButton, ButtonState) -> Unit)? = null) {
+        this.buttonMaker = buttonMaker
+        this.buttonUpdater = buttonUpdater
+        this.buttonCount = buttonCount
+        this.titles = titles.toMutableList()
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -144,18 +170,6 @@ class ScrollSegmentedButton: HorizontalScrollView {
 
     override fun canScrollHorizontally(direction: Int): Boolean {
         return isScrollEnabled
-    }
-
-    // MARK: - Initializer
-    fun setup(buttonCount: Int, buttonMaker: (() -> UIButton)? = null, buttonUpdater: ((UIButton, ButtonState) -> Unit)? = null) {
-        this.buttonUpdater = buttonUpdater
-        makeButtons(buttonCount = buttonCount, buttonMaker = buttonMaker ?: this::makeDefaultButton)
-    }
-
-    fun setup(titles: List<String>, buttonMaker: (() -> UIButton)? = null, buttonUpdater: ((UIButton, ButtonState) -> Unit)? = null) {
-        this.titles = titles.toMutableList()
-        this.buttonUpdater = buttonUpdater
-        makeButtons(buttonCount = titles.size, buttonMaker = buttonMaker ?: this::makeDefaultButton)
     }
 
     fun makeDefaultButton() : UIButton {
@@ -303,11 +317,11 @@ class ScrollSegmentedButton: HorizontalScrollView {
     private fun updateScrollSize() {
         if (isFitButtons) {
             // 横幅一杯とする
-            horizontalSupportView.layoutParams = FrameLayout.LayoutParams(MATCH_PARENT, 0)
+            horizontalSupportView.layoutParams = FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
         } else {
             // ボタン数 + 余白1ページ分のサイズをとる
-            val width = scrollButtonWidthPx * titles.size
-            horizontalSupportView.layoutParams = FrameLayout.LayoutParams(width.toInt(), 0)
+            val width = scrollButtonWidthPx * buttonCount
+            horizontalSupportView.layoutParams = FrameLayout.LayoutParams(width.toInt(), MATCH_PARENT)
         }
     }
 
