@@ -461,5 +461,8 @@ val String.urlDecoded: String
 /**
  * NSDecimalNumberを取得する
  */
-val String.decimalNumber: NSDecimalNumber
-    get() = NSDecimalNumber(string = this)
+val String.decimalNumber: NSDecimalNumber?
+    get() {
+        val decimalNumber = NSDecimalNumber(string = this)
+        return if (decimalNumber.bigDecimal == null) null else decimalNumber
+    }

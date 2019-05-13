@@ -524,6 +524,11 @@ class StringExtTest {
     }
 
     @Test
+    fun testNumberFormat_018() {
+        assertEquals("".signedNumberFormat, "")
+    }
+
+    @Test
     fun testPadLeft() {
         assertEquals("123".leftPadded(size = 6), "   123")
         assertEquals("123".leftPadded(size = 6, spacer = "0"), "000123")
@@ -642,6 +647,36 @@ class StringExtTest {
     @Test
     fun testLocalizedString() {
         assertEquals("Context is null", "test".localizedString)
+    }
+
+    @Test
+    fun testDecimalNumber_01() {
+        val value: String? = ""
+        assertEquals(value?.decimalNumber, null)
+    }
+
+    @Test
+    fun testDecimalNumber_02() {
+        val value: String? = null
+        assertEquals(value?.decimalNumber, null)
+    }
+
+    @Test
+    fun testDecimalNumber_03() {
+        val value: String? = "a"
+        assertEquals(value?.decimalNumber, null)
+    }
+
+    @Test
+    fun testDecimalNumber_04() {
+        val value: String? = "1500"
+        assertEquals(value?.decimalNumber?.stringValue, "1500")
+    }
+
+    @Test
+    fun testDecimalNumber_05() {
+        val value: String? = "0.124"
+        assertEquals(value?.decimalNumber?.stringValue, "0.124")
     }
 
     @Test
