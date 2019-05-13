@@ -166,4 +166,12 @@
         <attr name="currentPageIndicatorTintColor" format="color" />
     </declare-styleable>
 
+    <!-- ScrollSegmentedButton -->
+    <declare-styleable name="ScrollSegmentedButton">
+        <attr name="android:textSize" />
+        <attr name="scrollButtonWidth" format="dimension" />
+        <attr name="titlesText" format="string" />
+        <attr name="buttonCount" format="integer" />
+    </declare-styleable>
+
 </resources>

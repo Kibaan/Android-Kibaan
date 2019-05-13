@@ -88,6 +88,10 @@ fun <T> Collection<T>.sorted(by: (T, T) -> Boolean): List<T> {
     })
 }
 
+fun <T, R> zip(sequence1: Collection<T>, sequence2: Collection<R>): List<Pair<T, R>> {
+    return sequence1.zip(sequence2)
+}
+
 /**
  * enumerated()でインデックスとエレメントのコレクションを返却する為のクラス
  */
