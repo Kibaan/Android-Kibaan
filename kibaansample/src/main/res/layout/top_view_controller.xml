@@ -29,15 +29,13 @@
         android:background="#BBBBBB"
     />
 
-    <kibaan.android.ui.SmartTextField
+    <kibaan.android.ui.ScrollSegmentedButton
+        android:id="@+id/scrollSegment"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#FFFFFF"
-        app:layout_constraintTop_toBottomOf="@+id/segment"
-        android:paddingLeft="20dp"
-    >
-
-    </kibaan.android.ui.SmartTextField>
+        app:scrollButtonWidth="110dp"
+        android:background="#FFBBBB"
+        app:layout_constraintTop_toBottomOf="@+id/segment" />
 
 
     <kibaan.android.ui.SmartButton

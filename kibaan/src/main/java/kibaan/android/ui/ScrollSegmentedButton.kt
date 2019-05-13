@@ -2,18 +2,17 @@ package kibaan.android.ui
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import android.widget.HorizontalScrollView
 import android.widget.RelativeLayout
 import kibaan.android.AndroidUnique
-import kibaan.android.R
 import kibaan.android.extension.getStringOrNull
 import kibaan.android.extension.width
 import kibaan.android.ios.*
 import kotlin.math.abs
-
 
 /// 無限スクロールするセグメントボタン群
 /// - 全ボタンが横幅に収まりきる場合は、隙間が空かないよう全ボタンを均等配置して、スクロールを無効にする
@@ -21,7 +20,8 @@ import kotlin.math.abs
 class ScrollSegmentedButton: HorizontalScrollView {
 
     @IBInspectable var textSize: CGFloat = 14.0
-    @IBInspectable var scrollButtonWidth: CGFloat = 100.0
+    var scrollButtonWidthPx: CGFloat = 300.0
+
     @IBInspectable var titlesText: String
         get() {
             return titles.joined(separator = ",")
@@ -37,8 +37,8 @@ class ScrollSegmentedButton: HorizontalScrollView {
         }
 
     /// 実際に表示するボタンの横幅
-    val buttonWidth: CGFloat
-        get() = if (isFitButtons) (frame.width / titles.size) else scrollButtonWidth
+    val buttonWidthPx: CGFloat
+        get() = if (isFitButtons) (frame.width / titles.size) else scrollButtonWidthPx
 
     /// 選択中のインデックス
     var selectedIndex: Int?
@@ -54,7 +54,7 @@ class ScrollSegmentedButton: HorizontalScrollView {
         set(value) {
             select(value, needsCallback = true)
         }
-    var titles: MutableList<String> = mutableListOf()
+    var titles: List<String> = listOf()
         set(newValue) {
             field = newValue
             updateButtonTitles()
@@ -71,11 +71,11 @@ class ScrollSegmentedButton: HorizontalScrollView {
 
     /// 余白部分に移動するボタン個数
     private val marginCount: Int
-        get() = (frame.width / scrollButtonWidth).toInt()
+        get() = (frame.width / scrollButtonWidthPx).toInt()
 
     /// ボタンが端末の横幅に収まるか
     private val isFitButtons: Boolean
-        get() = titles.size * scrollButtonWidth <= frame.width
+        get() = titles.size * scrollButtonWidthPx <= frame.width
 
     /// 左端に表示しているボタン
     private val leftEndButton: UIButton?
@@ -91,6 +91,8 @@ class ScrollSegmentedButton: HorizontalScrollView {
 
     @AndroidUnique
     val content = FrameLayout(context)
+    // FrameLayoutの幅を伸ばすための支えのView
+    private val horizontalSupportView = View(context)
 
     constructor(context: Context) : super(context) {
         setup(context)
@@ -103,24 +105,24 @@ class ScrollSegmentedButton: HorizontalScrollView {
     }
 
     private fun setup(context: Context, attrs: AttributeSet? = null) {
+        content.backgroundColor = UIColor.blue
+
         // プロパティの読み込み
         if (attrs != null) {
-            val array = context.obtainStyledAttributes(attrs, R.styleable.ScrollSegmentedButton)
+            val array = context.obtainStyledAttributes(attrs, kibaan.android.R.styleable.ScrollSegmentedButton)
 
             // TODO サイズをpixelで保持してよいのか？
-            textSize = array.getDimensionPixelSize(R.styleable.ScrollSegmentedButton_android_textSize, textSize.toInt()).toDouble()
-            scrollButtonWidth = array.getDimensionPixelSize(R.styleable.ScrollSegmentedButton_scrollButtonWidth, scrollButtonWidth.toInt()).toDouble()
+            textSize = array.getDimensionPixelSize(kibaan.android.R.styleable.ScrollSegmentedButton_android_textSize, textSize.toInt()).toDouble()
+            scrollButtonWidthPx = array.getDimensionPixelSize(kibaan.android.R.styleable.ScrollSegmentedButton_scrollButtonWidth, scrollButtonWidthPx.toInt()).toDouble()
 
-            titlesText = array.getStringOrNull(R.styleable.ScrollSegmentedButton_titlesText) ?: titlesText
-            buttonCount = array.getInt(R.styleable.ScrollSegmentedButton_buttonCount, 0)
+            titlesText = array.getStringOrNull(kibaan.android.R.styleable.ScrollSegmentedButton_titlesText) ?: titlesText
+            buttonCount = array.getInt(kibaan.android.R.styleable.ScrollSegmentedButton_buttonCount, 0)
 
             array.recycle()
         }
 
-        addView(content, RelativeLayout.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        ))
+        content.addView(horizontalSupportView, FrameLayout.LayoutParams(width, MATCH_PARENT))
+        addView(content, RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, MATCH_PARENT))
     }
 
     init {
@@ -143,20 +145,6 @@ class ScrollSegmentedButton: HorizontalScrollView {
     override fun canScrollHorizontally(direction: Int): Boolean {
         return isScrollEnabled
     }
-
-//    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
-//        if (isScrollEnabled) {
-//            return super.onInterceptTouchEvent(ev)
-//        }
-//        return false
-//    }
-//
-//    override fun onTouchEvent(ev: MotionEvent?): Boolean {
-//        if (isScrollEnabled) {
-//            return super.onTouchEvent(ev)
-//        }
-//        return false
-//    }
 
     // MARK: - Initializer
     fun setup(buttonCount: Int, buttonMaker: (() -> UIButton)? = null, buttonUpdater: ((UIButton, ButtonState) -> Unit)? = null) {
@@ -191,6 +179,7 @@ class ScrollSegmentedButton: HorizontalScrollView {
         clearView()
         buttons = (0 until buttonCount).map {
             val button = buttonMaker()
+            button.layoutParams = LayoutParams(buttonWidthPx.toInt(), LayoutParams.MATCH_PARENT)
             content.addView(button)
             button.setOnClickListener {
                 actionSelect(button)
@@ -198,6 +187,8 @@ class ScrollSegmentedButton: HorizontalScrollView {
             button
         }
         dummyButton = buttonMaker()
+        dummyButton.backgroundColor = UIColor.cyan
+        dummyButton.layoutParams = LayoutParams(buttonWidthPx.toInt(), LayoutParams.MATCH_PARENT)
         content.addView(dummyButton)
         updateButtonTitles()
         updateButtonPosition()
@@ -217,13 +208,16 @@ class ScrollSegmentedButton: HorizontalScrollView {
 
     fun clear() {
         buttonCount = 0
-        titles.removeAll()
+        titles = listOf()
         clearView()
     }
 
     fun clearView() {
         previousSize = null
-        content.removeAllViews()
+        buttons.forEach {
+            it.removeFromSuperview()
+        }
+        dummyButton.removeFromSuperview()
     }
 
     // MARK: - Action
@@ -249,7 +243,7 @@ class ScrollSegmentedButton: HorizontalScrollView {
     override fun onScrollChanged(l: Int, t: Int, oldl: Int, oldt: Int) {
         super.onScrollChanged(l, t, oldl, oldt)
 
-        val fullWidth = content.width
+        val fullWidth = horizontalSupportView.width
         val maxScrollOffset = fullWidth - frame.size.width
         if (scrollX < 0) {
             // 左端を超える場合は右端に移動する
@@ -268,14 +262,23 @@ class ScrollSegmentedButton: HorizontalScrollView {
             return
         }
         // まずはページ順に横並び
-        buttons.enumerated().forEach { it.element.frame.origin.x = buttonWidth * it.offset }
+        buttons.enumerated().forEach {
+            val button = it.element
+            val layoutParams = FrameLayout.LayoutParams(button.layoutParams.width, button.layoutParams.height)
+            layoutParams.leftMargin = (buttonWidthPx * it.offset ).toInt()
+            button.layoutParams = layoutParams
+        }
         // 右端のさらに右が見える場合、ボタンをさらに右にもってくる
         if (isScrollEnabled) {
             val marginCount = this.marginCount
             (0 .. marginCount).forEach { index  ->
-                if (buttonWidth * (buttons.size - (marginCount - index)) < scrollX) {
-                    // TODO ボタンの位置を調整する
-                    buttons.safeGet(index)?.frame?.origin?.x = buttonWidth * (buttons.size + index)
+                if (buttonWidthPx * (buttons.size - (marginCount - index)) < scrollX) {
+                    val button = buttons.safeGet(index)
+                    if (button != null) {
+                        val layoutParams = FrameLayout.LayoutParams(button.layoutParams.width, button.layoutParams.height)
+                        layoutParams.leftMargin = (buttonWidthPx * (buttons.size + index)).toInt()
+                        button.layoutParams = layoutParams
+                    }
                 }
             }
             updateDummyButton()
@@ -300,10 +303,11 @@ class ScrollSegmentedButton: HorizontalScrollView {
     private fun updateScrollSize() {
         if (isFitButtons) {
             // 横幅一杯とする
-            content.layoutParams = FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+            horizontalSupportView.layoutParams = FrameLayout.LayoutParams(MATCH_PARENT, 0)
         } else {
             // ボタン数 + 余白1ページ分のサイズをとる
-            content.layoutParams = FrameLayout.LayoutParams((scrollButtonWidth * titles.size).toInt(), MATCH_PARENT)
+            val width = scrollButtonWidthPx * titles.size
+            horizontalSupportView.layoutParams = FrameLayout.LayoutParams(width.toInt(), 0)
         }
     }
 
@@ -313,9 +317,9 @@ class ScrollSegmentedButton: HorizontalScrollView {
             return
         }
         buttons.forEach {
-            it.layoutParams = FrameLayout.LayoutParams(buttonWidth.toInt(), MATCH_PARENT)
+            it.layoutParams = FrameLayout.LayoutParams(buttonWidthPx.toInt(), MATCH_PARENT)
         }
-        dummyButton.layoutParams = FrameLayout.LayoutParams(buttonWidth.toInt(), MATCH_PARENT)
+        dummyButton.layoutParams = FrameLayout.LayoutParams(buttonWidthPx.toInt(), MATCH_PARENT)
     }
 
     /// ボタンのタイトルを設定する
@@ -348,8 +352,8 @@ class ScrollSegmentedButton: HorizontalScrollView {
             return
         }
         val index = selectedIndex ?: return
-        val x1 = scrollButtonWidth * index - (frame.width / 2) + (scrollButtonWidth / 2)
-        val x2 = x1 + (scrollButtonWidth * titles.size)
+        val x1 = scrollButtonWidthPx * index - (frame.width / 2) + (scrollButtonWidthPx / 2)
+        val x2 = x1 + (scrollButtonWidthPx * titles.size)
         if (abs(scrollX - x1) < abs(scrollX - x2) && animated) {
             setContentOffset(CGPoint(x = x1, y = 0.0), animated = animated)
         } else {
