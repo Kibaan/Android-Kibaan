@@ -3,7 +3,7 @@
   <groupId>kibaan.android</groupId>
   <artifactId>kibaan</artifactId>
   <versioning>
-    <release>0.7.11</release>
+    <release>0.7.12</release>
     <versions>
       <version>0.6.14</version>
       <version>0.6.15</version>
@@ -64,7 +64,8 @@
       <version>0.7.09</version>
       <version>0.7.10</version>
       <version>0.7.11</version>
+      <version>0.7.12</version>
     </versions>
-    <lastUpdated>20190513012831</lastUpdated>
+    <lastUpdated>20190513032339</lastUpdated>
   </versioning>
 </metadata>
