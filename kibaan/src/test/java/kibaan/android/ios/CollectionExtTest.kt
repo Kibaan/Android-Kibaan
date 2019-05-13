@@ -79,4 +79,21 @@ class CollectionExtTest {
 
         assertEquals(3, count)
     }
+
+    @Test
+    fun sorted() {
+        val list = listOf(2, 5, 1, 5, 3, 4)
+
+        var sorted = list.sorted {lhs, rhs -> lhs < rhs }
+        assertArrayEquals(arrayOf(1, 2, 3, 4, 5, 5), sorted.toTypedArray())
+
+        sorted = list.sorted {lhs, rhs -> lhs <= rhs }
+        assertArrayEquals(arrayOf(1, 2, 3, 4, 5, 5), sorted.toTypedArray())
+
+        sorted = list.sorted {lhs, rhs -> lhs > rhs }
+        assertArrayEquals(arrayOf(5, 5, 4, 3, 2, 1), sorted.toTypedArray())
+
+        sorted = list.sorted {lhs, rhs -> lhs >= rhs }
+        assertArrayEquals(arrayOf(5, 5, 4, 3, 2, 1), sorted.toTypedArray())
+    }
 }
