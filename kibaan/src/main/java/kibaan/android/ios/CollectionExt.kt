@@ -82,6 +82,12 @@ fun <T, R : Any> Collection<T>.compactMap(transform: (T) -> R?): List<R> {
     return mapNotNull(transform)
 }
 
+fun <T> Collection<T>.sorted(by: (T, T) -> Boolean): List<T> {
+    return sortedWith(Comparator{left, right ->
+        if (by(left, right)) -1 else 1
+    })
+}
+
 /**
  * enumerated()でインデックスとエレメントのコレクションを返却する為のクラス
  */
