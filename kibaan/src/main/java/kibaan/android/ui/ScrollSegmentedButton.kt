@@ -14,6 +14,7 @@ import kibaan.android.extension.getStringOrNull
 import kibaan.android.extension.width
 import kibaan.android.ios.*
 import kotlin.math.abs
+import kotlin.math.max
 
 /// 無限スクロールするセグメントボタン群
 /// - 全ボタンが横幅に収まりきる場合は、隙間が空かないよう全ボタンを均等配置して、スクロールを無効にする
@@ -40,18 +41,15 @@ class ScrollSegmentedButton: HorizontalScrollView {
 
     /// 実際に表示するボタンの横幅
     val buttonWidthPx: CGFloat
-        get() = if (isFitButtons) (frame.width / titles.size) else scrollButtonWidthPx
+        get() {
+            val count = max(buttonCount, 1)
+            return if (isFitButtons) (frame.width / count) else scrollButtonWidthPx
+        }
 
     /// 選択中のインデックス
     var selectedIndex: Int?
         get() {
-            if (titles.size <= buttons.size) {
-
-                return buttons.subList(fromIndex = 0, toIndex = titles.size - 1)
-                    .enumerated()
-                    .firstOrNull{ it.element.isSelected }?.offset
-            }
-            return 0
+            return buttons.enumerated().firstOrNull{ it.element.isSelected }?.offset
         }
         set(value) {
             select(value, needsCallback = true)
@@ -77,7 +75,7 @@ class ScrollSegmentedButton: HorizontalScrollView {
 
     /// ボタンが端末の横幅に収まるか
     private val isFitButtons: Boolean
-        get() = titles.size * scrollButtonWidthPx <= frame.width
+        get() = buttonCount * scrollButtonWidthPx <= frame.width
 
     /// 左端に表示しているボタン
     private val leftEndButton: UIButton?
@@ -100,15 +98,23 @@ class ScrollSegmentedButton: HorizontalScrollView {
 
     private val layoutListener: ViewTreeObserver.OnGlobalLayoutListener = object : ViewTreeObserver.OnGlobalLayoutListener {
         override fun onGlobalLayout() {
-//            // 選択状態が左端の場合に初回表示にスクロール位置の調整がうまく動作しない為、以下で少しスクロール位置をずらした状態にしている
-//            scrollX = pageWidth.toInt()
-//            moveToCenter(true)
+            // サイズが変わった場合
+            if (previousSize == null || previousSize != frame.size) {
+                isScrollEnabled = !isFitButtons
+                updateScrollSize()
+                updateButtonSize()
+                moveToCenter(animated = false)
+                updateButtonPosition()
+                previousSize = frame.size
+            }
+
             viewTreeObserver?.removeOnGlobalLayoutListener(this)
         }
     }
 
     init {
         isHorizontalScrollBarEnabled = false
+        viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
     }
 
     constructor(context: Context) : super(context) {
@@ -157,15 +163,9 @@ class ScrollSegmentedButton: HorizontalScrollView {
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        // サイズが変わった場合
-        if (previousSize == null || previousSize != frame.size) {
-            isScrollEnabled = !isFitButtons
-            updateScrollSize()
-            updateButtonSize()
-            moveToCenter(animated = false)
-            updateButtonPosition()
-            previousSize = frame.size
-        }
+        // 横画面状態から縦画面状態に戻った際に選択状態が中央に移動しない問題への対策
+        viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
+        viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
     }
 
     override fun canScrollHorizontally(direction: Int): Boolean {
@@ -191,6 +191,11 @@ class ScrollSegmentedButton: HorizontalScrollView {
 
     fun makeButtons(buttonCount: Int, buttonMaker: (() -> UIButton)) {
         clearView()
+
+        dummyButton = buttonMaker()
+        dummyButton.layoutParams = LayoutParams(buttonWidthPx.toInt(), LayoutParams.MATCH_PARENT)
+        content.addView(dummyButton)
+
         buttons = (0 until buttonCount).map {
             val button = buttonMaker()
             button.layoutParams = LayoutParams(buttonWidthPx.toInt(), LayoutParams.MATCH_PARENT)
@@ -200,10 +205,6 @@ class ScrollSegmentedButton: HorizontalScrollView {
             }
             button
         }
-        dummyButton = buttonMaker()
-        dummyButton.backgroundColor = UIColor.cyan
-        dummyButton.layoutParams = LayoutParams(buttonWidthPx.toInt(), LayoutParams.MATCH_PARENT)
-        content.addView(dummyButton)
         updateButtonTitles()
         updateButtonPosition()
         isScrollEnabled = !isFitButtons
@@ -272,9 +273,6 @@ class ScrollSegmentedButton: HorizontalScrollView {
 
     /// 各ボタンのX座標を調整する
     private fun updateButtonPosition() {
-        if (titles.isEmpty()) {
-            return
-        }
         // まずはページ順に横並び
         buttons.enumerated().forEach {
             val button = it.element
@@ -320,16 +318,13 @@ class ScrollSegmentedButton: HorizontalScrollView {
             horizontalSupportView.layoutParams = FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
         } else {
             // ボタン数 + 余白1ページ分のサイズをとる
-            val width = scrollButtonWidthPx * buttonCount
+            val width = (scrollButtonWidthPx * buttonCount) + width
             horizontalSupportView.layoutParams = FrameLayout.LayoutParams(width.toInt(), MATCH_PARENT)
         }
     }
 
     /// ボタンの横幅を更新設定する
     private fun updateButtonSize() {
-        if (titles.isEmpty()) {
-            return
-        }
         buttons.forEach {
             it.layoutParams = FrameLayout.LayoutParams(buttonWidthPx.toInt(), MATCH_PARENT)
         }
@@ -367,7 +362,7 @@ class ScrollSegmentedButton: HorizontalScrollView {
         }
         val index = selectedIndex ?: return
         val x1 = scrollButtonWidthPx * index - (frame.width / 2) + (scrollButtonWidthPx / 2)
-        val x2 = x1 + (scrollButtonWidthPx * titles.size)
+        val x2 = x1 + (scrollButtonWidthPx * buttonCount)
         if (abs(scrollX - x1) < abs(scrollX - x2) && animated) {
             setContentOffset(CGPoint(x = x1, y = 0.0), animated = animated)
         } else {
