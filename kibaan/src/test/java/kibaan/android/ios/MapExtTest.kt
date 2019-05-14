@@ -38,4 +38,14 @@ class MapExtTest {
         assertNull(result)
 
     }
+
+    @Test
+    fun testInsertNull() {
+        val map = mutableMapOf<String, String>()
+        val optionalString: String? = null
+
+        map["1"] = "A"
+        map["2"] = null
+        map["3"] = optionalString
+    }
 }

@@ -16,3 +16,11 @@ fun <K, T> Map<K, T>.first(where: (Map.Entry<K, T>) -> Boolean): Map.Entry<K, T>
 fun <K, T> MutableMap<K, T>.removeValue(forKey: K) {
     remove(forKey)
 }
+
+operator fun <K, T> MutableMap<K, T>.set(key: K, value: T?) {
+    if (value == null) {
+        remove(key)
+    } else {
+        this[key] = value
+    }
+}
