@@ -280,31 +280,34 @@ class ScrollSegmentedButton: HorizontalScrollView {
             layoutParams.leftMargin = (buttonWidthPx * it.offset ).toInt()
             button.layoutParams = layoutParams
         }
+
+        if (!isScrollEnabled) return
+
         // 右端のさらに右が見える場合、ボタンをさらに右にもってくる
-        if (isScrollEnabled) {
-            val marginCount = this.marginCount
-            (0 .. marginCount).forEach { index  ->
-                if (buttonWidthPx * (buttons.size - (marginCount - index)) < scrollX) {
-                    val button = buttons.safeGet(index)
-                    if (button != null) {
-                        val layoutParams = FrameLayout.LayoutParams(button.layoutParams.width, button.layoutParams.height)
-                        layoutParams.leftMargin = (buttonWidthPx * (buttons.size + index)).toInt()
-                        button.layoutParams = layoutParams
-                    }
+        val marginCount = this.marginCount
+        (0 .. marginCount).forEach { index  ->
+            if (buttonWidthPx * (buttons.size - (marginCount - index)) < scrollX) {
+                val button = buttons.safeGet(index)
+                if (button != null) {
+                    val layoutParams = LayoutParams(button.layoutParams.width, button.layoutParams.height)
+                    layoutParams.leftMargin = (buttonWidthPx * (buttons.size + index)).toInt()
+                    button.layoutParams = layoutParams
                 }
             }
-            updateDummyButton()
         }
+        updateDummyButton()
     }
 
     private fun updateDummyButton() {
         // ダミーボタンは常に右端に表示する
-        val maxX = buttons.map({ it.frame.maxX }).sorted().lastOrNull()
+        val maxX = buttons.map{ it.left + buttonWidthPx }.sorted().lastOrNull()
         if (maxX != null) {
-            dummyButton.frame.origin.x = maxX
+            val layoutParams = LayoutParams(dummyButton.layoutParams.width, dummyButton.layoutParams.height)
+            layoutParams.leftMargin = maxX.toInt()
+            dummyButton.layoutParams = layoutParams
         }
-        val // 左端のボタンを取得してダミーボタンに反映
-                targetButton = leftEndButton
+        // 左端のボタンを取得してダミーボタンに反映
+        val targetButton = leftEndButton
         if (targetButton != null) {
             dummyButton.title = targetButton.title
             dummyButton.isSelected = targetButton.isSelected
