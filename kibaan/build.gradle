@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
-def kibaanVersion = "0.7.14"
+def kibaanVersion = "0.7.15"
 
 android {
     compileSdkVersion 28
