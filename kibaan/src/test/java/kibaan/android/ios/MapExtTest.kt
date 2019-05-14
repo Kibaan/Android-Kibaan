@@ -45,7 +45,15 @@ class MapExtTest {
         val optionalString: String? = null
 
         map["1"] = "A"
+        map["2"] = "B"
+        assertEquals("B", map["2"])
+
         map["2"] = null
         map["3"] = optionalString
+
+        assertEquals(1, map.count())
+        assertEquals("A", map["1"])
+        assertNull(map["2"])
+        assertNull(map["3"])
     }
 }

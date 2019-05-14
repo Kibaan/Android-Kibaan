@@ -21,6 +21,6 @@ operator fun <K, T> MutableMap<K, T>.set(key: K, value: T?) {
     if (value == null) {
         remove(key)
     } else {
-        this[key] = value
+        put(key, value)
     }
 }
