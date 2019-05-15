@@ -66,6 +66,8 @@ open class UITableView : FrameLayout {
     var estimatedRowHeight: CGFloat? = null
     /** セクション内フッターの高さ */
     var sectionFooterHeight: CGFloat? = null
+    /** スクロール可能かどうか */
+    var isScrollEnabled = true
     /** テーブルのヘッダー(セクション内のヘッダーではない) */
     var tableHeaderView: View? = null
         set(value) {
@@ -252,6 +254,14 @@ open class UITableView : FrameLayout {
     fun indexPathFor(cell: UITableViewCell): UITableViewAdapter.CellIndexPath? {
         val position = recyclerView.getChildAdapterPosition(cell)
         return adapter?.indexPathBy(position)
+    }
+
+    // endregion
+
+    // region -> Other
+
+    override fun canScrollVertically(direction: Int): Boolean {
+        return isScrollEnabled && super.canScrollVertically(direction)
     }
 
     // endregion
