@@ -1,7 +1,6 @@
 package kibaan.android.ui
 
 import android.content.Context
-import androidx.databinding.BindingAdapter
 import android.graphics.*
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.StateListDrawable
@@ -9,6 +8,7 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
+import androidx.databinding.BindingAdapter
 import kibaan.android.R
 import kibaan.android.extension.getStringOrNull
 import kibaan.android.ios.*
@@ -285,7 +285,7 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
     }
 
     private fun repeatAction() {
-        handler.post {
+        handler?.post {
             touchDownAction()
         }
     }
