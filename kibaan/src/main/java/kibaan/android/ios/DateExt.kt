@@ -12,3 +12,11 @@ fun Date.compare(other: Date): ComparisonResult {
         else -> ComparisonResult.orderedAscending
     }
 }
+
+/**
+ * 経過秒数を取得
+ */
+fun Date.timeIntervalSince(other: Date): TimeInterval {
+    val ms = time - other.time
+    return ms / 1000.0
+}

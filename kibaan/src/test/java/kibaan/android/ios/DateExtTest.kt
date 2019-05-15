@@ -55,6 +55,15 @@ class DateExtTest {
         Assert.assertTrue(create("12:30:35", format)?.compare(create("12:30:45", format)!!) == ComparisonResult.orderedAscending)
     }
 
+    @Test
+    fun testSince() {
+        val start = Date()
+        Thread.sleep(100)
+        val sec = Date().timeIntervalSince(start)
+        Assert.assertTrue(0.095 < sec)
+        Assert.assertTrue(sec < 0.105)
+    }
+
     private fun create(string: String, format: String): Date? {
         return Dates.create(string, format)
     }
