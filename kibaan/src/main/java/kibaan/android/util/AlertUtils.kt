@@ -69,7 +69,11 @@ object AlertUtils {
 
     fun dismissAllAlert() {
         displayingList.forEach {
-            it.dismiss()
+            try {
+                it.dismiss()
+            } catch (e: Exception) {
+                // ダイアログを表示していたアクティビティが終了済みの場合、dismissでExceptionが発生するのでキャッチする
+            }
         }
         displayingList.removeAll()
     }
