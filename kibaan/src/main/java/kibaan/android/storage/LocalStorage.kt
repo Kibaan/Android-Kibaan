@@ -3,10 +3,11 @@ package kibaan.android.storage
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kibaan.android.framework.SmartActivity
 import kibaan.android.extension.isNotEmpty
+import kibaan.android.framework.SmartActivity
 import kibaan.android.ios.CGFloat
 import kibaan.android.ios.StringEnum
+import kibaan.android.util.Log
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.FileNotFoundException
@@ -53,6 +54,8 @@ open class LocalStorage {
             }
         } catch (e: FileNotFoundException) {
             // 初回はファイルがないので何もしない
+        } catch (e: java.lang.Exception) {
+            Log.e(javaClass.simpleName, "JSON data may be broken.", e)
         }
 
         if (jsonString.isNotEmpty) {
