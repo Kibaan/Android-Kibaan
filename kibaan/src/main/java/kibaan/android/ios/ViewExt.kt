@@ -56,6 +56,10 @@ fun View.removeFromSuperview() {
     (parent as? ViewGroup)?.removeView(this)
 }
 
+fun View.setNeedsDisplay() {
+    invalidate()
+}
+
 val View.frame: CGRect
     get() = CGRect(0.0, 0.0, width = width.toDouble(), height = height.toDouble())
 
