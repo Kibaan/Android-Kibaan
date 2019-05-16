@@ -6,26 +6,45 @@
     android:layout_height="match_parent"
     android:background="@android:color/holo_green_dark">
 
+    <kibaan.android.ui.SmartButton
+        android:id="@+id/changeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cornerRadius="6dp"
+        android:background="#777777"
+        android:text="表示切り替え"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+    />
+
     <kibaan.android.ui.SmartTextView
         android:id="@+id/count_text"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
+        android:textSize="30sp"
         app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="20dp"
+        app:layout_constraintLeft_toRightOf="@id/changeButton"
+        app:layout_constraintBottom_toBottomOf="@id/changeButton"
         app:text="0"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh_layout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/count_text">
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/changeButton">
 
         <kibaan.android.ui.SmartTableView
-                android:id="@+id/table_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:separatorColor="#FF0000"/>
+            android:id="@+id/table_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:separatorColor="#FF0000"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

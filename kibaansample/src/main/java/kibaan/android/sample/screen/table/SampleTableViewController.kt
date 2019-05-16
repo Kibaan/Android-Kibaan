@@ -16,12 +16,16 @@ import kibaan.android.util.AlertUtils
 class SampleTableViewController : SmartViewController(), UITableViewDataSource, UITableViewDelegate {
 
     var count = 0
+    var dataCount = 200
 
     // region -> Outlets
 
-    @IBOutlet(R.id.count_text) lateinit var countText: SmartTextView
-    @IBOutlet(R.id.table_view) lateinit var tableView: SmartTableView
-    @IBOutlet(R.id.swipe_refresh_layout) lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    @IBOutlet(R.id.count_text)
+    lateinit var countText: SmartTextView
+    @IBOutlet(R.id.table_view)
+    lateinit var tableView: SmartTableView
+    @IBOutlet(R.id.swipe_refresh_layout)
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     // endregion
 
@@ -40,6 +44,7 @@ class SampleTableViewController : SmartViewController(), UITableViewDataSource, 
             AlertUtils.show("Success", "PullToRefresh!!")
             tableView.endRefreshing()
         }
+        tableView.setNoDataMessage("データがありません。")
     }
 
     override fun onEnterForeground() {
@@ -49,10 +54,21 @@ class SampleTableViewController : SmartViewController(), UITableViewDataSource, 
 
     // endregion
 
+    // region -> Actions
+
+    @IBAction(R.id.changeButton)
+    fun actionChangeButton(sender: View) {
+        dataCount = if (dataCount == 0) 200 else 0
+        tableView.reloadData()
+        tableView.showNoDataLabel(dataCount == 0)
+    }
+
+    // endregion
+
     // region -> UITableViewDataSource
 
     override fun numberOfRows(tableView: UITableView, section: Int): Int {
-        return 200
+        return dataCount
     }
 
     override fun cellForRow(tableView: UITableView, indexPath: IndexPath): View {
