@@ -14,6 +14,7 @@ class SecondPageViewController: SmartViewController() {
 
     // region -> Outlets
 
+    @IBOutlet(R.id.contentsView) lateinit var contentsView: View
     @IBOutlet(R.id.title_label) lateinit var titleLabel: SmartLabel
 
     // endregion
@@ -21,6 +22,8 @@ class SecondPageViewController: SmartViewController() {
     // region -> Variables
 
     var count: Int = 0
+
+    override val nextScreenTargetView: View get() = contentsView
 
     // endregion
 
@@ -65,6 +68,20 @@ class SecondPageViewController: SmartViewController() {
     @IBAction(R.id.remove_all_sub_screen_button)
     fun actionRemoveAllSubScreen(sender: View) {
         ScreenService.shared.removeAllSubScreen()
+    }
+
+    @IBAction(R.id.add_next_screen)
+    fun actionAddNextScreen(sender: View) {
+        val targetViewController = navigationRootController ?: this
+        val nextCount = this.count + 1
+        targetViewController.addNextScreen(FirstPageViewController::class, id = "test_$nextCount", prepare = {
+            it.count = nextCount
+        })
+    }
+
+    @IBAction(R.id.remove_next_screen)
+    fun actionRemoveNextScreen(sender: View) {
+        navigationRootController?.removeNextScreen()
     }
 
     // endregion

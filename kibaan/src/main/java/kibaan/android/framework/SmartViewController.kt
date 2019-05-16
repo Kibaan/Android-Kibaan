@@ -4,8 +4,9 @@ import android.animation.Animator
 import android.os.Build
 import android.view.View
 import android.view.ViewGroup
-import kibaan.android.task.TaskHolder
+import android.view.animation.LinearInterpolator
 import kibaan.android.ios.*
+import kibaan.android.task.TaskHolder
 import kotlin.reflect.KClass
 
 /**
@@ -138,8 +139,8 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
      * "targetView"がrootViewに含まれているかをチェックする
      */
     private fun checkTargetView(targetView: View) {
-        if (!targetView.isDescendant(view)) {
-            throw AssertionError("The target view must be included in the view")
+        if (!targetView.isDescendant(view) && targetView != view) {
+            throw AssertionError("The target view must be descendant of the viewController's view.")
         }
     }
 
@@ -179,9 +180,17 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
                 nextScreens.add(controller)
                 controller.view.animate().setDuration(0).translationX(controller.view.width.toFloat()).withEndAction {
                     controller.view.isHidden = false
-                    controller.view.animate().setDuration(nextScreenAnimationDuration).translationX(0.0f).start()
-                    prevView.animate().setDuration(nextScreenAnimationDuration).translationX(-parentView.width.toFloat()).withEndAction {
-                    }.setListener(cancelListener).start()
+                    controller.view.animate()
+                        .setInterpolator(LinearInterpolator())
+                        .setDuration(nextScreenAnimationDuration)
+                        .translationX(0.0f)
+                        .start()
+                    prevView.animate()
+                        .setInterpolator(LinearInterpolator())
+                        .setDuration(nextScreenAnimationDuration)
+                        .translationX(-parentView.width.toFloat())
+                        .setListener(cancelListener)
+                        .start()
                 }.setListener(cancelListener)
             }, 0)
         } else {
@@ -214,8 +223,16 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
         }
         val prevView = nextScreens.lastOrNull()?.view ?: targetView
         if (animated) {
-            removedScreen.view.animate().setDuration(nextScreenAnimationDuration).translationX(removedScreen.view.width.toFloat()).withStartAction {
-                prevView.animate().setDuration(nextScreenAnimationDuration).translationX(0.0f).start()
+            removedScreen.view.animate()
+                .setInterpolator(LinearInterpolator())
+                .setDuration(nextScreenAnimationDuration)
+                .translationX(removedScreen.view.width.toFloat())
+                .withStartAction {
+                    prevView.animate()
+                        .setInterpolator(LinearInterpolator())
+                        .setDuration(nextScreenAnimationDuration)
+                        .translationX(0.0f)
+                        .start()
             }.withEndAction {
                 completion()
             }

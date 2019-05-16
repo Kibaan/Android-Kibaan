@@ -10,10 +10,11 @@ import kibaan.android.ios.IBOutlet
 import kibaan.android.sample.R
 import kibaan.android.ui.SmartLabel
 
-class FirstPageViewController: SmartViewController() {
+class FirstPageViewController : SmartViewController() {
 
     // region -> Outlets
 
+    @IBOutlet(R.id.contentsView) lateinit var contentsView: View
     @IBOutlet(R.id.title_label) lateinit var titleLabel: SmartLabel
 
     // endregion
@@ -21,6 +22,8 @@ class FirstPageViewController: SmartViewController() {
     // region -> Variables
 
     var count: Int = 0
+
+    override val nextScreenTargetView: View get() = contentsView
 
     // endregion
 
@@ -59,12 +62,31 @@ class FirstPageViewController: SmartViewController() {
 
     @IBAction(R.id.remove_sub_screen_target_button)
     fun actionRemoveSubScreenTarget(sender: View) {
-        ScreenService.shared.removeSubScreen(to = ViewControllerCache.shared.get(SecondPageViewController::class, id = "test_2"))
+        ScreenService.shared.removeSubScreen(
+            to = ViewControllerCache.shared.get(
+                SecondPageViewController::class,
+                id = "test_2"
+            )
+        )
     }
 
     @IBAction(R.id.remove_all_sub_screen_button)
     fun actionRemoveAllSubScreen(sender: View) {
         ScreenService.shared.removeAllSubScreen()
+    }
+
+    @IBAction(R.id.add_next_screen)
+    fun actionAddNextScreen(sender: View) {
+        val targetViewController = navigationRootController ?: this
+        val nextCount = this.count + 1
+        targetViewController.addNextScreen(SecondPageViewController::class, id = "test_$nextCount", prepare = {
+            it.count = nextCount
+        })
+    }
+
+    @IBAction(R.id.remove_next_screen)
+    fun actionRemoveNextScreen(sender: View) {
+        navigationRootController?.removeNextScreen()
     }
 
     // endregion
