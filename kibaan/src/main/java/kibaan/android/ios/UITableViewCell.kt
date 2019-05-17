@@ -5,12 +5,14 @@ import android.graphics.ColorFilter
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import butterknife.ButterKnife
 import kibaan.android.R
+import kibaan.android.ui.SmartLabel
 import kibaan.android.util.DeviceUtils
 
 
@@ -18,7 +20,15 @@ open class UITableViewCell : LinearLayout {
 
     // region -> Variables
 
-    var contentView: View? = null
+    val textLabel: SmartLabel? by lazy {
+        val label = SmartLabel(context)
+        label.gravity = Gravity.CENTER_VERTICAL
+        label.setPadding(DeviceUtils.toPx(context, 10), 0, DeviceUtils.toPx(context, 10), 0)
+        contentView?.addView(label, LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT))
+        return@lazy label
+    }
+
+    var contentView: ViewGroup? = null
         set(value) {
             field = value
             if (value != null) {

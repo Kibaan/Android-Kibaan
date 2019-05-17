@@ -116,12 +116,13 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
      * 指定された[position]に対応するviewTypeを返却する
      */
     override fun getItemViewType(position: Int): Int {
-        val indexPath = indexPathBy(position) ?: return CellType.unknown.rawValue
+        val indexPath = indexPathBy(position) ?: return CellType.normal.rawValue
         return when (indexPath.cellType) {
             CellType.normal -> {
-                indexPath.cellType.rawValue + tableView.cellInfoList.indexOfFirst {
+                val index = tableView.cellInfoList.indexOrNull {
                     it.isTargetIndex?.invoke(indexPath) ?: true
-                }
+                } ?: 0
+                indexPath.cellType.rawValue + index
             }
             else -> indexPath.cellType.rawValue
         }
@@ -133,9 +134,15 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UITableViewHolder {
         return if (CellType.isNormal(viewType)) {
-            val cellInfo = tableView.cellInfoList[viewType - CellType.normal.rawValue]
-            val cell = cellInfo.type.java.getConstructor(Context::class.java).newInstance(context) as? UITableViewCell ?: UITableViewCell(context)
-            cell.contentView = cellInfo.create(inflater, parent)
+            val cell: UITableViewCell
+            val cellInfo = tableView.cellInfoList.safeGet(viewType - CellType.normal.rawValue)
+            if (cellInfo != null) {
+                cell = cellInfo.type.java.getConstructor(Context::class.java).newInstance(context) as? UITableViewCell ?: UITableViewCell(context)
+                cell.contentView = cellInfo.create(inflater, parent) as? ViewGroup
+            } else {
+                cell = UITableViewCell(context)
+                cell.contentView = FrameLayout(context)
+            }
             cell.setOnClickListener { tableView.onItemClick(it) }
             cell.setOnTouchListener { _, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
@@ -372,7 +379,8 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
 
     class CellIndexPath(val cellType: CellType = CellType.normal, section: Int?, row: Int) : IndexPath(section ?: -1, row)
 
-    enum class CellType : IntEnumDefault { unknown, header, sectionHeader, footer, sectionFooter, normal;
+    enum class CellType : IntEnumDefault {
+        header, sectionHeader, footer, sectionFooter, normal;
 
         companion object {
             fun isNormal(viewType: Int): Boolean {
