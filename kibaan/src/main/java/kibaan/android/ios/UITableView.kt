@@ -5,8 +5,6 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RectShape
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -68,6 +66,8 @@ open class UITableView : FrameLayout {
     var sectionFooterHeight: CGFloat? = null
     /** スクロール可能かどうか */
     var isScrollEnabled = true
+    /** アクセサリ（チェックマーク、横矢印）などの色 */
+    var tintColor: UIColor = UIColor.defaultTint
     /** テーブルのヘッダー(セクション内のヘッダーではない) */
     var tableHeaderView: View? = null
         set(value) {

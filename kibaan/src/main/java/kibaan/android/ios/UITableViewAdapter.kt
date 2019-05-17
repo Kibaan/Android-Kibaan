@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.ItemTouchHelper
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -143,6 +142,7 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
                 cell = UITableViewCell(context)
                 cell.contentView = FrameLayout(context)
             }
+            cell.tableView = tableView
             cell.setOnClickListener { tableView.onItemClick(it) }
             cell.setOnTouchListener { _, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {

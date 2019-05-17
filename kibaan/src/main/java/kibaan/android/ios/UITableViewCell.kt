@@ -20,6 +20,11 @@ open class UITableViewCell : LinearLayout {
 
     // region -> Variables
 
+    internal var tableView: UITableView? by didSet(null) {
+        reflectTintColor()
+    }
+
+    @Suppress("unused")
     val textLabel: SmartLabel? by lazy {
         val label = SmartLabel(context)
         label.gravity = Gravity.CENTER_VERTICAL
@@ -32,7 +37,7 @@ open class UITableViewCell : LinearLayout {
         set(value) {
             field = value
             if (value != null) {
-                addView(value, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1.0f))
+                addView(value, LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1.0f))
                 ButterKnife.bind(this, value)
                 awakeFromNib()
             }
@@ -42,7 +47,7 @@ open class UITableViewCell : LinearLayout {
         set(value) {
             if (value != null) {
                 if (field != value) {
-                    addView(value, LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT))
+                    addView(value, LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT))
                     value.backgroundColor = contentView?.backgroundColor
                 }
             } else {
@@ -80,14 +85,19 @@ open class UITableViewCell : LinearLayout {
         return@lazy imageView
     }
 
-    open var tintColor: UIColor = UIColor.white
+    open var tintColor: UIColor = UIColor.defaultTint
         set(value) {
             field = value
-            (disclosureIndicatorView as? ImageView)?.colorFilter = tintColorFilter
-            (checkMarkView as? ImageView)?.colorFilter = tintColorFilter
+            reflectTintColor()
         }
 
-    private val tintColorFilter: ColorFilter get() = PorterDuffColorFilter(tintColor.intValue, PorterDuff.Mode.SRC_ATOP)
+    private val tintColorFilter: ColorFilter get() {
+        var tintColor = tintColor
+        if (tintColor == UIColor.defaultTint) {
+            tintColor = tableView?.tintColor ?: UIColor.defaultTint
+        }
+        return PorterDuffColorFilter(tintColor.intValue, PorterDuff.Mode.SRC_ATOP)
+    }
 
     // endregion
 
@@ -96,6 +106,9 @@ open class UITableViewCell : LinearLayout {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context, tableView: UITableView): super(context) {
+        this.tableView = tableView
+    }
 
     // endregion
 
@@ -138,6 +151,15 @@ open class UITableViewCell : LinearLayout {
     override fun setSelected(selected: Boolean) {
         super.setSelected(selected)
         setSelected(selected, true)
+    }
+
+    // endregion
+
+    // region -> Other
+
+    private fun reflectTintColor() {
+        (disclosureIndicatorView as? ImageView)?.colorFilter = tintColorFilter
+        (checkMarkView as? ImageView)?.colorFilter = tintColorFilter
     }
 
     // endregion

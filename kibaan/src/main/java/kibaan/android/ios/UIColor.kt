@@ -21,6 +21,7 @@ class UIColor {
         val yellow = UIColor(rgbValue = 0xFFFF00)
         val cyan = UIColor(rgbValue = 0x00FFFF)
         val lightGray = UIColor(rgbValue = 0x00000, alpha = 0.667)
+        val defaultTint = UIColor(rgbValue = 0x007AF)
     }
 
     /**
