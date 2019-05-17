@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import butterknife.ButterKnife
 import kibaan.android.extension.toSnakeCase
+import kibaan.android.ios.UIColor
+import kibaan.android.ios.backgroundColor
 import kibaan.android.util.Log
 
 /**
@@ -41,5 +43,6 @@ abstract class CustomNibView : FrameLayout {
             Log.e(javaClass.simpleName, "Layout file not found!!! file name is [$resourceName]")
             throw e
         }
+        backgroundColor = UIColor.clear
     }
 }
