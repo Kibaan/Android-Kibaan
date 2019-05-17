@@ -65,6 +65,8 @@ open class SmartScrollView : ScrollView {
     /** PullToRefresh用のレイアウト（外から設定される前提） */
     var swipeRefreshLayout: SwipeRefreshLayout? = null
 
+    var delegate: UIScrollViewDelegate? = null
+
     // endregion
 
     // region -> Initialize
@@ -85,6 +87,8 @@ open class SmartScrollView : ScrollView {
 
     override fun onScrollChanged(x: Int, y: Int, oldx: Int, oldy: Int) {
         super.onScrollChanged(x, y, oldx, oldy)
+        delegate?.scrollViewDidScroll(this)
+
         // スクロールが発生する場合
         if (isScroll) {
             if (y <= 0) {
@@ -171,4 +175,8 @@ open class SmartScrollView : ScrollView {
     }
 
     // endregion
+}
+
+interface UIScrollViewDelegate {
+    fun scrollViewDidScroll(scrollView: SmartScrollView)
 }
