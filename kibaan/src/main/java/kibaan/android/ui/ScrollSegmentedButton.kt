@@ -191,19 +191,17 @@ class ScrollSegmentedButton: HorizontalScrollView {
 
     fun makeButtons(buttonCount: Int, buttonMaker: (() -> UIButton)) {
         clearView()
-
         dummyButton = buttonMaker()
         dummyButton.layoutParams = LayoutParams(buttonWidthPx.toInt(), LayoutParams.MATCH_PARENT)
-        content.addView(dummyButton)
-
-        buttons = (0 until buttonCount).map {
-            val button = buttonMaker()
+        buttons = (0 until buttonCount).map { buttonMaker() }
+        val allButtons = buttons.toMutableList()
+        allButtons.append(dummyButton)
+        allButtons.forEach { button ->
             button.layoutParams = LayoutParams(buttonWidthPx.toInt(), LayoutParams.MATCH_PARENT)
             content.addView(button)
             button.setOnClickListener {
                 actionSelect(button)
             }
-            button
         }
         updateButtonTitles()
         updateButtonPosition()
