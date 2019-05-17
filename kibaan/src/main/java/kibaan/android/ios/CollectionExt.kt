@@ -53,6 +53,16 @@ fun <T> Collection<T>.indexOrNull(predicate: (T) -> Boolean): Int? {
 }
 
 /**
+ * 指定された条件を満たす値がコレクション内で現れる位置のインデックスを返す.
+ * ただし、見つからなかった場合は"null"を返す.
+ */
+fun <T> Collection<T>.firstIndex(predicate: (T) -> Boolean): Int? {
+    return indexOrNull(predicate)
+}
+
+// UIImage(named: ""
+
+/**
  * 指定した要素が含まれるか判定する
  */
 fun <T> Collection<T>.contains(where: (T) -> Boolean): Boolean {

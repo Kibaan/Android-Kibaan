@@ -41,10 +41,13 @@ class CollectionExtTest {
 
     @Test
     fun testIndex() {
-        val list = mutableListOf("A", "B", "C")
+        val list = mutableListOf("A", "B", "C", "C")
 
         assertEquals(1, list.index("B"))
         assertEquals(null, list.indexOrNull { it == "D" })
+
+        assertEquals(null, list.firstIndex { it == "D" })
+        assertEquals(2, list.firstIndex { it == "C" })
     }
 
     @Test
