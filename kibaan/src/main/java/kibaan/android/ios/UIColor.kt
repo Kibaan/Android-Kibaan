@@ -48,13 +48,33 @@ class UIColor {
      * ex.UIColor(rgbValue = 0x171b35)
      */
     constructor(rgbValue: Int, alpha: Double = 1.0) {
-        var iAlpha = to255(alpha)   // 0x 00 00 00 FF
-        iAlpha = iAlpha shl (8 * 3) // 0x FF 00 00 00
-
-        argbInt = iAlpha or rgbValue
+        setColorInt(rgbValue, alpha)
     }
 
     constructor(rgbValue: Long, alpha: Double = 1.0) : this(rgbValue.toInt(), alpha)
+
+    constructor(rgbHex: String, alpha: Double = 1.0) {
+        val code = rgbHex.removePrefix("#")
+        if (code.count != 6) {
+            return
+        }
+        val rgbValue = code.toIntOrNull(16) ?: 0xFFFFFF
+        setColorInt(rgbValue, alpha)
+    }
+
+    constructor(argbHex: String) {
+        val code = argbHex.removePrefix("#")
+        if (code.count != 8) {
+            return
+        }
+
+        val aStr = code.substring(0 .. 1)
+        val alpha = (aStr.toIntOrNull(16) ?: 0) / 255.0
+        val rgb = code.substring(startIndex = 2)
+
+        val rgbValue = rgb.toIntOrNull(16) ?: 0xFFFFFF
+        setColorInt(rgbValue, alpha)
+    }
 
     constructor(white: Double = 1.0, alpha: Double = 1.0) {
         val iWhite = to255(white)
@@ -63,6 +83,12 @@ class UIColor {
 
     constructor(red: Double, green: Double, blue: Double, alpha: Double) {
         argbInt = Color.argb(to255(alpha), to255(red), to255(green), to255(blue))
+    }
+
+    private fun setColorInt(rgbValue: Int, alpha: Double) {
+        var iAlpha = to255(alpha)   // 0x 00 00 00 FF
+        iAlpha = iAlpha shl (8 * 3) // 0x FF 00 00 00
+        argbInt = iAlpha or rgbValue
     }
 
     private fun to255(d: Double): Int {
