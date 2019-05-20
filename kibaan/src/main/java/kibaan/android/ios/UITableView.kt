@@ -64,6 +64,8 @@ open class UITableView : FrameLayout {
     var estimatedRowHeight: CGFloat? = null
     /** セクション内フッターの高さ */
     var sectionFooterHeight: CGFloat? = null
+    // TODO:sectionHeaderHeightを追加
+    
     /** スクロール可能かどうか */
     var isScrollEnabled = true
     /** アクセサリ（チェックマーク、横矢印）などの色 */

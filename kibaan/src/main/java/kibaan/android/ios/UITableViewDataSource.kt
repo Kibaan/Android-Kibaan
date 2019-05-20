@@ -9,5 +9,13 @@ interface UITableViewDataSource {
 
     fun numberOfRows(tableView: UITableView, section: Int): Int
     fun cellForRow(tableView: UITableView, indexPath: IndexPath): View
+    fun titleForHeaderInSection(tableView: UITableView, section: Int): String? {
+        return null
+    }
+
+    fun titleForFooterInSection(tableView: UITableView, section: Int): String? {
+        return null
+    }
+
     fun moveRow(tableView: UITableView, sourceIndexPath: IndexPath, destinationIndexPath: IndexPath) {}
 }

@@ -27,6 +27,8 @@ interface UITableViewDelegate {
     }
 
     fun willDisplayCell(indexPath: IndexPath) {}
+    fun willDisplayHeaderView(view: View, section: Int) {}
+    fun willDisplayFooterView(view: View, section: Int) {}
     fun didSelectRow(tableView: UITableView, indexPath: IndexPath) {}
 
 }

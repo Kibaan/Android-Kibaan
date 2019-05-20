@@ -3,8 +3,6 @@ package kibaan.android.ios
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.ItemTouchHelper
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -12,8 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
-import kibaan.android.util.DeviceUtils
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.ItemTouchHelper
 import kibaan.android.R
+import kibaan.android.util.DeviceUtils
 
 
 class UITableViewAdapter(private var tableView: UITableView) : androidx.recyclerview.widget.RecyclerView.Adapter<UITableViewAdapter.UITableViewHolder>() {
@@ -146,9 +146,9 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
             cell.setOnClickListener { tableView.onItemClick(it) }
             cell.setOnTouchListener { _, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
-                    cell.setHighlighted(true, true)
+                    cell.setHighlighted(highlighted = true, animated = true)
                 } else if (event.action == MotionEvent.ACTION_UP || event.action == MotionEvent.ACTION_CANCEL) {
-                    cell.setHighlighted(false, true)
+                    cell.setHighlighted(highlighted = false, animated = true)
                 }
                 return@setOnTouchListener false
             }
@@ -187,16 +187,30 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
                 holder.replaceInnerView(tableView.tableFooterView)
             }
             CellType.sectionHeader -> {
-                val view = tableView.delegate?.viewForHeaderInSection(tableView, section = indexPath.section) ?: return
+                var view = tableView.delegate?.viewForHeaderInSection(tableView, section = indexPath.section)
+                if (view == null) {
+                    val title = tableView.dataSource?.titleForHeaderInSection(tableView, section = indexPath.section) ?:return
+                    view = UITableViewHeaderFooterView(context, title)
+                }
                 holder.replaceInnerView(view)
-                val height = tableView.delegate?.heightForHeaderInSection(tableView, section = indexPath.section) ?: return
-                updateCellHeight(holder.itemView, dpHeight = height)
+                val height = tableView.delegate?.heightForHeaderInSection(tableView, section = indexPath.section)
+                if (height != null) {
+                    updateCellHeight(holder.itemView, dpHeight = height)
+                }
+                tableView.delegate?.willDisplayHeaderView(view, indexPath.section)
             }
             CellType.sectionFooter -> {
-                val view = tableView.delegate?.viewForFooterInSection(tableView, section = indexPath.section) ?: return
+                var view = tableView.delegate?.viewForFooterInSection(tableView, section = indexPath.section)
+                if (view == null) {
+                    val title = tableView.dataSource?.titleForFooterInSection(tableView, section = indexPath.section) ?:return
+                    view = UITableViewHeaderFooterView(context, title)
+                }
                 holder.replaceInnerView(view)
-                val height = tableView.delegate?.heightForFooterInSection(tableView, section = indexPath.section) ?: return
-                updateCellHeight(holder.itemView, dpHeight = height)
+                val height = tableView.delegate?.heightForFooterInSection(tableView, section = indexPath.section)
+                if (height != null) {
+                    updateCellHeight(holder.itemView, dpHeight = height)
+                }
+                tableView.delegate?.willDisplayFooterView(view, indexPath.section)
             }
             else -> {
                 val cell = holder.itemView as? UITableViewCell
@@ -310,23 +324,37 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
      * 指定された[section]にヘッダーがあるかどうかを返す
      */
     private fun hasHeaderOfSection(section: Int): Boolean {
-        val view = tableView.delegate?.viewForHeaderInSection(tableView, section = section)
-        val viewHeight = tableView.delegate?.heightForHeaderInSection(tableView, section = section)
+        val title = tableView.dataSource?.titleForHeaderInSection(tableView, section = section)
+        if (title != null) {
+            return true
+        }
         // TODO:sectionHeaderHeightを追加
-        return (view != null || (viewHeight != null && viewHeight != CGFloat.leastNormalMagnitude && viewHeight != UITableViewAutomaticDimension))
+        val viewHeight = tableView.delegate?.heightForHeaderInSection(tableView, section = section) ?: Double.leastNormalMagnitude
+        if (viewHeight != CGFloat.leastNormalMagnitude && viewHeight != UITableViewAutomaticDimension) {
+            return true
+        }
+        val view = tableView.delegate?.viewForHeaderInSection(tableView, section = section)
+        return (view != null)
     }
 
     /**
      * 指定された[section]にフッターがあるかどうかを返す
      */
     private fun hasFooterOfSection(section: Int): Boolean {
-        val view = tableView.delegate?.viewForFooterInSection(tableView, section = section)
-        var viewHeight = tableView.sectionFooterHeight ?: Double.leastNormalMagnitude
+        val title = tableView.dataSource?.titleForFooterInSection(tableView, section = section)
+        if (title != null) {
+            return true
+        }
+        val viewHeight = tableView.sectionFooterHeight ?: Double.leastNormalMagnitude
+        if (viewHeight != CGFloat.leastNormalMagnitude && viewHeight != UITableViewAutomaticDimension) {
+            return true
+        }
         val heightOfSection = tableView.delegate?.heightForFooterInSection(tableView, section = section)
         if (heightOfSection != null && heightOfSection != Double.leastNormalMagnitude) {
-            viewHeight = heightOfSection
+            return true
         }
-        return (view != null || (viewHeight != CGFloat.leastNormalMagnitude && viewHeight != UITableViewAutomaticDimension))
+        val view = tableView.delegate?.viewForFooterInSection(tableView, section = section)
+        return (view != null)
     }
 
     // endregion

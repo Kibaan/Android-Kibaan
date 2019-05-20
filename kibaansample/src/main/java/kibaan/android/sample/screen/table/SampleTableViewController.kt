@@ -1,9 +1,10 @@
 package kibaan.android.sample.screen.table
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import android.util.TypedValue
 import android.view.View
-import kibaan.android.framework.SmartViewController
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kibaan.android.extension.stringValue
+import kibaan.android.framework.SmartViewController
 import kibaan.android.ios.*
 import kibaan.android.sample.R
 import kibaan.android.ui.SmartTableView
@@ -69,6 +70,36 @@ class SampleTableViewController : SmartViewController(), UITableViewDataSource, 
 
     override fun numberOfRows(tableView: UITableView, section: Int): Int {
         return dataCount
+    }
+
+//    override fun viewForHeaderInSection(tableView: UITableView, section: Int): View? {
+//        val label = SmartLabel(tableView.context)
+//        label.text = "viewForHeaderInSection"
+//        return label
+//    }
+
+    override fun titleForHeaderInSection(tableView: UITableView, section: Int): String? {
+        return "金額指定"
+    }
+
+    override fun titleForFooterInSection(tableView: UITableView, section: Int): String? {
+        return "titleForFooterInSection"
+    }
+
+//    override fun willDisplayHeaderView(view: View, section: Int) {
+//        val header = view as? UITableViewHeaderFooterView ?: return
+//        header.borderWidth = 0.5
+//        header.borderColor = UIColor.gray
+//        header.textLabel?.textColor = UIColor.red
+//        header.textLabel?.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
+//    }
+
+    override fun willDisplayFooterView(view: View, section: Int) {
+        val header = view as? UITableViewHeaderFooterView ?: return
+        header.borderWidth = 0.5
+        header.borderColor = UIColor.red
+        header.textLabel?.textColor = UIColor.blue
+        header.textLabel?.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10f)
     }
 
     override fun cellForRow(tableView: UITableView, indexPath: IndexPath): View {
