@@ -30,10 +30,16 @@ interface UITextFieldDelegate {
         return false
     }
 
+    /**
+     * return NO to disallow editing
+     */
     fun textFieldShouldBeginEditing(textField: SmartTextField): Boolean {
-        return false
+        return true
     }
 
+    /**
+     * became first responder
+     */
     fun textFieldDidBeginEditing(textField: SmartTextField) {
     }
 
