@@ -15,7 +15,8 @@ class UIImage {
             return CGSize(drawable.intrinsicWidth.cgFloatValue, drawable.intrinsicHeight.cgFloatValue)
         }
 
-    constructor(context: Context, named: String, defType: String = "drawable") {
+    constructor(context: Context?, named: String, defType: String = "drawable") {
+        if (context == null) return 
         val id = context.resources.getIdentifier(named, defType, context.packageName)
         if (id != 0) {
             drawable = ContextCompat.getDrawable(context, id)
