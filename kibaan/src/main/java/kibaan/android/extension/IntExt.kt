@@ -1,5 +1,6 @@
 package kibaan.android.extension
 
+import android.content.res.Resources
 import kibaan.android.framework.SmartActivity
 import kibaan.android.ios.CGFloat
 import java.util.*
@@ -41,7 +42,11 @@ fun Int.Companion.random(min: Int, max: Int): Int {
 val Int.localizedString: String
     get() {
         val context = SmartActivity.sharedOrNull ?: return "Context is null"
-        return context.resources.getString(this)
+        return try {
+            context.resources.getString(this)
+        } catch (e: Resources.NotFoundException) {
+            "TextNotFound [$this]"
+        }
     }
 
 /**
