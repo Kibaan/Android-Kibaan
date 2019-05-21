@@ -66,8 +66,8 @@ open class UIViewController(layoutName: String? = null) {
     // OnGlobalLayoutListenerでviewDidAppearを呼び出す
     private val layoutListener: ViewTreeObserver.OnGlobalLayoutListener = object : ViewTreeObserver.OnGlobalLayoutListener {
         override fun onGlobalLayout() {
-            viewDidAppear(false)
             view.viewTreeObserver?.removeOnGlobalLayoutListener(this)
+            viewDidAppear(false)
         }
     }
 
