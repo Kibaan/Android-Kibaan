@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import kibaan.android.R
@@ -378,9 +379,16 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
         var draggableListener: UITableViewAdapter? = null
 
         /** 並び替え用のView */
-        open val sortEditView: ImageView? by lazy {
+        open val sortEditView: LinearLayout? by lazy {
+            val linearLayout = LinearLayout(view.context)
+            linearLayout.orientation = LinearLayout.HORIZONTAL
+
+            val leftLineView = View(view.context)
+            leftLineView.backgroundColor = UIColor(rgbValue = 0xC7C6CB)
+            linearLayout.addView(leftLineView, ViewGroup.LayoutParams(DeviceUtils.toPx(view.context, 1), ViewGroup.LayoutParams.MATCH_PARENT))
+
             val imageView = ImageView(itemView.context)
-            val padding = DeviceUtils.toPx(itemView.context, 6)
+            val padding = DeviceUtils.toPx(itemView.context, 14)
             imageView.setImageResource(R.drawable.sort_edit)
             imageView.setPadding(padding, padding, padding, padding)
             val listener = View.OnTouchListener { _, motionEvent ->
@@ -392,7 +400,8 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
                 false
             }
             imageView.setOnTouchListener(listener)
-            return@lazy imageView
+            linearLayout.addView(imageView, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+            return@lazy linearLayout
         }
 
         /**
