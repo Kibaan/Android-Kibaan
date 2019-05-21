@@ -2,21 +2,22 @@ package kibaan.android.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.BitmapFactory
 import android.graphics.Color
-import androidx.constraintlayout.widget.ConstraintSet
-import androidx.appcompat.widget.AppCompatEditText
 import android.text.Editable
 import android.text.InputType
 import android.text.Spanned
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.FrameLayout
+import androidx.appcompat.widget.AppCompatEditText
+import androidx.constraintlayout.widget.ConstraintSet
 import kibaan.android.AndroidUnique
 import kibaan.android.R
 import kibaan.android.extension.getStringOrNull
@@ -193,10 +194,16 @@ open class SmartTextField : RoundedConstraintLayout {
             array.recycle()
         }
         if (showClearButton) {
-            val constraintSet = ConstraintSet()
-            constraintSet.clone(this)
-            constraintSet.setDimensionRatio(rightParentView.id, "1:1")
-            constraintSet.applyTo(this)
+            clearButton = SmartButton(context)
+            clearButton.backgroundColor = UIColor.clear
+            clearButton.setImage(R.drawable.clear, UIControlState.normal)
+            clearButton.setOnClickListener {
+                editText.text = null
+            }
+            val layoutParams = FrameLayout.LayoutParams(DeviceUtils.toPx(context, 48), DeviceUtils.toPx(context, 48))
+            layoutParams.gravity = Gravity.CENTER_VERTICAL
+            clearButton.layoutParams = layoutParams
+            rightView = clearButton
         }
         setupEditTextListener()
     }
@@ -282,7 +289,7 @@ open class SmartTextField : RoundedConstraintLayout {
         leftParentView.visibility = View.GONE
 
         rightParentView = RoundedFrameLayout(context)
-        rightParentView.layoutParams = LayoutParams(0, 0)
+        rightParentView.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, 0)
         rightParentView.id = context.resources.getIdentifier("smart_text_field_right_parent", "id", context.packageName)
         addView(rightParentView)
         leftParentView.visibility = View.GONE
@@ -303,6 +310,7 @@ open class SmartTextField : RoundedConstraintLayout {
         constraintSet.connect(editText.id, ConstraintSet.RIGHT, rightParentView.id, ConstraintSet.LEFT)
 
         // Setting constraint for rightView
+        constraintSet.connect(rightParentView.id, ConstraintSet.LEFT, editText.id, ConstraintSet.RIGHT)
         constraintSet.connect(rightParentView.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
         constraintSet.connect(rightParentView.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
         constraintSet.connect(rightParentView.id, ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT)
