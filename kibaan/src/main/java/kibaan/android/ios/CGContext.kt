@@ -42,7 +42,7 @@ class CGContext(val canvas: Canvas) {
         canvas.clipRect(to.rectF)
     }
 
-    fun clip(using: CGPathFillRule) {
+    fun clip(using: CGPathFillRule = CGPathFillRule.winding) {
         canvas.clipPath(path)
     }
 
