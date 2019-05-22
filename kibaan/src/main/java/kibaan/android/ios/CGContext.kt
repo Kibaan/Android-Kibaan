@@ -3,8 +3,6 @@ package kibaan.android.ios
 import android.graphics.*
 
 
-
-
 /**
  * 描画コンテキスト
  * Created by Yamamoto Keita on 2018/05/26.
@@ -42,6 +40,10 @@ class CGContext(val canvas: Canvas) {
 
     fun clip(to: CGRect) {
         canvas.clipRect(to.rectF)
+    }
+
+    fun clip(using: CGPathFillRule) {
+        canvas.clipPath(path)
     }
 
     //endregion
@@ -100,6 +102,11 @@ class CGContext(val canvas: Canvas) {
         canvas.drawRect(rect.rectF, param.paint)
     }
 
+    fun fillEllipse(rect: CGRect) {
+        param.fillMode()
+        canvas.drawOval(rect.rectF, param.paint)
+    }
+
     fun strokePath() {
         param.strokeMode()
         canvas.drawPath(path, param.paint)
@@ -145,6 +152,12 @@ class CGContext(val canvas: Canvas) {
     fun drawImage(image: Bitmap, rect: CGRect) {
         val srcRect = Rect(0, 0, image.width, image.height)
         canvas.drawBitmap(image, srcRect, rect.rectF, param.paint)
+    }
+
+    /**
+     * This does nothing. This method is for iOS compatibility
+     */
+    fun flush() {
     }
 
     /**
@@ -218,4 +231,10 @@ class CGContext(val canvas: Canvas) {
             return Param(fillColor, strokeColor, lineDashPhase, lineDashLengths, shouldAntialias)
         }
     }
+}
+
+enum class CGPathFillRule {
+    winding,
+    // evenOdd is not supported
+    ;
 }
