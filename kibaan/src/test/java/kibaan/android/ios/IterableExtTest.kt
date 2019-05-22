@@ -40,4 +40,10 @@ class IterableExtTest {
         val intList = listOf(2, 5, 1)
         assertEquals(1, intList.min { o1, o2 -> o1 < o2 })
     }
+
+    @Test
+    fun max() {
+        val intList = listOf(2, 5, 1)
+        assertEquals(5, intList.max { o1, o2 -> o1 > o2 })
+    }
 }

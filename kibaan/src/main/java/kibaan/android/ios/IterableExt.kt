@@ -15,3 +15,9 @@ fun <T> Iterable<T>.min(by: (T, T) -> Boolean): T? {
         if (by(o1, o2)) -1 else 1
     })
 }
+
+fun <T> Iterable<T>.max(by: (T, T) -> Boolean): T? {
+    return maxWith(Comparator { o1, o2 ->
+        if (by(o1, o2)) 1 else -1
+    })
+}
