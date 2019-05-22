@@ -89,6 +89,7 @@ fun <T> Collection<T>.enumerated(): List<CollectionEnumerationItem<T>> {
  * Returns an array containing the non-`nil` results of calling the given transformation with each element of this sequence.
  */
 fun <T, R : Any> Collection<T>.compactMap(transform: (T) -> R?): List<R> {
+    firstOrNull()
     return mapNotNull(transform)
 }
 
@@ -96,10 +97,6 @@ fun <T> Collection<T>.sorted(by: (T, T) -> Boolean): List<T> {
     return sortedWith(Comparator{left, right ->
         if (by(left, right)) -1 else 1
     })
-}
-
-inline fun <T, R> Iterable<T>.reduce(initial: R, operation: (acc: R, T) -> R): R {
-    return fold(initial, operation)
 }
 
 fun <T, R> zip(sequence1: Collection<T>, sequence2: Collection<R>): List<Pair<T, R>> {

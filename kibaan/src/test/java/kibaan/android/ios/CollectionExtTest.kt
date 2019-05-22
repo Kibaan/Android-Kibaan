@@ -99,23 +99,4 @@ class CollectionExtTest {
         sorted = list.sorted { lhs, rhs -> lhs >= rhs }
         assertArrayEquals(arrayOf(5, 5, 4, 3, 2, 1), sorted.toTypedArray())
     }
-
-    @Test
-    fun reduce() {
-        val intList = listOf(2, 5, 1)
-        assertEquals(8, intList.reduce(0) { acc, i ->
-            acc + i
-        })
-        assertEquals(8, intList.reduce(0, Int::plus))
-
-        val stringList = listOf("あ", "い", "う")
-        assertEquals("あいう", stringList.reduce("", String::plus))
-        assertEquals("251", intList.reduce("", String::plus))
-
-        val listList = listOf(listOf("あ", "い", "う"), listOf("え", "お"))
-        assertArrayEquals(arrayOf("あ", "い", "う", "え", "お"), listList.reduce(listOf<String>(), { acc, s ->
-            acc + s
-        }).toTypedArray())
-    }
-
 }
