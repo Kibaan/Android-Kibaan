@@ -72,6 +72,10 @@
         <attr name="highlightedTextColor" format="color" />
         <attr name="selectedTextColor" format="color" />
         <attr name="disabledTextColor" format="color" />
+        <attr name="defaultImage" format="reference" />
+        <attr name="highlightedImage" format="reference" />
+        <attr name="selectedImage" format="reference" />
+        <attr name="disabledImage" format="reference" />
     </declare-styleable>
 
     <!-- SmartButton -->

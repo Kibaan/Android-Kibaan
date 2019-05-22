@@ -8,6 +8,7 @@ import androidx.appcompat.widget.AppCompatButton
 import android.util.AttributeSet
 import android.util.TypedValue
 import kibaan.android.R
+import kibaan.android.extension.getBitmapOrNull
 import kibaan.android.extension.getUIColorOrNull
 import kibaan.android.util.min
 
@@ -53,6 +54,30 @@ open class UIButton : AppCompatButton {
             updateTextColor()
         }
 
+    var defaultImage: Bitmap? = null
+        set(value) {
+            field = value
+            setImageBitmap(bitmap = value, state = UIControlState.normal.rawValue)
+        }
+
+    var highlightedImage: Bitmap? = null
+        set(value) {
+            field = value
+            setImageBitmap(bitmap = value, state = UIControlState.highLighted.rawValue)
+        }
+
+    var selectedImage: Bitmap? = null
+        set(value) {
+            field = value
+            setImageBitmap(bitmap = value, state = UIControlState.selected.rawValue)
+        }
+
+    var disabledImage: Bitmap? = null
+        set(value) {
+            field = value
+            setImageBitmap(bitmap = value, state = UIControlState.disabled.rawValue)
+        }
+
     private var isLayoutCompleted = false
 
     /** 横幅に合わせたフォントサイズ縮小前のフォントサイズ */
@@ -93,9 +118,11 @@ open class UIButton : AppCompatButton {
     constructor(context: Context) : super(context) {
         setupUIButton(context)
     }
+
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         setupUIButton(context, attrs)
     }
+
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         setupUIButton(context, attrs)
     }
@@ -110,6 +137,12 @@ open class UIButton : AppCompatButton {
             highlightedTextColor = array.getUIColorOrNull(R.styleable.UIButton_highlightedTextColor)
             selectedTextColor = array.getUIColorOrNull(R.styleable.UIButton_selectedTextColor)
             disabledTextColor = array.getUIColorOrNull(R.styleable.UIButton_disabledTextColor)
+
+            defaultImage = array.getBitmapOrNull(R.styleable.UIButton_defaultImage)
+            highlightedImage = array.getBitmapOrNull(R.styleable.UIButton_highlightedImage)
+            selectedImage = array.getBitmapOrNull(R.styleable.UIButton_selectedImage)
+            disabledImage = array.getBitmapOrNull(R.styleable.UIButton_disabledImage)
+
             array.recycle()
         }
     }
@@ -150,7 +183,10 @@ open class UIButton : AppCompatButton {
     }
 
     fun setImage(@DrawableRes imageId: Int, state: Int) {
-        val bitmap = BitmapFactory.decodeResource(resources, imageId)
+        setImageBitmap(BitmapFactory.decodeResource(resources, imageId), state = state)
+    }
+
+    fun setImageBitmap(bitmap: Bitmap?, state: Int) {
         imageMap[state] = bitmap
         invalidate()
     }

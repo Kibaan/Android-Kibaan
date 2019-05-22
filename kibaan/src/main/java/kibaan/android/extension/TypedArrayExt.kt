@@ -1,6 +1,8 @@
 package kibaan.android.extension
 
 import android.content.res.TypedArray
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import kibaan.android.ios.UIColor
 
@@ -16,4 +18,15 @@ fun TypedArray.getStringOrNull(id: Int): String? {
  */
 fun TypedArray.getUIColorOrNull(id: Int): UIColor? {
     return if (hasValue(id)) UIColor(getColor(id, Color.BLACK)) else null
+}
+
+/**
+ * 引数にしていた属性が存在する場合はBitmapとして取得し、存在しない場合はnullを返す.
+ */
+fun TypedArray.getBitmapOrNull(id: Int): Bitmap? {
+    return if (hasValue(id)) {
+        BitmapFactory.decodeResource(resources, getResourceId(id, -1))
+    } else {
+        null
+    }
 }
