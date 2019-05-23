@@ -12,8 +12,10 @@ class FontUtils {
         @Suppress("NAME_SHADOWING")
         fun adjustTextSize(text: String, baseTextSize: Float, width: Int, typeface: Typeface?, minSize: Float): Float {
 
-            // ドットとスペースのサイズが実際より小さく計算されてしまう場合があるため、Aに置換して幅に余裕を持たせる（暫定対応）
-            val text = text.replace('.', 'A').replace(' ', 'A')
+            // FIXME: ドットとスペースのサイズが実際より小さく計算されてしまう場合がある
+            // ただし、下記のリプレースを行うと幅が"WrapContent"の場合に、'.'か' 'が含まれていると実際のサイズよりも文字幅が大きいと見なされてしまい、
+            // 無条件でフォントサイズが縮小されてしまう為、処理をはずした
+            // val text = text.replace('.', 'A').replace(' ', 'A')
 
             var textSize = baseTextSize
 

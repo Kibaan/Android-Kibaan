@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.util.AttributeSet
 import android.util.TypedValue
+import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import kibaan.android.R
 import kibaan.android.extension.*
@@ -94,6 +95,12 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
             textFrameWidth = textFrameWidth,
             typeface = typeface
         )
+    /** WidthがWrapContentかどうか */
+    private val isWrapContent: Boolean
+        get() {
+            val layoutParams = this.layoutParams ?: return false
+            return layoutParams.width == ViewGroup.LayoutParams.WRAP_CONTENT
+        }
 
     var textColor: UIColor?
         get() {
@@ -124,6 +131,7 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
         var fontSizeUnit = SmartFontProtocol.defaultFontSizeUnit
         var isBold = false
         var adjustsFontSizeForDevice = this.adjustsFontSizeForDevice
+        var adjustsFontSizeForWidth = this.adjustsFontSizeForWidth
         var useGlobalFont = this.useGlobalFont
         if (attrs != null) {
             val array = context.obtainStyledAttributes(attrs, R.styleable.SmartLabel)
@@ -157,6 +165,7 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
         // 設定前に実行すると"didSet"で"updateFont"が呼ばれ、設定前のtextSizeで上書きされてしまう為（XMLに指定した値が無視される）
         this.adjustsFontSizeForDevice = adjustsFontSizeForDevice
         this.useGlobalFont = useGlobalFont
+        this.adjustsFontSizeForWidth = adjustsFontSizeForWidth
 
         setOnTouchListener { _, _ ->
             return@setOnTouchListener !isUserInteractionEnabled
@@ -191,6 +200,9 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
         isLayoutCompleted = true
+        if (text.toString().hasPrefix("+6円")) {
+            System.out.println("@@@@ onLayout!!")
+        }
         resizeFontForWidth()
     }
 
@@ -199,7 +211,15 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
      */
     override fun onTextChanged(text: CharSequence, start: Int, lengthBefore: Int, lengthAfter: Int) {
         super.onTextChanged(text, start, lengthBefore, lengthAfter)
-        resizeFontForWidth()
+
+        if (adjustsFontSizeForWidth && isWrapContent && !isInEditMode) {
+            // テキストが変わったらWrapContentの場合は、一度フォントサイズをリセットする必要がある
+            if (fontCalculatedSnapshot == null || fontCalculatedSnapshot != stateSnapshot) {
+                super.setTextSize(TypedValue.COMPLEX_UNIT_PX, rawTextSizePx)
+            }
+        } else {
+            resizeFontForWidth()
+        }
     }
 
     // endregion
@@ -216,6 +236,9 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
                 text = text.toString(), baseTextSize = rawTextSizePx,
                 width = textFrameWidth, typeface = typeface, minSize = autoResizeMinTextSize
             )
+            if (text.toString().hasPrefix("+6円")) {
+                System.out.println("@@@@ rawTextSizePx = $rawTextSizePx, size = $size, textFrameWidth = $textFrameWidth")
+            }
             super.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
             fontCalculatedSnapshot = stateSnapshot
         }
@@ -267,15 +290,14 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
 
     private fun updateFont() {
         val convertedFont = convertFont(originalFont) ?: return
-        rawTextSizePx = convertedFont.pointSize.toFloat()
-
-        val pointSize = if (convertedFont.sizeUnit == FontSizeUnit.sp) {
+        val pxSize = if (convertedFont.sizeUnit == FontSizeUnit.sp) {
             context.spToPx(convertedFont.pointSize)
         } else {
             context.dpToPx(convertedFont.pointSize)
         }.toFloat()
+        rawTextSizePx = pxSize
 
-        super.setTextSize(TypedValue.COMPLEX_UNIT_PX, pointSize)
+        super.setTextSize(TypedValue.COMPLEX_UNIT_PX, pxSize)
         typeface = convertedFont.typeface
     }
 

@@ -395,13 +395,14 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
 
     private fun updateFont() {
         val convertedFont = convertFont(originalFont) ?: return
-        val pointSize = if (convertedFont.sizeUnit == FontSizeUnit.sp) {
+        val pxSize = if (convertedFont.sizeUnit == FontSizeUnit.sp) {
             context.spToPx(convertedFont.pointSize)
         } else {
             context.dpToPx(convertedFont.pointSize)
         }.toFloat()
+        rawTextSizePx = pxSize
 
-        super.setTextSize(TypedValue.COMPLEX_UNIT_PX, pointSize)
+        super.setTextSize(TypedValue.COMPLEX_UNIT_PX, pxSize)
         typeface = convertedFont.typeface
     }
 

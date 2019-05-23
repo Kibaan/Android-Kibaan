@@ -7,6 +7,7 @@ import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatButton
 import android.util.AttributeSet
 import android.util.TypedValue
+import android.view.ViewGroup
 import kibaan.android.R
 import kibaan.android.extension.getBitmapOrNull
 import kibaan.android.extension.getUIColorOrNull
@@ -102,6 +103,13 @@ open class UIButton : AppCompatButton {
     private val textFrameWidth: Int
         get() = width - (paddingLeft + paddingRight)
 
+    /** WidthがWrapContentかどうか */
+    private val isWrapContent: Boolean
+        get() {
+            val layoutParams = this.layoutParams ?: return false
+            return layoutParams.width == ViewGroup.LayoutParams.WRAP_CONTENT
+        }
+
     private val stateSnapshot: StateSnapshot
         get() = StateSnapshot(
             text = text,
@@ -157,7 +165,15 @@ open class UIButton : AppCompatButton {
 
     override fun onTextChanged(text: CharSequence?, start: Int, lengthBefore: Int, lengthAfter: Int) {
         super.onTextChanged(text, start, lengthBefore, lengthAfter)
-        resizeFontForWidth()
+
+        if (adjustsFontSizeForWidth && isWrapContent && !isInEditMode) {
+            // テキストが変わったらWrapContentの場合は、一度フォントサイズをリセットする必要がある
+            if (fontCalculatedSnapshot == null || fontCalculatedSnapshot != stateSnapshot) {
+                super.setTextSize(TypedValue.COMPLEX_UNIT_PX, rawTextSizePx)
+            }
+        } else {
+            resizeFontForWidth()
+        }
     }
 
     fun setTitleColor(color: UIColor?, forState: UIControlState) {
