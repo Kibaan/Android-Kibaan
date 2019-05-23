@@ -106,6 +106,8 @@ class NSDecimalNumberTest {
     fun testStatic() {
         assertEquals("0", NSDecimalNumber.zero.stringValue)
         assertEquals("1", NSDecimalNumber.one.stringValue)
+        assertEquals(Long.MAX_VALUE.stringValue, NSDecimalNumber.maximum.stringValue)
+        assertEquals(Long.MIN_VALUE.stringValue, NSDecimalNumber.minimum.stringValue)
     }
 
     @Test

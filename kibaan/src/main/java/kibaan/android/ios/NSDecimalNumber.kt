@@ -16,6 +16,14 @@ class NSDecimalNumber : Comparable<NSDecimalNumber> {
          */
         val one = NSDecimalNumber(1)
         /**
+         * FIXME: 値が"Long.MAX_VALUE"（DoubleでNegativeValueがない為）
+         */
+        val maximum = NSDecimalNumber(Long.MAX_VALUE)
+        /**
+         * FIXME: 値が"Long.MAX_VALUE"（DoubleでNegativeValueがない為）
+         */
+        val minimum = NSDecimalNumber(Long.MIN_VALUE)
+        /**
          * 値が"null"のインスタンス
          */
         val notANumber = NSDecimalNumber(null)
