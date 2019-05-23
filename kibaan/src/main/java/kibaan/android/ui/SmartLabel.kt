@@ -7,11 +7,11 @@ import android.graphics.Typeface
 import androidx.appcompat.widget.AppCompatTextView
 import android.util.AttributeSet
 import android.util.TypedValue
-import kibaan.android.ios.CGFloat
-import kibaan.android.ios.FontUtils
-import kibaan.android.ios.UIColor
-import kibaan.android.ios.UIFont
 import kibaan.android.R
+import kibaan.android.extension.getStringOrNull
+import kibaan.android.extension.isTrue
+import kibaan.android.ios.*
+import kibaan.android.util.DeviceUtils
 
 /**
  * 共通テキストラベル
@@ -52,6 +52,14 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
             super.setMaxLines(if (adjustsFontSizeForWidth) 1 else rawMaxLines)
             resizeFontForWidth()
         }
+    /** フォント */
+    var font: UIFont
+        get() = originalFont
+        set(value) {
+            originalFont = value
+            isBold = value.isBold
+        }
+
     /** 太字かどうか */
     var isBold: Boolean = false
         set(value) {
@@ -72,7 +80,7 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
         }
 
     /** 端末サイズによるフォントサイズ調整とSmartContextのglobalFontを反映する前のフォント */
-    private var originalFont: UIFont = UIFont(typeface, textSize.toDouble())
+    private var originalFont: UIFont = UIFont(typeface, 17.0) // デフォルトで指定しているUIFontはコンストラクタで上書きされる為、使用されない
         set(value) {
             field = value
             updateFont()
@@ -102,38 +110,53 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
     // region -> Constructor
 
     constructor(context: Context) : super(context) {
-        setup(context)
+        commonInit(context)
     }
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        setup(context, attrs)
+        commonInit(context, attrs)
     }
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        setup(context, attrs)
+        commonInit(context, attrs)
     }
 
-    private fun setup(context: Context, attrs: AttributeSet? = null) {
+    private fun commonInit(context: Context, attrs: AttributeSet? = null) {
         // プロパティの読み込み
+        var fontSizeUnit = FontSizeUnit.sp
+        var isBold = false
+        var adjustsFontSizeForDevice = this.adjustsFontSizeForDevice
+        var useGlobalFont = this.useGlobalFont
         if (attrs != null) {
             val array = context.obtainStyledAttributes(attrs, R.styleable.SmartLabel)
             cornerRadius = array.getDimensionPixelOffset(R.styleable.SmartLabel_cornerRadius, 0)
             borderColor = UIColor(array.getColor(R.styleable.SmartLabel_borderColor, Color.TRANSPARENT))
             borderWidth = array.getDimensionPixelOffset(R.styleable.SmartLabel_borderWidth, 0).toDouble()
-            isUserInteractionEnabled =
-                    array.getBoolean(R.styleable.SmartLabel_isUserInteractionEnabled, isUserInteractionEnabled)
-
-            adjustsFontSizeForWidth =
-                    array.getBoolean(R.styleable.SmartLabel_adjustsFontSizeForWidth, adjustsFontSizeForWidth)
-            adjustsFontSizeForDevice =
-                    array.getBoolean(R.styleable.SmartLabel_adjustsFontSizeForDevice, adjustsFontSizeForDevice)
+            isUserInteractionEnabled = array.getBoolean(R.styleable.SmartLabel_isUserInteractionEnabled, isUserInteractionEnabled)
+            adjustsFontSizeForWidth = array.getBoolean(R.styleable.SmartLabel_adjustsFontSizeForWidth, adjustsFontSizeForWidth)
+            adjustsFontSizeForDevice = array.getBoolean(R.styleable.SmartLabel_adjustsFontSizeForDevice, adjustsFontSizeForDevice)
             useGlobalFont = array.getBoolean(R.styleable.SmartLabel_useGlobalFont, useGlobalFont)
 
+            // textSizeの指定が"dp"か判定（指定がない場合は"sp"扱いとする）
+            if (array.getStringOrNull(R.styleable.SmartLabel_android_textSize)?.hasSuffix("dp").isTrue) {
+                fontSizeUnit = FontSizeUnit.dp
+            }
             // android:textStyleがある場合はそちらを優先、なければisBoldを反映
             val textStyle = array.getInt(R.styleable.SmartLabel_android_textStyle, 0)
             isBold = (0 < textStyle and textStyleBold)
             array.recycle()
         }
+        val textPointSize = if (fontSizeUnit == FontSizeUnit.sp) DeviceUtils.toSp(context, textSize.toInt()) else DeviceUtils.toDp(context, textSize.toInt())
+        originalFont = if (isBold) {
+            UIFont.boldSystemFont(textPointSize.toDouble(), fontSizeUnit)
+        } else {
+            UIFont.systemFont(textPointSize.toDouble(), fontSizeUnit)
+        }
+        // 以下の処理はデフォルトの"originalFont"が設定された後に実行する必要がある
+        // 設定前に実行すると"didSet"で"updateFont"が呼ばれ、設定前のtextSizeで上書きされてしまう為（XMLに指定した値が無視される）
+        this.adjustsFontSizeForDevice = adjustsFontSizeForDevice
+        this.useGlobalFont = useGlobalFont
+
         setOnTouchListener { _, _ ->
             return@setOnTouchListener !isUserInteractionEnabled
         }
@@ -144,9 +167,11 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
         setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
     }
 
+    @Deprecated("Use font instead.")
     override fun setTextSize(unit: Int, size: Float) {
         super.setTextSize(unit, size)
-        setOriginalFontSize(size = textSize.toDouble())
+        val pointSize = if (unit == TypedValue.COMPLEX_UNIT_PX) DeviceUtils.toSp(context, size.toInt()) else size
+        setOriginalFontSize(size = pointSize.toDouble())
     }
 
     private fun setOriginalFontSize(size: CGFloat) {
@@ -242,7 +267,14 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
     private fun updateFont() {
         val convertedFont = convertFont(originalFont) ?: return
         rawTextSizePx = convertedFont.pointSize.toFloat()
-        super.setTextSize(TypedValue.COMPLEX_UNIT_PX, convertedFont.pointSize.toFloat())
+
+        val pointSize = if (convertedFont.sizeUnit == FontSizeUnit.sp) {
+            DeviceUtils.toPx(context, sp = convertedFont.pointSize.toFloat())
+        } else {
+            DeviceUtils.toPx(context, dp = convertedFont.pointSize)
+        }.toFloat()
+
+        super.setTextSize(TypedValue.COMPLEX_UNIT_PX, pointSize)
         typeface = convertedFont.typeface
     }
 

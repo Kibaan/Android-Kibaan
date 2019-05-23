@@ -11,7 +11,9 @@ import android.view.View
 import androidx.databinding.BindingAdapter
 import kibaan.android.R
 import kibaan.android.extension.getStringOrNull
+import kibaan.android.extension.isTrue
 import kibaan.android.ios.*
+import kibaan.android.util.DeviceUtils
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -44,6 +46,14 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
     /** 長押しの繰り返し用タイマー */
     private var repeatTimer: Timer? = null
 
+    /** フォント */
+    var font: UIFont
+        get() = originalFont
+        set(value) {
+            originalFont = value
+            isBold = value.isBold
+        }
+
     /** 太字かどうか */
     var isBold: Boolean = false
         set(value) {
@@ -64,7 +74,7 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
         }
 
     /** 端末サイズによるフォントサイズ調整とSmartContextのglobalFontを反映する前のフォント */
-    private var originalFont: UIFont = UIFont(typeface, textSize.toDouble())
+    private var originalFont: UIFont = UIFont(typeface, 17.0) // デフォルトで指定しているUIFontはコンストラクタで上書きされる為、使用されない
         set(value) {
             field = value
             updateFont()
@@ -145,23 +155,27 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
     // region -> Constructor
 
     constructor(context: Context) : super(context) {
-        setup(context)
+        commonInit(context)
     }
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        setup(context, attrs)
+        commonInit(context, attrs)
     }
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        setup(context, attrs)
+        commonInit(context, attrs)
     }
 
     // endregion
 
     // region -> Initializer
 
-    private fun setup(context: Context, attrs: AttributeSet? = null) {
+    private fun commonInit(context: Context, attrs: AttributeSet? = null) {
         // プロパティの読み込み
+        var fontSizeUnit = FontSizeUnit.sp
+        var isBold = false
+        var adjustsFontSizeForDevice = this.adjustsFontSizeForDevice
+        var useGlobalFont = this.useGlobalFont
         if (attrs != null) {
             val array = context.obtainStyledAttributes(attrs, R.styleable.SmartButton)
             cornerRadius = array.getDimensionPixelOffset(R.styleable.SmartButton_cornerRadius, 0)
@@ -186,8 +200,23 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
             if (array.hasValue(R.styleable.SmartButton_selectedBackgroundColor)) {
                 selectedBackgroundColor = UIColor(array.getColor(R.styleable.SmartButton_selectedBackgroundColor, Color.TRANSPARENT))
             }
+            // textSizeの指定が"dp"か判定（指定がない場合は"sp"扱いとする）
+            if (array.getStringOrNull(R.styleable.SmartLabel_android_textSize)?.hasSuffix("dp").isTrue) {
+                fontSizeUnit = FontSizeUnit.dp
+            }
             array.recycle()
         }
+        val textPointSize = if (fontSizeUnit == FontSizeUnit.sp) DeviceUtils.toSp(context, textSize.toInt()) else DeviceUtils.toDp(context, textSize.toInt())
+        originalFont = if (isBold) {
+            UIFont.boldSystemFont(textPointSize.toDouble(), fontSizeUnit)
+        } else {
+            UIFont.systemFont(textPointSize.toDouble(), fontSizeUnit)
+        }
+        // 以下の処理はデフォルトの"originalFont"が設定された後に実行する必要がある
+        // 設定前に実行すると"didSet"で"updateFont"が呼ばれ、設定前のtextSizeで上書きされてしまう為（XMLに指定した値が無視される）
+        this.adjustsFontSizeForDevice = adjustsFontSizeForDevice
+        this.useGlobalFont = useGlobalFont
+
         setOnTouchListener(this)
     }
 
@@ -304,9 +333,11 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
         setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
     }
 
+    @Deprecated("Use font instead.")
     override fun setTextSize(unit: Int, size: Float) {
         super.setTextSize(unit, size)
-        setOriginalFontSize(textSize.toDouble())
+        val pointSize = if (unit == TypedValue.COMPLEX_UNIT_PX) DeviceUtils.toSp(context, size.toInt()) else size
+        setOriginalFontSize(pointSize.toDouble())
     }
 
     private fun setOriginalFontSize(size: CGFloat) {
@@ -363,7 +394,13 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
 
     private fun updateFont() {
         val convertedFont = convertFont(originalFont) ?: return
-        super.setTextSize(TypedValue.COMPLEX_UNIT_PX, convertedFont.pointSize.toFloat())
+        val pointSize = if (convertedFont.sizeUnit == FontSizeUnit.sp) {
+            DeviceUtils.toPx(context, sp = convertedFont.pointSize.toFloat())
+        } else {
+            DeviceUtils.toPx(context, dp = convertedFont.pointSize)
+        }.toFloat()
+
+        super.setTextSize(TypedValue.COMPLEX_UNIT_PX, pointSize)
         typeface = convertedFont.typeface
     }
 

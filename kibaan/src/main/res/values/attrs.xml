@@ -63,7 +63,9 @@
         <attr name="adjustsFontSizeForWidth" />
         <attr name="adjustsFontSizeForDevice" />
         <attr name="useGlobalFont" />
+
         <attr name="android:textStyle" />
+        <attr name="android:textSize" />
     </declare-styleable>
 
     <!-- UIButton -->
@@ -96,6 +98,8 @@
         <attr name="iconRightInset" format="float" />
         <attr name="iconAspectRatio" format="float" />
         <attr name="selectedBackgroundColor" format="color" />
+
+        <attr name="android:textSize" />
     </declare-styleable>
 
     <!-- SmartTextView -->

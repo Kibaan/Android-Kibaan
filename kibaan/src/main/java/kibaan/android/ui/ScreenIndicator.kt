@@ -3,12 +3,12 @@ package kibaan.android.ui
 import android.R
 import android.content.Context
 import android.util.AttributeSet
-import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import kibaan.android.ios.UIColor
+import kibaan.android.ios.UIFont
 import kibaan.android.ios.backgroundColor
 import kibaan.android.util.DeviceUtils
 
@@ -51,7 +51,7 @@ class ScreenIndicator : RelativeLayout {
         // ラベルを追加
         label = SmartLabel(context)
         label.textColor = UIColor.white
-        label.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20.0f)
+        label.font = UIFont.systemFont(20.0)
 
         val labelParams = RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
         labelParams.addRule(RelativeLayout.CENTER_IN_PARENT)

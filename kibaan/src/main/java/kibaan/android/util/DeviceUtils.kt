@@ -6,6 +6,9 @@ import android.graphics.Rect
 import android.os.Build
 import android.view.Window
 import android.view.WindowManager
+import android.util.TypedValue
+
+
 
 object DeviceUtils {
 
@@ -31,8 +34,16 @@ object DeviceUtils {
         return (dp * context.resources.displayMetrics.density).toInt()
     }
 
-    fun toDp(context: Context, px: Int): Int {
-        return (px / context.resources.displayMetrics.density).toInt()
+    fun toDp(context: Context, px: Int): Float {
+        return (px / context.resources.displayMetrics.density)
+    }
+
+    fun toSp(context: Context, px: Int): Float {
+        return px / context.resources.displayMetrics.scaledDensity
+    }
+
+    fun toPx(context: Context, sp: Float): Int {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.resources.displayMetrics).toInt()
     }
 
     /**

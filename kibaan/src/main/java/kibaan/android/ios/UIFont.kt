@@ -3,7 +3,7 @@ package kibaan.android.ios
 import android.graphics.Typeface
 import kibaan.android.extension.isTrue
 
-class UIFont(val typeface: Typeface?, val pointSize: CGFloat) {
+class UIFont(val typeface: Typeface?, val pointSize: CGFloat, val sizeUnit: FontSizeUnit = FontSizeUnit.sp) {
 
     val isBold: Boolean get() = typeface?.isBold.isTrue
 
@@ -14,12 +14,16 @@ class UIFont(val typeface: Typeface?, val pointSize: CGFloat) {
     }
 
     companion object {
-        fun boldSystemFont(ofSize: CGFloat): UIFont {
-            return UIFont(Typeface.DEFAULT_BOLD, ofSize)
+        fun boldSystemFont(ofSize: CGFloat, sizeUnit: FontSizeUnit = FontSizeUnit.sp): UIFont {
+            return UIFont(Typeface.DEFAULT_BOLD, ofSize, sizeUnit)
         }
 
-        fun systemFont(ofSize: CGFloat): UIFont {
-            return UIFont(Typeface.DEFAULT, ofSize)
+        fun systemFont(ofSize: CGFloat, sizeUnit: FontSizeUnit = FontSizeUnit.sp): UIFont {
+            return UIFont(Typeface.DEFAULT, ofSize, sizeUnit)
         }
     }
+}
+
+enum class FontSizeUnit {
+    sp, dp
 }
