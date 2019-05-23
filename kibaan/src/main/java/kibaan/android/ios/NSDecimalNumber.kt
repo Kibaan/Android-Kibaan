@@ -117,31 +117,31 @@ class NSDecimalNumber : Comparable<NSDecimalNumber> {
     /**
      * NSDecimalNumber型で指定された数値を掛けた結果を返す
      */
-    fun multiplying(decimalNumber: NSDecimalNumber): NSDecimalNumber {
+    fun multiplying(by: NSDecimalNumber): NSDecimalNumber {
         val bigDecimal = bigDecimal ?: return this
-        return NSDecimalNumber(bigDecimal.multiply(decimalNumber.bigDecimal))
+        return NSDecimalNumber(bigDecimal.multiply(by.bigDecimal))
     }
 
     /**
      * Int型で指定された数値を掛けた結果を返す
      */
-    fun multiplying(value: Int): NSDecimalNumber {
-        return multiplying(NSDecimalNumber(value))
+    fun multiplying(by: Int): NSDecimalNumber {
+        return multiplying(NSDecimalNumber(by))
     }
 
     /**
      * NSDecimalNumber型で指定された数値で割った結果を返す
      */
-    fun dividing(decimalNumber: NSDecimalNumber): NSDecimalNumber {
+    fun dividing(by: NSDecimalNumber): NSDecimalNumber {
         val bigDecimal = bigDecimal ?: return this
-        return NSDecimalNumber(bigDecimal.divide(decimalNumber.bigDecimal, MathContext(38, RoundingMode.HALF_EVEN)))
+        return NSDecimalNumber(bigDecimal.divide(by.bigDecimal, MathContext(38, RoundingMode.HALF_EVEN)))
     }
 
     /**
      * Int型で指定された数値で割った結果を返す
      */
-    fun dividing(value: Int): NSDecimalNumber {
-        return dividing(NSDecimalNumber(value))
+    fun dividing(by: Int): NSDecimalNumber {
+        return dividing(NSDecimalNumber(by))
     }
 
     /**
