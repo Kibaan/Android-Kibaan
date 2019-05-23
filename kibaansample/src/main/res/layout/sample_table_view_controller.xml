@@ -21,6 +21,21 @@
         app:layout_constraintLeft_toLeftOf="parent"
     />
 
+    <kibaan.android.ui.SmartButton
+        android:id="@+id/scrollToRowButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cornerRadius="6dp"
+        android:background="#777777"
+        android:text="ScrollToRow"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/changeButton"
+    />
+
     <kibaan.android.ui.SmartTextView
         android:id="@+id/count_text"
         android:layout_width="wrap_content"

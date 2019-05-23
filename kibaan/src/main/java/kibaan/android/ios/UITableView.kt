@@ -11,10 +11,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import kibaan.android.extension.toSnakeCase
 import kibaan.android.R
+import kibaan.android.extension.dpToPx
 import kibaan.android.ui.TouchLock
 import kibaan.android.util.DeviceUtils
+import java.lang.IllegalStateException
 import kotlin.reflect.KClass
 
 val UITableViewAutomaticDimension: CGFloat = Double.MIN_VALUE
@@ -25,9 +28,11 @@ open class UITableView : FrameLayout {
     // region -> IBInspectable
 
     /** 一覧が選択可能かどうか */
-    @IBInspectable var allowsSelection: Boolean = true
+    @IBInspectable
+    var allowsSelection: Boolean = true
     /** 罫線の色 */
-    @IBInspectable open var separatorColor: Int = Color.BLACK
+    @IBInspectable
+    open var separatorColor: Int = Color.BLACK
         set(value) {
             field = value
             (0 until recyclerView.itemDecorationCount).mapNotNull { recyclerView.getItemDecorationAt(it) as? androidx.recyclerview.widget.DividerItemDecoration }.forEach {
@@ -66,7 +71,7 @@ open class UITableView : FrameLayout {
     /** セクション内フッターの高さ */
     var sectionFooterHeight: CGFloat? = null
     // TODO:sectionHeaderHeightを追加
-    
+
     /** スクロール可能かどうか */
     var isScrollEnabled = true
     /** アクセサリ（チェックマーク、横矢印）などの色 */
@@ -266,6 +271,18 @@ open class UITableView : FrameLayout {
         return adapter?.indexPathBy(position)
     }
 
+    fun scrollToRow(indexPath: IndexPath, scrollPosition: ScrollPosition) {
+        val linearLayoutManager = recyclerView.layoutManager as? LinearLayoutManager ?: return
+        val position = adapter?.positionBy(indexPath) ?: return
+        val rowHeight = rowHeight ?: throw IllegalStateException("must specify a rowHeight.")
+        val offset = when (scrollPosition) {
+            ScrollPosition.middle -> context.dpToPx(rowHeight / 2)
+            ScrollPosition.top -> context.dpToPx(rowHeight)
+            else -> 0
+        }
+        linearLayoutManager.scrollToPositionWithOffset(position, offset)
+    }
+
     // endregion
 
     // region -> Other
@@ -275,4 +292,8 @@ open class UITableView : FrameLayout {
     }
 
     // endregion
+
+    enum class ScrollPosition : IntEnumDefault {
+        none, top, middle, bottom
+    }
 }

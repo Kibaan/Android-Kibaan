@@ -2,7 +2,12 @@ package kibaan.android.sample.screen.table
 
 import android.content.Context
 import android.util.AttributeSet
+import kibaan.android.extension.stringValue
+import kibaan.android.ios.IBOutlet
 import kibaan.android.ios.UITableViewCell
+import kibaan.android.ios.didSet
+import kibaan.android.sample.R
+import kibaan.android.ui.SmartLabel
 
 class SampleTableViewCell : UITableViewCell {
 
@@ -14,6 +19,12 @@ class SampleTableViewCell : UITableViewCell {
 
     // endregion
 
+    // region -> Outlets
+
+    @IBOutlet(R.id.indexLabel) lateinit var indexLabel: SmartLabel
+
+    // endregion
+
     // region -> Initializer
 
     init {
@@ -21,4 +32,8 @@ class SampleTableViewCell : UITableViewCell {
     }
 
     // endregion
+
+    var index: Int by didSet(0) {
+        indexLabel.text = index.stringValue
+    }
 }

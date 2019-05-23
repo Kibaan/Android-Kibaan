@@ -66,6 +66,11 @@ class SampleTableViewController : SmartViewController(), UITableViewDataSource, 
         tableView.showNoDataLabel(dataCount == 0)
     }
 
+    @IBAction(R.id.scrollToRowButton)
+    fun actionScrollToRowButton(sender: View) {
+        tableView.scrollToRow(IndexPath(0, 20), UITableView.ScrollPosition.middle)
+    }
+
     // endregion
 
     // region -> UITableViewDataSource
@@ -107,6 +112,7 @@ class SampleTableViewController : SmartViewController(), UITableViewDataSource, 
     override fun cellForRow(tableView: UITableView, indexPath: IndexPath): View {
         val tableView = tableView as? SmartTableView ?: return UITableViewCell(tableView.context)
         val cell = tableView.registeredCell(indexPath, SampleTableViewCell::class)
+        cell.index = indexPath.row
         return cell
     }
 
