@@ -6,8 +6,7 @@ import android.graphics.Rect
 import android.os.Build
 import android.view.Window
 import android.view.WindowManager
-import android.util.TypedValue
-
+import kibaan.android.extension.dpToPx
 
 
 object DeviceUtils {
@@ -26,24 +25,14 @@ object DeviceUtils {
         return longLengthPX(context) * rate
     }
 
+    @Deprecated("Use context.dpToPx instead.", ReplaceWith("context.dpToPx(dp)", "kibaan.android.extension.dpToPx"))
     fun toPx(context: Context, dp: Int): Int {
-        return (dp * context.resources.displayMetrics.density).toInt()
+        return context.dpToPx(dp)
     }
 
+    @Deprecated("Use context.dpToPx instead.", ReplaceWith("context.dpToPx(dp)", "kibaan.android.extension.dpToPx"))
     fun toPx(context: Context, dp: Double): Int {
-        return (dp * context.resources.displayMetrics.density).toInt()
-    }
-
-    fun toDp(context: Context, px: Int): Float {
-        return (px / context.resources.displayMetrics.density)
-    }
-
-    fun toSp(context: Context, px: Int): Float {
-        return px / context.resources.displayMetrics.scaledDensity
-    }
-
-    fun toPx(context: Context, sp: Float): Int {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.resources.displayMetrics).toInt()
+        return context.dpToPx(dp)
     }
 
     /**

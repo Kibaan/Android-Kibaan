@@ -4,14 +4,12 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Typeface
-import androidx.appcompat.widget.AppCompatTextView
 import android.util.AttributeSet
 import android.util.TypedValue
+import androidx.appcompat.widget.AppCompatTextView
 import kibaan.android.R
-import kibaan.android.extension.getStringOrNull
-import kibaan.android.extension.isTrue
+import kibaan.android.extension.*
 import kibaan.android.ios.*
-import kibaan.android.util.DeviceUtils
 
 /**
  * 共通テキストラベル
@@ -61,10 +59,10 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
         }
 
     /** 太字かどうか */
-    var isBold: Boolean = false
+    var isBold: Boolean
+        get() = originalFont.isBold
         set(value) {
-            field = value
-            setOriginalFontSize(size = originalFont.pointSize)
+            setOriginalFontSize(size = originalFont.pointSize, isBold = value)
         }
 
     override var adjustsFontSizeForDevice: Boolean = false
@@ -123,7 +121,7 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
 
     private fun commonInit(context: Context, attrs: AttributeSet? = null) {
         // プロパティの読み込み
-        var fontSizeUnit = FontSizeUnit.sp
+        var fontSizeUnit = SmartFontProtocol.defaultFontSizeUnit
         var isBold = false
         var adjustsFontSizeForDevice = this.adjustsFontSizeForDevice
         var useGlobalFont = this.useGlobalFont
@@ -137,16 +135,19 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
             adjustsFontSizeForDevice = array.getBoolean(R.styleable.SmartLabel_adjustsFontSizeForDevice, adjustsFontSizeForDevice)
             useGlobalFont = array.getBoolean(R.styleable.SmartLabel_useGlobalFont, useGlobalFont)
 
-            // textSizeの指定が"dp"か判定（指定がない場合は"sp"扱いとする）
-            if (array.getStringOrNull(R.styleable.SmartLabel_android_textSize)?.hasSuffix("dp").isTrue) {
+            // textSize単位の指定
+            val textSizeAttribute = array.getStringOrNull(R.styleable.SmartLabel_android_textSize)
+            if (textSizeAttribute?.hasSuffix("dip").isTrue) {
                 fontSizeUnit = FontSizeUnit.dp
+            } else if (textSizeAttribute?.hasSuffix("sp").isTrue) {
+                fontSizeUnit = FontSizeUnit.sp
             }
             // android:textStyleがある場合はそちらを優先、なければisBoldを反映
             val textStyle = array.getInt(R.styleable.SmartLabel_android_textStyle, 0)
             isBold = (0 < textStyle and textStyleBold)
             array.recycle()
         }
-        val textPointSize = if (fontSizeUnit == FontSizeUnit.sp) DeviceUtils.toSp(context, textSize.toInt()) else DeviceUtils.toDp(context, textSize.toInt())
+        val textPointSize = if (fontSizeUnit == FontSizeUnit.sp) context.pxToSp(textSize) else context.pxToDp(textSize)
         originalFont = if (isBold) {
             UIFont.boldSystemFont(textPointSize.toDouble(), fontSizeUnit)
         } else {
@@ -170,11 +171,11 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
     @Deprecated("Use font instead.")
     override fun setTextSize(unit: Int, size: Float) {
         super.setTextSize(unit, size)
-        val pointSize = if (unit == TypedValue.COMPLEX_UNIT_PX) DeviceUtils.toSp(context, size.toInt()) else size
-        setOriginalFontSize(size = pointSize.toDouble())
+        val pointSize = if (unit == TypedValue.COMPLEX_UNIT_PX) context.pxToSp(size) else size
+        setOriginalFontSize(size = pointSize.toDouble(), isBold = isBold)
     }
 
-    private fun setOriginalFontSize(size: CGFloat) {
+    private fun setOriginalFontSize(size: CGFloat, isBold: Boolean) {
         if (useGlobalFont) {
             originalFont = if (isBold) UIFont.boldSystemFont(ofSize = size) else UIFont.systemFont(ofSize = size)
         }
@@ -269,9 +270,9 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
         rawTextSizePx = convertedFont.pointSize.toFloat()
 
         val pointSize = if (convertedFont.sizeUnit == FontSizeUnit.sp) {
-            DeviceUtils.toPx(context, sp = convertedFont.pointSize.toFloat())
+            context.spToPx(convertedFont.pointSize)
         } else {
-            DeviceUtils.toPx(context, dp = convertedFont.pointSize)
+            context.dpToPx(convertedFont.pointSize)
         }.toFloat()
 
         super.setTextSize(TypedValue.COMPLEX_UNIT_PX, pointSize)

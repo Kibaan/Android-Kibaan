@@ -16,8 +16,8 @@ class UIPageControl : LinearLayout {
 
     // region -> Constants
 
-    private var spacing = DeviceUtils.toDp(context, 70).toInt()
-    private var buttonSize = DeviceUtils.toDp(context, 60).toInt()
+    private var spacing = DeviceUtils.toPx(context, dp = 70)
+    private var buttonSize = DeviceUtils.toPx(context, dp = 60)
     private var defaultNormalColor = UIColor(rgbValue = 0xDEDEDE)
     private var defaultSelectedColor = UIColor(rgbValue = 0x555555)
 

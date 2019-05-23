@@ -5,10 +5,16 @@ import kibaan.android.framework.SmartActivity
 import kibaan.android.ios.CGFloat
 import kibaan.android.ios.UIFont
 import kibaan.android.framework.SingletonContainer
+import kibaan.android.ios.FontSizeUnit
 import kibaan.android.util.DeviceUtils
 
 
 interface SmartFontProtocol {
+
+    companion object {
+        /** デフォルトの文字サイズ単位 */
+        var defaultFontSizeUnit: FontSizeUnit = FontSizeUnit.sp
+    }
 
     /** 端末のサイズに合わせてフォントサイズを自動で調整するか（4.7inch端末を基準とする） */
     var adjustsFontSizeForDevice: Boolean
