@@ -36,4 +36,28 @@ class CGFloatTest {
         val value = 2.3
         Assert.assertEquals(false, value.isNaN)
     }
+
+    @Test
+    fun testInvokeInt() {
+        val value: Int = 1
+        Assert.assertEquals(1.0, CGFloat(value), 1.0)
+    }
+
+    @Test
+    fun testInvokeLong() {
+        val value: Long = 1
+        Assert.assertEquals(1.0, CGFloat(value), 1.0)
+    }
+
+    @Test
+    fun testInvokeFloat() {
+        val value: Float = 1.0f
+        Assert.assertEquals(1.0, CGFloat(value), 1.0)
+    }
+
+    @Test
+    fun testInvokeDouble() {
+        val value: Double = 1.0
+        Assert.assertEquals(1.0, CGFloat(value), 1.0)
+    }
 }

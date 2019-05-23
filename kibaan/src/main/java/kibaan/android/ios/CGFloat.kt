@@ -21,3 +21,19 @@ val Double.Companion.nan: CGFloat get() = Double.NaN
  * A Boolean value indicating whether the instance is NaN ("not a number").
  */
 val Double.isNaN: Boolean get() = isNaN()
+
+operator fun Double.Companion.invoke(value: Int): Double {
+    return value.toDouble()
+}
+
+operator fun Double.Companion.invoke(value: Long): Double {
+    return value.toDouble()
+}
+
+operator fun Double.Companion.invoke(value: Float): Double {
+    return value.toDouble()
+}
+
+operator fun Double.Companion.invoke(value: Double): Double {
+    return value
+}
