@@ -4,6 +4,7 @@ import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
+import android.widget.LinearLayout
 
 /**
  * ViewにiOSのUIViewと似た挙動をさせるためのエクステンション
@@ -22,7 +23,11 @@ var View.intTag: Int
 var View.isHidden: Boolean
     get() = visibility == View.INVISIBLE || visibility == View.GONE
     set(value) {
-        visibility = if (value) View.INVISIBLE else View.VISIBLE
+        visibility = if (value) {
+            if (parent is LinearLayout) View.GONE else View.INVISIBLE
+        } else {
+            View.VISIBLE
+        }
     }
 
 var View.isGone: Boolean
