@@ -31,7 +31,7 @@ open class UIViewController(layoutName: String? = null) {
     }
 
     protected val context: Context
-        get() = view.context
+        get() = privateView.context
 
 
     private lateinit var privateView: ViewGroup
@@ -65,7 +65,7 @@ open class UIViewController(layoutName: String? = null) {
     // OnGlobalLayoutListenerでviewDidAppearを呼び出す
     private val layoutListener: ViewTreeObserver.OnGlobalLayoutListener = object : ViewTreeObserver.OnGlobalLayoutListener {
         override fun onGlobalLayout() {
-            view.viewTreeObserver?.removeOnGlobalLayoutListener(this)
+            privateView.viewTreeObserver?.removeOnGlobalLayoutListener(this)
             viewDidAppear(false)
         }
     }
@@ -98,15 +98,15 @@ open class UIViewController(layoutName: String? = null) {
         //ButterKnifeでbindする
         ButterKnife.bind(this, privateView)
 
-        view.addOnAttachStateChangeListener(attachListener)
-        view.addOnLayoutChangeListener(layoutChangeListener)
+        privateView.addOnAttachStateChangeListener(attachListener)
+        privateView.addOnLayoutChangeListener(layoutChangeListener)
 
         // 裏のViewにタッチが貫通しないようにする
-        view.setOnTouchListener { _, _ -> true }
+        privateView.setOnTouchListener { _, _ -> true }
     }
 
     fun <T : ViewDataBinding> bind(): T? {
-        return DataBindingUtil.bind(view)
+        return DataBindingUtil.bind(privateView)
     }
 
     open fun viewDidLoad() {}
