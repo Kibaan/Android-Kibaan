@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import butterknife.ButterKnife
@@ -24,10 +23,10 @@ open class UIViewController(layoutName: String? = null) {
     companion object {
         // Context（Activity）はstaticに保持する
         @SuppressLint("StaticFieldLeak")
-        private var activity: AppCompatActivity? = null
+        private var globalContext: Context? = null
 
-        fun setActivity(activity: AppCompatActivity?) {
-            Companion.activity = activity
+        fun setGlobalContext(context: Context?) {
+            globalContext = context
         }
     }
 
@@ -35,20 +34,20 @@ open class UIViewController(layoutName: String? = null) {
         get() = view.context
 
 
-    private var _view: ViewGroup? = null
+    private lateinit var privateView: ViewGroup
     val view: ViewGroup
         get() {
-            if (!_isViewLoaded) {
-                _isViewLoaded = true
+            if (!privateIsViewLoaded) {
+                privateIsViewLoaded = true
                 // viewDidLoadは最初にviewが参照されたとき呼び出す
                 viewDidLoad()
             }
-            return _view!!
+            return privateView
         }
 
-    private var _isViewLoaded = false
+    private var privateIsViewLoaded = false
     val isViewLoaded: Boolean
-        get() = _isViewLoaded
+        get() = privateIsViewLoaded
 
     // OnAttachStateChangeListenerでviewWillAppear、viewWillDisappear、viewDidDisappearを呼び出す
     private val attachListener: View.OnAttachStateChangeListener = object : View.OnAttachStateChangeListener {
@@ -77,13 +76,12 @@ open class UIViewController(layoutName: String? = null) {
     }
 
     init {
-        loadLayout(layoutName)
+        val context = globalContext ?: throw IllegalStateException("Context is not set. Call UIViewController.setGlobalContext(Context) before init.")
+        loadLayout(context = context, layoutName = layoutName)
     }
 
     // レイアウトファイルを読み込み、Viewを作成する
-    private fun loadLayout(layoutName: String? = null) {
-
-        val context = activity ?: throw IllegalStateException("Activity is not set. Call UIViewController.setActivity()")
+    private fun loadLayout(context: Context, layoutName: String? = null) {
 
         val layoutName = layoutName ?: javaClass.simpleName
         val resourceName = layoutName.toSnakeCase()
@@ -91,16 +89,14 @@ open class UIViewController(layoutName: String? = null) {
 
         try {
             val loadedView = LayoutInflater.from(context).inflate(layoutId, null, false)
-            _view = loadedView as ViewGroup
+            privateView = loadedView as ViewGroup
         } catch (e: Resources.NotFoundException) {
             Log.e(javaClass.simpleName, "Layout file not found!!! file name is [$resourceName]")
             throw e
         }
 
-        val view = _view ?: return
-
         //ButterKnifeでbindする
-        ButterKnife.bind(this, view)
+        ButterKnife.bind(this, privateView)
 
         view.addOnAttachStateChangeListener(attachListener)
         view.addOnLayoutChangeListener(layoutChangeListener)

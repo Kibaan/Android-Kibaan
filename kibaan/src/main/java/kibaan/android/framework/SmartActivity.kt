@@ -4,11 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.FrameLayout
+import androidx.appcompat.app.AppCompatActivity
 import kibaan.android.ios.UIViewController
 import kibaan.android.ui.SmartContext
 import kibaan.android.util.DeviceUtils
@@ -44,7 +44,7 @@ open class SmartActivity : AppCompatActivity() {
             FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
         )
 
-        UIViewController.setActivity(this)
+        UIViewController.setGlobalContext(this)
         ScreenService.setActivity(this)
         SmartContext.shared.setActivity(this)
 
@@ -63,7 +63,7 @@ open class SmartActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        UIViewController.setActivity(null)
+        UIViewController.setGlobalContext(null)
         ViewControllerCache.shared.clear()
         SingletonContainer.shared.clear()
     }
