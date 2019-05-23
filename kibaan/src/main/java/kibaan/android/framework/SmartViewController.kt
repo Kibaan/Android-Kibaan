@@ -5,6 +5,7 @@ import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
+import kibaan.android.extension.isTrue
 import kibaan.android.ios.*
 import kibaan.android.task.TaskHolder
 import kotlin.reflect.KClass
@@ -346,10 +347,14 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
      */
     open fun goBack(): Boolean {
         if (overlays.isNotEmpty()) {
-            removeOverlay()
+            if (!overlays.last?.goBack().isTrue) {
+                removeOverlay()
+            }
             return true
         } else if (nextScreens.isNotEmpty()) {
-            removeNextScreen()
+            if (!nextScreens.last?.goBack().isTrue) {
+                removeNextScreen()
+            }
             return true
         }
         return false
