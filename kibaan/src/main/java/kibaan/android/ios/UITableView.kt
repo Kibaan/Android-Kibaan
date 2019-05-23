@@ -14,6 +14,7 @@ import android.widget.FrameLayout
 import kibaan.android.extension.toSnakeCase
 import kibaan.android.R
 import kibaan.android.ui.TouchLock
+import kibaan.android.util.DeviceUtils
 import kotlin.reflect.KClass
 
 val UITableViewAutomaticDimension: CGFloat = Double.MIN_VALUE
@@ -74,7 +75,7 @@ open class UITableView : FrameLayout {
     var contentInset: UIEdgeInsets? by didSet(null) {
         val inset = contentInset ?: UIEdgeInsets.zero
         recyclerView.clipToPadding = contentInset == null
-        recyclerView.setPadding(inset.left, inset.top, inset.right, inset.bottom)
+        recyclerView.setPadding(DeviceUtils.toPx(context, inset.left), DeviceUtils.toPx(context, inset.top), DeviceUtils.toPx(context, inset.right), DeviceUtils.toPx(context, inset.bottom))
     }
 
     /** テーブルのヘッダー(セクション内のヘッダーではない) */
