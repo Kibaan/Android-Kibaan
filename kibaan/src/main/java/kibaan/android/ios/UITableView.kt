@@ -70,6 +70,13 @@ open class UITableView : FrameLayout {
     var isScrollEnabled = true
     /** アクセサリ（チェックマーク、横矢印）などの色 */
     var tintColor: UIColor = UIColor.defaultTint
+    /** コンテンツのインセット */
+    var contentInset: UIEdgeInsets? by didSet(null) {
+        val inset = contentInset ?: UIEdgeInsets.zero
+        recyclerView.clipToPadding = contentInset == null
+        recyclerView.setPadding(inset.left, inset.top, inset.right, inset.bottom)
+    }
+
     /** テーブルのヘッダー(セクション内のヘッダーではない) */
     var tableHeaderView: View? = null
         set(value) {

@@ -10,6 +10,7 @@ import kibaan.android.sample.R
 import kibaan.android.ui.SmartTableView
 import kibaan.android.ui.SmartTextView
 import kibaan.android.util.AlertUtils
+import kibaan.android.util.DeviceUtils
 
 /**
  * UITableView関連の動作をチェックする為のコントローラ
@@ -46,6 +47,7 @@ class SampleTableViewController : SmartViewController(), UITableViewDataSource, 
             tableView.endRefreshing()
         }
         tableView.setNoDataMessage("データがありません。")
+        tableView.contentInset = UIEdgeInsets(0, 0, DeviceUtils.toPx(view.context, 66), 0)
     }
 
     override fun onEnterForeground() {
