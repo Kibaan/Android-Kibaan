@@ -3,13 +3,13 @@ package kibaan.android.ios
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
-import androidx.appcompat.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import butterknife.ButterKnife
 import kibaan.android.extension.toSnakeCase
 import kibaan.android.util.Log
@@ -31,8 +31,8 @@ open class UIViewController(layoutName: String? = null) {
         }
     }
 
-    protected val context: Context?
-        get() = activity
+    protected val context: Context
+        get() = view.context
 
 
     private var _view: ViewGroup? = null
@@ -83,7 +83,7 @@ open class UIViewController(layoutName: String? = null) {
     // レイアウトファイルを読み込み、Viewを作成する
     private fun loadLayout(layoutName: String? = null) {
 
-        val context = activity ?: return
+        val context = activity ?: throw IllegalStateException("Activity is not set. Call UIViewController.setActivity()")
 
         val layoutName = layoutName ?: javaClass.simpleName
         val resourceName = layoutName.toSnakeCase()
