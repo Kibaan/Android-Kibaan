@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.widget.LinearLayout
+import kibaan.android.extension.pxToDp
 
 /**
  * ViewにiOSのUIViewと似た挙動をさせるためのエクステンション
@@ -66,7 +67,20 @@ fun View.setNeedsDisplay() {
 }
 
 val View.frame: CGRect
-    get() = CGRect(0.0, 0.0, width = width.toDouble(), height = height.toDouble())
+    get() {
+        val width = context.pxToDp(width).toDouble()
+        val height = context.pxToDp(height).toDouble()
+        val x = context.pxToDp(top).toDouble()
+        val y = context.pxToDp(left).toDouble()
+        return CGRect(x, y, width = width, height = height)
+    }
+
+val View.bounds: CGRect
+    get() {
+        val width = context.pxToDp(width).toDouble()
+        val height = context.pxToDp(height).toDouble()
+        return CGRect(0.0, 0.0, width = width, height = height)
+    }
 
 fun View.isDescendant(of: View): Boolean {
     return this.id != of.id && of.findViewById<View>(id) != null
