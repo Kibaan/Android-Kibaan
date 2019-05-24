@@ -294,9 +294,27 @@
         app:defaultTextColor="#555555"
         app:highlightedTextColor="#FF0000"
         app:selectedTextColor="#00FF00"
+        app:disabledTextColor="#999999"
         app:layout_constraintTop_toBottomOf="@id/circle_button"
         android:layout_marginLeft="10dp"
         app:layout_constraintLeft_toLeftOf="parent"
+    />
+
+    <kibaan.android.ui.SmartButton
+        android:id="@+id/background_color_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="背景変更"
+        app:selectedBackgroundColor="#000055"
+        app:disabledTextColor="#999999"
+        app:selectedTextColor="@android:color/white"
+        app:disabledBackgroundColor="#666666"
+        android:background="#FFFFFF"
+        app:cornerRadius="10dp"
+        app:layout_constraintTop_toBottomOf="@id/circle_button"
+        app:layout_constraintLeft_toRightOf="@id/text_color_button"
+        android:layout_marginLeft="10dp"
     />
 
     <kibaan.android.sample.screen.sub.SampleCustomView

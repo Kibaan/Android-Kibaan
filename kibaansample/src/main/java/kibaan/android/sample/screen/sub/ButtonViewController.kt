@@ -20,6 +20,7 @@ class ButtonViewController : SmartViewController() {
 
     @IBOutlet(R.id.set_image_button) lateinit var setImageButton: SmartButton
     @IBOutlet(R.id.text_color_button) lateinit var textColorButton :UIButton
+    @IBOutlet(R.id.background_color_button) lateinit var backgroundColorButton: SmartButton
 
     // endregion
 
@@ -49,6 +50,15 @@ class ButtonViewController : SmartViewController() {
     @IBAction(R.id.text_color_button)
     fun actionTextColorButton(sender: View) {
         textColorButton.isSelected = textColorButton.isSelected.toggled()
+
+        if (backgroundColorButton.isEnabled && backgroundColorButton.isSelected) {
+            backgroundColorButton.isEnabled = false
+            backgroundColorButton.isSelected = false
+        } else if (backgroundColorButton.isEnabled) {
+            backgroundColorButton.isSelected = true
+        } else if (!backgroundColorButton.isEnabled) {
+            backgroundColorButton.isEnabled = true
+        }
     }
 
 //    fun action

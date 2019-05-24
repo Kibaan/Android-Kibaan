@@ -98,7 +98,9 @@
         <attr name="iconRightInset" format="float" />
         <attr name="iconAspectRatio" format="float" />
         <attr name="selectedBackgroundColor" format="color" />
+        <attr name="disabledBackgroundColor" format="color" />
 
+        <attr name="android:background" />
         <attr name="android:textSize" />
     </declare-styleable>
 

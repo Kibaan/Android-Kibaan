@@ -86,6 +86,11 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
         set(value) {
             setBackgroundColor(value, forState = UIControlState.selected)
         }
+    /** 非活性時の背景色 */
+    @IBInspectable var disabledBackgroundColor: UIColor? = null
+        set(value) {
+            setBackgroundColor(value, forState = UIControlState.disabled)
+        }
 
     /** アイコンのサイズを決める為の基準の向き */
     private var iconBaseSide: IconBaseSide = IconBaseSide.HEIGHT
@@ -194,9 +199,23 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
             if (array.hasValue(R.styleable.SmartButton_selectedIconImage)) {
                 selectedIconImage = BitmapFactory.decodeResource(resources, array.getResourceId(R.styleable.SmartButton_selectedIconImage, -1))
             }
-            if (array.hasValue(R.styleable.SmartButton_selectedBackgroundColor)) {
-                selectedBackgroundColor = UIColor(array.getColor(R.styleable.SmartButton_selectedBackgroundColor, Color.TRANSPARENT))
+
+            // 状態毎の背景色の設定
+            val backgroundColor = array.getUIColorOrNull(R.styleable.SmartButton_android_background)
+            if (backgroundColor != null) {
+                backgroundColorMap[UIControlState.normal] = backgroundColor
+                backgroundColorMap[UIControlState.highLighted] = backgroundColor
+                backgroundColorMap[UIControlState.selected] = backgroundColor
+                backgroundColorMap[UIControlState.disabled] = backgroundColor
             }
+            if (array.hasValue(R.styleable.SmartButton_selectedBackgroundColor)) {
+                backgroundColorMap[UIControlState.selected] = UIColor(array.getColor(R.styleable.SmartButton_selectedBackgroundColor, Color.TRANSPARENT))
+            }
+            if (array.hasValue(R.styleable.SmartButton_disabledBackgroundColor)) {
+                backgroundColorMap[UIControlState.disabled] = UIColor(array.getColor(R.styleable.SmartButton_disabledBackgroundColor, Color.TRANSPARENT))
+            }
+            updateBackgroundColor()
+
             // textSize単位の指定
             val textSizeAttribute = array.getStringOrNull(R.styleable.SmartLabel_android_textSize)
             if (textSizeAttribute?.hasSuffix("dip").isTrue) {
@@ -410,6 +429,8 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
      * 背景色を更新する
      */
     private fun updateBackgroundColor() {
+        if (backgroundColorMap.isEmpty()) return
+
         val stateListDrawable = StateListDrawable()
         backgroundColorMap.forEach {
             val colorValue = it.value?.intValue ?: return@forEach
