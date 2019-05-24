@@ -1,13 +1,15 @@
 package kibaan.android.ios
 
+import android.content.Context
 import android.graphics.*
+import kibaan.android.extension.dpToPx
 
 
 /**
  * 描画コンテキスト
  * Created by Yamamoto Keita on 2018/05/26.
  */
-class CGContext(val canvas: Canvas) {
+class CGContext(val canvas: Canvas, val context: Context) {
 
     private var param = Param()
 
@@ -120,7 +122,7 @@ class CGContext(val canvas: Canvas) {
     // テキストを描画する
     // 引数のpointは左上
     fun drawText(text: String, point: CGPoint, font: UIFont, color: UIColor) {
-        param.paint.textSize = font.pointSize.toFloat()
+        param.paint.textSize = context.dpToPx(font.pointSize).toFloat()
         param.fillColor = color
         param.fillMode()
 
@@ -130,7 +132,7 @@ class CGContext(val canvas: Canvas) {
     }
 
     fun drawTextInRect(text: String, rect: CGRect, font: UIFont, color: UIColor) {
-        param.paint.textSize = font.pointSize.toFloat()
+        param.paint.textSize = context.dpToPx(font.pointSize).toFloat()
         param.fillColor = color
         param.fillMode()
 
