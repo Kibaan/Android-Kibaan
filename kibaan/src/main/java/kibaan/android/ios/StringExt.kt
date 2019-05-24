@@ -2,10 +2,12 @@ package kibaan.android.ios
 
 import android.graphics.Paint
 import android.graphics.Rect
-import kibaan.android.extension.*
+import kibaan.android.extension.isEmpty
+import kibaan.android.extension.substringTo
+import kibaan.android.extension.toHiragana
+import kibaan.android.extension.toKatakana
 import java.net.URLDecoder
 import java.nio.charset.Charset
-import kotlin.text.substring
 
 /**
  * 指定されたCharsetでバイト配列に変換する
@@ -160,4 +162,11 @@ fun String.toKatakana(): String {
 enum class StringTransform {
     hiraganaToKatakana
     // all cases are not implemented
+}
+
+operator fun String.get(range: IntRange): String? {
+    if (range.first < 0 || length <= range.endInclusive) {
+        return null
+    }
+    return substring(range)
 }
