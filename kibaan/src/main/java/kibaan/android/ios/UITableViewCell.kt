@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.ColorFilter
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
@@ -12,8 +13,9 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import butterknife.ButterKnife
 import kibaan.android.R
+import kibaan.android.extension.dpToPx
+import kibaan.android.extension.numberOfLines
 import kibaan.android.ui.SmartLabel
-import kibaan.android.util.DeviceUtils
 
 
 open class UITableViewCell : LinearLayout {
@@ -28,7 +30,10 @@ open class UITableViewCell : LinearLayout {
     val textLabel: SmartLabel? by lazy {
         val label = SmartLabel(context)
         label.gravity = Gravity.CENTER_VERTICAL
-        label.setPadding(DeviceUtils.toPx(context, 10), 0, DeviceUtils.toPx(context, 10), 0)
+        label.setPadding(context.dpToPx(10), 0, context.dpToPx(10), 0)
+        label.minHeight = context.dpToPx(44.0)
+        label.ellipsize = TextUtils.TruncateAt.END
+        label.numberOfLines = 1
         contentView?.addView(label, LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT))
         return@lazy label
     }
@@ -69,7 +74,7 @@ open class UITableViewCell : LinearLayout {
 
     open val disclosureIndicatorView: View by lazy {
         val imageView = ImageView(context)
-        val padding = DeviceUtils.toPx(context, 10)
+        val padding = context.dpToPx(10)
         imageView.setImageResource(R.drawable.disclosure_indicator)
         imageView.setPadding(padding, 0, padding, 0)
         imageView.colorFilter = tintColorFilter
@@ -78,7 +83,7 @@ open class UITableViewCell : LinearLayout {
 
     open val checkMarkView: View by lazy {
         val imageView = ImageView(context)
-        val padding = DeviceUtils.toPx(context, 10)
+        val padding = context.dpToPx(10)
         imageView.setImageResource(R.drawable.checkmark)
         imageView.setPadding(padding, 0, padding, 0)
         imageView.colorFilter = tintColorFilter
