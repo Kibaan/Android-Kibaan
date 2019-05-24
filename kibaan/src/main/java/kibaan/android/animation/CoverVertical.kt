@@ -10,7 +10,7 @@ class CoverVertical(private val duration: Long = 320) : TransitionAnimator {
 
     override fun animateIn(view: View?, completion: (() -> Unit)?) {
         val targetView = view ?: return
-        val viewHeight = targetView.superview?.frame?.height ?: return
+        val viewHeight = targetView.superview?.height ?: return
         view.translationY = viewHeight.toFloat()
         view.animate()
             .setDuration(duration)
@@ -20,7 +20,7 @@ class CoverVertical(private val duration: Long = 320) : TransitionAnimator {
     }
 
     override fun animateOut(view: View?, completion: (() -> Unit)?) {
-        val viewHeight = view?.frame?.height ?: return
+        val viewHeight = view?.height ?: return
         view.animate()
             .setDuration(duration)
             .translationY(viewHeight.toFloat())
