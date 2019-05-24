@@ -128,25 +128,4 @@ class StringExtTest {
         assertEquals("あかいおしゃれ龍", "あかいオシャレ龍".applyingTransform(StringTransform.hiraganaToKatakana, reverse = true))
     }
 
-    @Test
-    fun testIntRange() {
-        val src = "012345"
-        assertEquals("012", src[0..2])
-        assertEquals("01", src[0 until  2])
-
-        assertEquals("0", src[0..0])
-        assertEquals("", src[0 until 0])
-
-        assertEquals("345", src[3..5])
-
-        assertEquals("012345", src[0..5])
-    }
-
-    @Test
-    fun testIntRangeOut() {
-        val src = "012345"
-        assertNull(src[0..6])
-        assertNull(src[-1..4])
-    }
-
 }
