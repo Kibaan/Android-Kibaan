@@ -313,6 +313,12 @@ open class LocalStorage {
         return Gson().fromJson(string, type)
     }
 
+    inline fun <reified T> getCodableOrNil(key: String) : T? where T : Any {
+        val string = getStringOrNil(key) ?: return null
+        val type = object: TypeToken<T>() {}.type
+        return Gson().fromJson(string, type)
+    }
+
     fun setCodable(key: String, value: Any, willSave: Boolean = true) {
         val json = Gson().toJson(value)
         setString(key, json, willSave)

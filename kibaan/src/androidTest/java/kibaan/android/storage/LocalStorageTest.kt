@@ -106,6 +106,12 @@ class LocalStorageTest {
     }
 
     @Test
+    fun testCodableOrNil() {
+        val setting = LocalStorage()
+        assertNull(setting.getCodableOrNil<String>("Nil"))
+    }
+
+    @Test
     fun testCodableList() {
         val setting = LocalStorage()
 
