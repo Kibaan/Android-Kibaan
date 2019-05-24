@@ -43,7 +43,7 @@ class ScrollSegmentedButton: HorizontalScrollView {
     val buttonWidthPx: CGFloat
         get() {
             val count = max(buttonCount, 1)
-            return if (isFitButtons) (frame.width / count) else scrollButtonWidthPx
+            return if (isFitButtons) (width.toDouble() / count) else scrollButtonWidthPx
         }
 
     /// 選択中のインデックス
@@ -71,11 +71,11 @@ class ScrollSegmentedButton: HorizontalScrollView {
 
     /// 余白部分に移動するボタン個数
     private val marginCount: Int
-        get() = (frame.width / scrollButtonWidthPx).toInt()
+        get() = (width / scrollButtonWidthPx).toInt()
 
     /// ボタンが端末の横幅に収まるか
     private val isFitButtons: Boolean
-        get() = buttonCount * scrollButtonWidthPx <= frame.width
+        get() = buttonCount * scrollButtonWidthPx <= width
 
     /// 左端に表示しているボタン
     private val leftEndButton: UIButton?
@@ -362,7 +362,7 @@ class ScrollSegmentedButton: HorizontalScrollView {
             return
         }
         val index = selectedIndex ?: return
-        val x1 = scrollButtonWidthPx * index - (frame.width / 2) + (scrollButtonWidthPx / 2)
+        val x1 = scrollButtonWidthPx * index - (width / 2) + (scrollButtonWidthPx / 2)
         val x2 = x1 + (scrollButtonWidthPx * buttonCount)
         if (abs(scrollX - x1) < abs(scrollX - x2) && animated) {
             setContentOffset(CGPoint(x = x1, y = 0.0), animated = animated)
