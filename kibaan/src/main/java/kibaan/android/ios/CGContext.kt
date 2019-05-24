@@ -19,11 +19,11 @@ class CGContext(val canvas: Canvas, val context: Context) {
 
     //region Set parameters ---------------
 
-    fun setFill(color: UIColor) {
+    fun setFillColor(color: UIColor) {
         param.fillColor = color
     }
 
-    fun setStroke(color: UIColor) {
+    fun setStrokeColor(color: UIColor) {
         param.strokeColor = color
     }
 
