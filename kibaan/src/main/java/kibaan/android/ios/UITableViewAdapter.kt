@@ -408,6 +408,7 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
          * itemViewの中身を指定された[view]に入れ替える
          */
         fun replaceInnerView(view: View?) {
+            view?.removeFromSuperview()
             val viewGroup = (itemView as? ViewGroup)
             viewGroup?.removeAllViews()
             viewGroup?.addView(view, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
