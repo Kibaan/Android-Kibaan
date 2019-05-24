@@ -56,13 +56,7 @@ class CollectionExtTest {
         assertTrue(list.contains("B"))
         assertFalse(list.contains("D"))
     }
-
-    @Test
-    fun testFlatMap() {
-        val list = mutableListOf("A", null, "B")
-        assertArrayEquals(arrayOf("A", "B"), list.flatMap { it }.toTypedArray())
-    }
-
+    
     @Test
     fun testCompactMap() {
         val list = mutableListOf("A", null, "B")

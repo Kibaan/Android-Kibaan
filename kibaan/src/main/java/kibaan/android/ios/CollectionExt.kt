@@ -70,13 +70,6 @@ fun <T> Collection<T>.contains(where: (T) -> Boolean): Boolean {
 }
 
 /**
- * Returns an array containing the non-`nil` results of calling the given transformation with each element of this sequence.
- */
-fun <T, R : Any> Collection<T>.flatMap(transform: (T) -> R?): List<R> {
-    return mapNotNull(transform)
-}
-
-/**
  * Returns a sequence of pairs (*n*, *x*), where *n* represents a consecutive integer starting at zero and *x* represents an element of the sequence.
  */
 fun <T> Collection<T>.enumerated(): List<CollectionEnumerationItem<T>> {
