@@ -3,12 +3,12 @@ package kibaan.android.http
 import android.os.Handler
 import android.view.View
 import kibaan.android.AndroidUnique
-import kibaan.android.util.QueryUtils
-import kibaan.android.valueobject.KeyValue
 import kibaan.android.ios.*
 import kibaan.android.task.Task
 import kibaan.android.task.TaskHolder
 import kibaan.android.util.Log
+import kibaan.android.util.QueryUtils
+import kibaan.android.valueobject.KeyValue
 import java.nio.charset.Charset
 
 
@@ -77,6 +77,11 @@ abstract class HTTPTask : Task {
         val userAgent = defaultUserAgent
         if (userAgent != null && !headers.keys.map { it.lowercased() }.contains("user-agent")) {
             request.headers["User-Agent"] = userAgent
+        }
+        @AndroidUnique
+        // ボディがあってcontent-typeが空の場合はデフォルトのcontent-typeをセット
+        if (httpBody != null && !headers.keys.map { it.lowercased() }.contains("content-type")) {
+            request.headers["Content-Type"] = "application/x-www-form-urlencoded"
         }
         for ((key, value) in headers) {
             request.headers[key] = value
