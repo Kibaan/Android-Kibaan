@@ -99,6 +99,9 @@ open class SmartTextField : RoundedConstraintLayout {
             editText.hint = value
         }
 
+    val isFirstResponder: Boolean
+        get() = editText.isFocused
+
     private val textWatcher = object : TextWatcher {
         var currentLength: Int = 0
         var start: Int = 0
@@ -230,24 +233,18 @@ open class SmartTextField : RoundedConstraintLayout {
         editText.setOnTouchListener { _, motionEvent ->
             if (motionEvent?.action == MotionEvent.ACTION_UP && isEnabled) {
                 editText.isCursorVisible = true
-                if (delegate?.textFieldShouldBeginEditing(this) ?: isEnabled) {
-                    delegate?.textFieldDidBeginEditing(this)
-                }
+                return@setOnTouchListener !(delegate?.textFieldShouldBeginEditing(this) ?: isEnabled)
             }
             false
         }
         editText.onFocusChangeListener = object : OnFocusChangeListener {
             override fun onFocusChange(v: View?, hasFocus: Boolean) {
-                if (!hasFocus) {
-                    onFocusChange(hasFocus = hasFocus)
+                if (hasFocus) {
+                    delegate?.textFieldDidBeginEditing(this@SmartTextField)
+                } else {
+                    delegate?.textFieldDidEndEditing(textField = this@SmartTextField)
                 }
             }
-        }
-    }
-
-    private fun onFocusChange(hasFocus: Boolean) {
-        if (!hasFocus) {
-            delegate?.textFieldDidEndEditing(textField = this)
         }
     }
 

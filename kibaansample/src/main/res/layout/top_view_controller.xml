@@ -37,6 +37,14 @@
         android:background="#FFBBBB"
         app:layout_constraintTop_toBottomOf="@+id/segment" />
 
+    <kibaan.android.ui.SmartTextField
+        android:id="@+id/textField"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@+id/scrollSegment"
+    />
+
 
     <kibaan.android.ui.SmartButton
         android:id="@+id/page_button"
