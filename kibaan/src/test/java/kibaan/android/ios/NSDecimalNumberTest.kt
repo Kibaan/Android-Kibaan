@@ -82,6 +82,8 @@ class NSDecimalNumberTest {
 
         assertEquals("6", two.multiplying(three).stringValue)
         assertEquals("8", two.multiplying(four).stringValue)
+        assertEquals("100", one.multiplyingByPowerOf10(2).stringValue)
+        assertEquals("2000", two.multiplyingByPowerOf10(3).stringValue)
         assertEquals("1", one.stringValue)
         assertEquals("2", two.stringValue)
         assertEquals("3", three.stringValue)

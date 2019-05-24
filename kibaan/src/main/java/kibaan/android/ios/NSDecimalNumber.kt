@@ -130,6 +130,13 @@ class NSDecimalNumber : Comparable<NSDecimalNumber> {
     }
 
     /**
+     * Int型で指定された数値のべき乗を掛けた結果を返す
+     */
+    fun multiplyingByPowerOf10(by: Int): NSDecimalNumber {
+        return multiplying(NSDecimalNumber(10).raising(by))
+    }
+
+    /**
      * NSDecimalNumber型で指定された数値で割った結果を返す
      */
     fun dividing(by: NSDecimalNumber): NSDecimalNumber {
