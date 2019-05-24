@@ -1,8 +1,8 @@
 package kibaan.android.ios
 
-data class UIEdgeInsets(var top: Int, var left: Int, var bottom: Int, var right: Int) {
+data class UIEdgeInsets(var top: CGFloat, var left: CGFloat, var bottom: CGFloat, var right: CGFloat) {
     companion object {
         val zero: UIEdgeInsets
-            get() = UIEdgeInsets(0, 0, 0, 0)
+            get() = UIEdgeInsets(0.0, 0.0, 0.0, 0.0)
     }
 }

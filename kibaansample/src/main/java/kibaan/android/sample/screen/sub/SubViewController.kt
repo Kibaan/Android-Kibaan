@@ -7,17 +7,25 @@ import kibaan.android.framework.ScreenService
 import kibaan.android.extension.stringValue
 import kibaan.android.ios.IBAction
 import kibaan.android.ios.IBOutlet
+import kibaan.android.ios.UIEdgeInsets
 import kibaan.android.ios.isGone
 import kibaan.android.sample.R
 import kibaan.android.sample.screen.table.SampleTableViewController
 import kibaan.android.sample.screen.top.TopViewController
 import kibaan.android.ui.SmartButton
+import kibaan.android.ui.SmartScrollView
 import kibaan.android.ui.SmartTextView
 
 /**
  * サブ画面
  */
 class SubViewController : SmartViewController() {
+
+    // region -> Outlets
+
+    @IBOutlet(R.id.scrollView) lateinit var scrollView: SmartScrollView
+
+    // endregion
 
     val handler = Handler()
 
@@ -33,6 +41,7 @@ class SubViewController : SmartViewController() {
 
     override fun viewDidLoad() {
         super.viewDidLoad()
+        scrollView.contentInset = UIEdgeInsets(0.0,0.0,100.0,0.0)
     }
 
     override fun onEnterForeground() {

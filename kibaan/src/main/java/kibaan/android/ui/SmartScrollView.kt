@@ -8,10 +8,8 @@ import android.util.AttributeSet
 import android.widget.ScrollView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kibaan.android.R
-import kibaan.android.ios.CGSize
-import kibaan.android.ios.IBInspectable
-import kibaan.android.ios.didSet
-import kibaan.android.ios.frame
+import kibaan.android.extension.dpToPx
+import kibaan.android.ios.*
 
 open class SmartScrollView : ScrollView {
 
@@ -61,6 +59,13 @@ open class SmartScrollView : ScrollView {
 
     @Suppress("MemberVisibilityCanBePrivate")
     var indicatorSize: CGSize? = null
+
+    /** コンテンツのインセット */
+    var contentInset: UIEdgeInsets? by didSet(null) {
+        val inset = contentInset ?: UIEdgeInsets.zero
+        clipToPadding = contentInset == null
+        setPadding(context.dpToPx(inset.left), context.dpToPx(inset.top), context.dpToPx(inset.right), context.dpToPx(inset.bottom))
+    }
 
     /** PullToRefresh用のレイアウト（外から設定される前提） */
     var swipeRefreshLayout: SwipeRefreshLayout? = null

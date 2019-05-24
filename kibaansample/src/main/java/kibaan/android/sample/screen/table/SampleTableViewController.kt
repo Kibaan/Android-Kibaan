@@ -47,7 +47,7 @@ class SampleTableViewController : SmartViewController(), UITableViewDataSource, 
             tableView.endRefreshing()
         }
         tableView.setNoDataMessage("データがありません。")
-        tableView.contentInset = UIEdgeInsets(0, 0, DeviceUtils.toPx(view.context, 66), 0)
+        tableView.contentInset = UIEdgeInsets(0.0, 0.0, 66.0, 0.0)
     }
 
     override fun onEnterForeground() {

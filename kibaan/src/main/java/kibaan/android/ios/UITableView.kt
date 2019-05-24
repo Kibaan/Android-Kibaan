@@ -80,7 +80,7 @@ open class UITableView : FrameLayout {
     var contentInset: UIEdgeInsets? by didSet(null) {
         val inset = contentInset ?: UIEdgeInsets.zero
         recyclerView.clipToPadding = contentInset == null
-        recyclerView.setPadding(DeviceUtils.toPx(context, inset.left), DeviceUtils.toPx(context, inset.top), DeviceUtils.toPx(context, inset.right), DeviceUtils.toPx(context, inset.bottom))
+        recyclerView.setPadding(context.dpToPx(inset.left), context.dpToPx(inset.top), context.dpToPx(inset.right), context.dpToPx(inset.bottom))
     }
 
     /** テーブルのヘッダー(セクション内のヘッダーではない) */
