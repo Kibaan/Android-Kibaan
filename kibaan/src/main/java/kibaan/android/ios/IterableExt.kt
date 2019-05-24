@@ -21,3 +21,11 @@ fun <T> Iterable<T>.max(by: (T, T) -> Boolean): T? {
         if (by(o1, o2)) -1 else 1
     })
 }
+
+fun <T> Iterable<T>.dropFirst(k: Int = 1): List<T> {
+    return drop(k)
+}
+
+fun <T> Iterable<T>.dropLast(k: Int = 1): List<T> {
+    return dropLast(k)
+}
