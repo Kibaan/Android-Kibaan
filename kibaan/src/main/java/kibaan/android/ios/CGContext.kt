@@ -122,6 +122,7 @@ class CGContext(val canvas: Canvas, val context: Context) {
     // テキストを描画する
     // 引数のpointは左上
     fun drawText(text: String, point: CGPoint, font: UIFont, color: UIColor) {
+        param.paint.typeface = font.typeface
         param.paint.textSize = context.dpToPx(font.pointSize).toFloat()
         param.fillColor = color
         param.fillMode()
