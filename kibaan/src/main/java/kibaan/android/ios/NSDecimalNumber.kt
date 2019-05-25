@@ -226,4 +226,7 @@ class NSDecimalNumber : Comparable<NSDecimalNumber> {
         }
     }
 
+    override fun toString(): String {
+        return stringValue
+    }
 }
