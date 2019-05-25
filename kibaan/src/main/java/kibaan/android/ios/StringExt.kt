@@ -1,5 +1,6 @@
 package kibaan.android.ios
 
+import android.content.Context
 import android.graphics.Paint
 import android.graphics.Rect
 import kibaan.android.extension.*
@@ -130,9 +131,9 @@ val String.hashValue: Int
 /**
  * 文字列のサイズを返す.
  */
-fun String.size(font: UIFont): CGSize {
+fun String.size(context: Context, font: UIFont): CGSize {
     val paint = Paint()
-    paint.textSize = font.pointSize.toFloat()
+    paint.textSize = context.dpToPx(font.pointSize).toFloat()
     paint.typeface = font.typeface
     paint.isAntiAlias = true
 

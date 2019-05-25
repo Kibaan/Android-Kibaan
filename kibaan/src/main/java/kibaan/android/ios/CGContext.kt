@@ -128,16 +128,17 @@ class CGContext(val canvas: Canvas, val context: Context) {
         param.fillMode()
 
         // canvas.drawTextの引数は左下なので、フォント高分下に下げる必要がある
-        val height = "9".size(font).height
+        val height = "9".size(context, font).height
         canvas.drawText(text, point.x.toFloat(), point.y.toFloat() + height.toFloat(), param.paint)
     }
 
     fun drawTextInRect(text: String, rect: CGRect, font: UIFont, color: UIColor) {
+        param.paint.typeface = font.typeface
         param.paint.textSize = context.dpToPx(font.pointSize).toFloat()
         param.fillColor = color
         param.fillMode()
 
-        val height = "9".size(font).height
+        val height = "9".size(context, font).height
         canvas.drawText(text, rect.origin.x.toFloat(), rect.origin.y.toFloat() + height.toFloat(), param.paint)
     }
 
