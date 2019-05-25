@@ -281,6 +281,7 @@ open class SmartTextField : RoundedConstraintLayout {
         editText.setHintTextColor(Color.GRAY)
         editText.setBackgroundColor(Color.TRANSPARENT)
         editText.setPadding(0, 0, 0, 0)
+        editText.setSingleLine(true)
         editText.isFocusable = true
         editText.isFocusableInTouchMode = true
         addView(editText)
