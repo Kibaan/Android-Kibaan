@@ -71,6 +71,12 @@ class StringExtTest {
         assertEquals("12345"[1 until 5], "2345")
     }
 
+    @Test
+    fun testSubscript_018() {
+        val value: String? = null
+        assertEquals(value[4..5], null)
+    }
+
     // endregion
 
     // region -> Substring(from)

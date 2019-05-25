@@ -32,7 +32,8 @@ fun String.toSnakeCase(): String {
 /**
  * Subscript
  */
-operator fun String.get(range: IntRange): String? {
+operator fun String?.get(range: IntRange): String? {
+    this ?: return null
     if (count <= range.first || count <= range.last) {
         return null
     }
