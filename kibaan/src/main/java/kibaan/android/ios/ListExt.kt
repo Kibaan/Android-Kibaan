@@ -41,3 +41,11 @@ fun <T> List<T>.prefix(maxLength: Int): List<T> {
 fun <T> List<T>.suffix(maxLength: Int): List<T> {
     return takeLast(maxLength)
 }
+
+fun <T> List<T>.subList(range: IntRange): List<T> {
+    return subList(range.first, range.last + 1)
+}
+
+operator fun <T> List<T>.get(range: IntRange): List<T> {
+    return subList(range)
+}

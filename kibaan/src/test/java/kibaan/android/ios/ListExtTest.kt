@@ -97,4 +97,24 @@ class ListExtTest {
         assertEquals(3, list.count)
     }
 
+    @Test
+    fun testRangeAccess() {
+        val list = listOf(0, 1, 2, 3, 4)
+
+        assertArrayEquals(listOf(0, 1, 2).toIntArray(), list.subList(0..2).toIntArray())
+        assertArrayEquals(listOf(0, 1).toIntArray(), list.subList(0 until 2).toIntArray())
+        assertArrayEquals(listOf(1, 2, 3).toIntArray(), list.subList(1..3).toIntArray())
+        assertArrayEquals(listOf(1, 2).toIntArray(), list.subList(1 until 3).toIntArray())
+    }
+
+    @Test
+    fun testRangeIndexerAccess() {
+        val list = listOf(0, 1, 2, 3, 4)
+
+        assertArrayEquals(listOf(0, 1, 2).toIntArray(), list[0..2].toIntArray())
+        assertArrayEquals(listOf(0, 1).toIntArray(), list[0 until 2].toIntArray())
+        assertArrayEquals(listOf(1, 2, 3).toIntArray(), list[1..3].toIntArray())
+        assertArrayEquals(listOf(1, 2).toIntArray(), list[1 until 3].toIntArray())
+    }
+
 }
