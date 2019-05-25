@@ -230,6 +230,7 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
                     else -> null
                 }
                 tableView.delegate?.willDisplayCell(indexPath = indexPath)
+                // FIXME: cellForRowで返却されたViewを使用していない
                 tableView.dataSource?.cellForRow(tableView, indexPath = indexPath)
                 tableView.reusableCell = null
             }
