@@ -5,9 +5,9 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.LinearLayout
 import kibaan.android.R
+import kibaan.android.extension.dpToPx
 import kibaan.android.ui.EllipseButton
 import kibaan.android.ui.SmartButton
-import kibaan.android.util.DeviceUtils
 
 /**
  * ページ数と選択中のページを表示するUI
@@ -16,8 +16,8 @@ class UIPageControl : LinearLayout {
 
     // region -> Constants
 
-    private var spacing = DeviceUtils.toPx(context, dp = 70)
-    private var buttonSize = DeviceUtils.toPx(context, dp = 60)
+    private var spacing = context.dpToPx(dp = 10)
+    private var buttonSize = context.dpToPx(dp = 7)
     private var defaultNormalColor = UIColor(rgbValue = 0xDEDEDE)
     private var defaultSelectedColor = UIColor(rgbValue = 0x555555)
 
@@ -28,6 +28,7 @@ class UIPageControl : LinearLayout {
     init {
         orientation = HORIZONTAL
         gravity = Gravity.CENTER
+        setPadding(0, context.dpToPx(8), 0, context.dpToPx(8))
     }
 
     var onPageChanged: ((UIPageControl) -> Unit)? = null
@@ -106,7 +107,7 @@ class UIPageControl : LinearLayout {
         removeAllViews()
         (0 until numberOfPages).forEach { offset ->
             val button = EllipseButton(context)
-            val layoutParams = LinearLayout.LayoutParams(buttonSize, buttonSize)
+            val layoutParams = LayoutParams(buttonSize, buttonSize)
             val leftMargin = if (offset != 0) this.spacing else 0
             layoutParams.setMargins(leftMargin, 0, 0, 0)
             button.layoutParams = layoutParams
