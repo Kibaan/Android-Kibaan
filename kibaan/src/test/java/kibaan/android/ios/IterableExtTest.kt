@@ -46,4 +46,10 @@ class IterableExtTest {
         val intList = listOf(2, 5, 1)
         assertEquals(5, intList.max { o1, o2 -> o1 < o2 })
     }
+
+    @Test
+    fun dropFirst() {
+        val list = mutableListOf(0, 1, 2, 3)
+        assertArrayEquals(listOf(1, 2, 3).toIntArray(), list.dropFirst().toIntArray())
+    }
 }
