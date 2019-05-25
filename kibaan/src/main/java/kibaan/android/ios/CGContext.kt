@@ -3,6 +3,7 @@ package kibaan.android.ios
 import android.content.Context
 import android.graphics.*
 import kibaan.android.extension.dpToPx
+import kotlin.math.PI
 
 
 /**
@@ -65,7 +66,7 @@ class CGContext(val canvas: Canvas, val context: Context) {
 
     //region Path making ---------------
     fun beginPath() {
-        path = Path()
+        clearPath()
     }
 
     fun move(to: CGPoint) {
@@ -94,6 +95,18 @@ class CGContext(val canvas: Canvas, val context: Context) {
         path.addOval(rect.rectF, Path.Direction.CW)
     }
 
+    fun addArc(center: CGPoint, radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat, clockwise: Boolean) {
+        val oval = RectF((center.x - radius).toFloat(), (center.y - radius).toFloat(), (center.x + radius).toFloat(), (center.y + radius).toFloat())
+        val startDegree = startAngle * 180 / PI
+        val endDegree = endAngle * 180 / PI
+        val sweepDegree = if (clockwise) {
+            startDegree - endDegree
+        } else {
+            endDegree - startDegree
+        }
+        path.addArc(oval, startDegree.toFloat(), sweepDegree.toFloat())
+    }
+
     fun closePath() {
         path.close()
     }
@@ -109,14 +122,21 @@ class CGContext(val canvas: Canvas, val context: Context) {
         canvas.drawOval(rect.rectF, param.paint)
     }
 
+    fun stroke(rect: CGRect) {
+        param.strokeMode()
+        canvas.drawRect(rect.rectF, param.paint)
+    }
+
     fun strokePath() {
         param.strokeMode()
         canvas.drawPath(path, param.paint)
+        clearPath()
     }
 
     fun fillPath() {
         param.fillMode()
         canvas.drawPath(path, param.paint)
+        clearPath()
     }
 
     // テキストを描画する
@@ -162,6 +182,10 @@ class CGContext(val canvas: Canvas, val context: Context) {
      * This does nothing. This method is for iOS compatibility
      */
     fun flush() {
+    }
+
+    private fun clearPath() {
+        path = Path()
     }
 
     /**
