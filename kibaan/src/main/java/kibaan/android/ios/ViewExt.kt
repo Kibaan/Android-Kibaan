@@ -4,7 +4,6 @@ import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
-import android.widget.LinearLayout
 import kibaan.android.extension.pxToDp
 
 /**
@@ -25,7 +24,7 @@ var View.isHidden: Boolean
     get() = visibility == View.INVISIBLE || visibility == View.GONE
     set(value) {
         visibility = if (value) {
-            if (parent is LinearLayout) View.GONE else View.INVISIBLE
+            if (parent is UIStackView) View.GONE else View.INVISIBLE
         } else {
             View.VISIBLE
         }
