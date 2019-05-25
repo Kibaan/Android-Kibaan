@@ -2,6 +2,7 @@ package kibaan.android.framework
 
 import kibaan.android.ios.removeAll
 import kibaan.android.ios.removeFromSuperview
+import java.lang.IllegalStateException
 import kotlin.reflect.KClass
 
 /**
@@ -34,7 +35,11 @@ class ViewControllerCache {
 
     fun <T : SmartViewController> create(type: KClass<T>, layoutName: String? = null, id: String? = null): T {
         val controller: T = if (layoutName != null) {
-            type.java.getConstructor(String::class.java).newInstance(layoutName)
+            try {
+                type.java.getConstructor(String::class.java).newInstance(layoutName)
+            } catch (e: NoSuchMethodException) {
+                throw IllegalStateException("If you set layout name `$layoutName`, ${type.simpleName} class must have constructor(String).", e)
+            }
         } else {
             type.java.newInstance()
         }
