@@ -38,7 +38,7 @@ class ViewControllerCache {
             try {
                 type.java.getConstructor(String::class.java).newInstance(layoutName)
             } catch (e: NoSuchMethodException) {
-                throw IllegalStateException("If you set layout name `$layoutName`, ${type.simpleName} class must have constructor(String).", e)
+                throw IllegalStateException("If you specify layout name, ${type.simpleName} must have constructor(String) and also call SmartViewController.constructor(String).", e)
             }
         } else {
             type.java.newInstance()
