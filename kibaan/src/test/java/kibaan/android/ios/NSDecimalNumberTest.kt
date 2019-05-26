@@ -1,6 +1,7 @@
 package kibaan.android.ios
 
 import kibaan.android.extension.stringValue
+import kibaan.android.ios.NSDecimalNumber.Companion.one
 import org.junit.Assert.*
 import org.junit.Test
 import java.math.BigDecimal
@@ -61,6 +62,13 @@ class NSDecimalNumberTest {
     }
 
     @Test
+    fun testStringValue() {
+        assertEquals("1", NSDecimalNumber("1").stringValue)
+        assertEquals("0.1", NSDecimalNumber("0.1").stringValue)
+        assertEquals("0.001", NSDecimalNumber("0.001").stringValue)
+    }
+
+    @Test
     fun testArithmetic() {
 
         val one = NSDecimalNumber("1")
@@ -82,8 +90,6 @@ class NSDecimalNumberTest {
 
         assertEquals("6", two.multiplying(three).stringValue)
         assertEquals("8", two.multiplying(four).stringValue)
-        assertEquals("100", one.multiplyingByPowerOf10(2).stringValue)
-        assertEquals("2000", two.multiplyingByPowerOf10(3).stringValue)
         assertEquals("1", one.stringValue)
         assertEquals("2", two.stringValue)
         assertEquals("3", three.stringValue)
@@ -94,14 +100,26 @@ class NSDecimalNumberTest {
         assertEquals("2", two.stringValue)
         assertEquals("3", three.stringValue)
 
-        assertEquals("1", one.raising(four).stringValue)
-        assertEquals("16", two.raising(four).stringValue)
-        assertEquals("81", three.raising(four).stringValue)
-
         // doubleValueのテスト
         assertTrue(one.doubleValue == 1.0)
         assertTrue(NSDecimalNumber(0.54).doubleValue == 0.54)
         assertTrue(NSDecimalNumber.notANumber.doubleValue.stringValue == Double.NaN.stringValue)
+    }
+
+    @Test
+    fun testRaising() {
+        assertEquals("1", NSDecimalNumber("1").raising(4).stringValue)
+        assertEquals("16", NSDecimalNumber("2").raising(4).stringValue)
+        assertEquals("81", NSDecimalNumber("3").raising(4).stringValue)
+    }
+
+    @Test
+    fun testMultiplyingByPowerOf10() {
+        assertEquals("0.1", NSDecimalNumber("1").multiplyingByPowerOf10(-1).stringValue)
+        assertEquals("1", NSDecimalNumber("1").multiplyingByPowerOf10(0).stringValue)
+        assertEquals("10", NSDecimalNumber("1").multiplyingByPowerOf10(1).stringValue)
+        assertEquals("100", NSDecimalNumber("1").multiplyingByPowerOf10(2).stringValue)
+        assertEquals("2000", NSDecimalNumber("2").multiplyingByPowerOf10(3).stringValue)
     }
 
     @Test

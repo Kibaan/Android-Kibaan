@@ -133,7 +133,8 @@ class NSDecimalNumber : Comparable<NSDecimalNumber> {
      * Int型で指定された数値のべき乗を掛けた結果を返す
      */
     fun multiplyingByPowerOf10(by: Int): NSDecimalNumber {
-        return multiplying(NSDecimalNumber(10).raising(by))
+        val bigDecimal = bigDecimal ?: return this
+        return NSDecimalNumber(bigDecimal.scaleByPowerOfTen(by))
     }
 
     /**
@@ -156,7 +157,8 @@ class NSDecimalNumber : Comparable<NSDecimalNumber> {
      */
     fun raising(toPower: Int): NSDecimalNumber {
         val bigDecimal = bigDecimal ?: return this
-        return NSDecimalNumber(bigDecimal.pow(toPower))
+        val result = bigDecimal.pow(toPower)
+        return NSDecimalNumber(result)
     }
 
     /**
@@ -182,7 +184,7 @@ class NSDecimalNumber : Comparable<NSDecimalNumber> {
      * 数値を文字列に変換して返す
      */
     val stringValue: String
-        get() = if (bigDecimal != null) bigDecimal.toString() else "nan"
+        get() = bigDecimal?.toPlainString() ?: "nan"
 
     /**
      * Double型の数値に変換して返す
