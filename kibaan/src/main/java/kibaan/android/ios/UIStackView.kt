@@ -29,7 +29,7 @@ open class UIStackView : RoundedLinearLayout {
 
     fun addArrangedSubview(childView: View, layout: ViewGroup.LayoutParams? = null) {
         if (layout != null) {
-            addView(childView, layoutParams)
+            addView(childView, layout)
         } else {
             addView(childView)
         }
