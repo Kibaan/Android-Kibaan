@@ -11,7 +11,6 @@ import android.widget.HorizontalScrollView
 import android.widget.RelativeLayout
 import kibaan.android.AndroidUnique
 import kibaan.android.extension.getStringOrNull
-import kibaan.android.extension.width
 import kibaan.android.ios.*
 import kotlin.math.abs
 import kotlin.math.max
@@ -118,16 +117,16 @@ class ScrollSegmentedButton: HorizontalScrollView {
     }
 
     constructor(context: Context) : super(context) {
-        setup(context)
+        commonInit(context)
     }
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        setup(context, attrs)
+        commonInit(context, attrs)
     }
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        setup(context, attrs)
+        commonInit(context, attrs)
     }
 
-    private fun setup(context: Context, attrs: AttributeSet? = null) {
+    private fun commonInit(context: Context, attrs: AttributeSet? = null) {
         horizontalSupportView.layoutParams = LayoutParams(width, LayoutParams.MATCH_PARENT)
         content.addView(horizontalSupportView)
         addView(content, RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, MATCH_PARENT))
@@ -157,7 +156,7 @@ class ScrollSegmentedButton: HorizontalScrollView {
     fun setup(titles: List<String>, buttonMaker: (() -> UIButton)? = null, buttonUpdater: ((UIButton, ButtonState) -> Unit)? = null) {
         this.buttonMaker = buttonMaker
         this.buttonUpdater = buttonUpdater
-        this.buttonCount = buttonCount
+        this.buttonCount = titles.count
         this.titles = titles.toMutableList()
     }
 
