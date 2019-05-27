@@ -28,6 +28,13 @@ class NSDecimalNumberTest {
         decimal = NSDecimalNumber(bigDecimal = BigDecimal(-123.45))
         assertEquals(BigDecimal(-123.45), decimal.bigDecimal)
 
+        assertEquals(NSDecimalNumber.notANumber, NSDecimalNumber(string = "a"))
+        assertEquals(NSDecimalNumber.notANumber, NSDecimalNumber(string = ""))
+        assertEquals(NSDecimalNumber.notANumber, NSDecimalNumber(string = null))
+        assertEquals(NSDecimalNumber.zero, NSDecimalNumber(string = "-"))
+        assertEquals(NSDecimalNumber.zero, NSDecimalNumber(string = " -"))
+        assertEquals(NSDecimalNumber.zero, NSDecimalNumber(string = "-0"))
+
         decimal = NSDecimalNumber.notANumber
         assertEquals(NSDecimalNumber.notANumber, decimal)
 

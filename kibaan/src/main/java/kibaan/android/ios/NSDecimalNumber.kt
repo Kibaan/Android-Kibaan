@@ -44,7 +44,7 @@ class NSDecimalNumber : Comparable<NSDecimalNumber> {
         bigDecimal = try {
             BigDecimal(string)
         } catch (e: NumberFormatException) {
-            null
+            if (string.trim() == "-") BigDecimal.ZERO else null
         }
     }
 
