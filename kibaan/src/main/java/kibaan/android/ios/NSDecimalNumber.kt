@@ -166,7 +166,17 @@ class NSDecimalNumber : Comparable<NSDecimalNumber> {
      */
     override fun equals(other: Any?): Boolean {
         val decimalNumber = (other as? NSDecimalNumber) ?: return false
-        return bigDecimal == decimalNumber.bigDecimal
+
+        val thisDecimal = bigDecimal
+        val otherDecimal = decimalNumber.bigDecimal
+
+        if (thisDecimal == null && otherDecimal == null) {
+            return true
+        } else if (thisDecimal == null || otherDecimal == null) {
+            return false
+        }
+
+        return thisDecimal.compareTo(otherDecimal) == 0
     }
 
     /**

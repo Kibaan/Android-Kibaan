@@ -1,7 +1,6 @@
 package kibaan.android.ios
 
 import kibaan.android.extension.stringValue
-import kibaan.android.ios.NSDecimalNumber.Companion.one
 import org.junit.Assert.*
 import org.junit.Test
 import java.math.BigDecimal
@@ -40,15 +39,43 @@ class NSDecimalNumberTest {
     }
 
     @Test
-    fun testEqual() {
+    fun testEqualBasic() {
+        assertEquals(NSDecimalNumber(string = "100"), NSDecimalNumber(string = "100"))
+        assertNotEquals(NSDecimalNumber(string = "100"), NSDecimalNumber(string = "101"))
+    }
 
-        val decimalString = NSDecimalNumber(string = "0.3")
-        val decimalDouble = NSDecimalNumber(value = 0.3)
-        val decimalDouble2 = NSDecimalNumber(value = 0.31)
+    @Test
+    fun testEqualDifferentType() {
+        // Double
+        assertEquals(NSDecimalNumber(string = "0.3"), NSDecimalNumber(value = 0.3))
+        assertNotEquals(NSDecimalNumber(string = "0.3"), NSDecimalNumber(value = 0.31))
 
-        assertEquals(decimalString, decimalDouble)
+        // Int
+        assertEquals(NSDecimalNumber(string = "123"), NSDecimalNumber(123))
+        assertNotEquals(NSDecimalNumber(string = "998"), NSDecimalNumber(999))
 
-        assertNotEquals(decimalString, decimalDouble2)
+        // Long
+        assertEquals(NSDecimalNumber(string = "123"), NSDecimalNumber(123L))
+        assertNotEquals(NSDecimalNumber(string = "998"), NSDecimalNumber(999L))
+
+        // BigDecimal
+        assertEquals(NSDecimalNumber(string = "1"), NSDecimalNumber(BigDecimal.ONE))
+        assertNotEquals(NSDecimalNumber(string = "1"), NSDecimalNumber(BigDecimal.ZERO))
+
+    }
+
+    @Test
+    fun testEqualDecimal() {
+        assertEquals(NSDecimalNumber(string = "1"), NSDecimalNumber(string = "1.00000"))
+        assertEquals(NSDecimalNumber(string = "0.1"), NSDecimalNumber(string = "0.10"))
+        assertEquals(NSDecimalNumber(string = "1E+1"), NSDecimalNumber(string = "10"))
+    }
+
+    @Test
+    fun testEqualNan() {
+        assertEquals(NSDecimalNumber.notANumber, NSDecimalNumber(Double.NaN))
+        assertEquals(NSDecimalNumber.notANumber, NSDecimalNumber("あ"))
+        assertEquals(NSDecimalNumber.notANumber, NSDecimalNumber(""))
     }
 
     @Test
