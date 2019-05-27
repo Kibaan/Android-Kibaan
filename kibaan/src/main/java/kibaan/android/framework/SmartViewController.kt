@@ -38,7 +38,7 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
     /** スライド表示させる画面を追加する対象のビュー */
     open val nextScreenTargetView: View get() = throw AssertionError("When using the next screen, be sure to implement it in a subclass")
     /** スライドアニメーション時間 */
-    var nextScreenAnimationDuration: Long = 1300
+    var nextScreenAnimationDuration: Long = 300
     /** オーバーレイ画面のオーナー */
     var owner: SmartViewController? = null
     /** スライド表示させた画面の遷移のルート */
