@@ -69,8 +69,8 @@ val View.frame: CGRect
     get() {
         val width = context.pxToDp(width).toDouble()
         val height = context.pxToDp(height).toDouble()
-        val x = context.pxToDp(top).toDouble()
-        val y = context.pxToDp(left).toDouble()
+        val x = context.pxToDp(left).toDouble()
+        val y = context.pxToDp(top).toDouble()
         return CGRect(x, y, width = width, height = height)
     }
 
