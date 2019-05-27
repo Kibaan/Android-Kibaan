@@ -93,7 +93,7 @@
 
         <kibaan.android.ui.SmartButton
             android:id="@+id/add_next_screen"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:layout_height="30dp"
@@ -106,7 +106,7 @@
 
         <kibaan.android.ui.SmartButton
             android:id="@+id/remove_next_screen"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:layout_height="30dp"
