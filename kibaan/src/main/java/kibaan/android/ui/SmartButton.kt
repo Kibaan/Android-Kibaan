@@ -55,20 +55,26 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
     /** 太字かどうか */
     var isBold: Boolean = false
         set(value) {
-            field = value
-            setOriginalFontSize(size = originalFont.pointSize)
+            if (field != value) {
+                field = value
+                setOriginalFontSize(size = originalFont.pointSize)
+            }
         }
 
     override var adjustsFontSizeForDevice = false
         set(value) {
-            field = value
-            updateFont()
+            if (field != value) {
+                field = value
+                updateFont()
+            }
         }
 
     override var useGlobalFont: Boolean = true
         set(value) {
-            field = value
-            updateFont()
+            if (field != value) {
+                field = value
+                updateFont()
+            }
         }
 
     /** 端末サイズによるフォントサイズ調整とSmartContextのglobalFontを反映する前のフォント */
