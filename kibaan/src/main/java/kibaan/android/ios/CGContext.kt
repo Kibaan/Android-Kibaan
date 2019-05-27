@@ -147,9 +147,14 @@ class CGContext(val canvas: Canvas, val context: Context) {
         param.fillColor = color
         param.fillMode()
 
+        val oldShouldAntialias = param.shouldAntialias
+        param.shouldAntialias = true
+
         // canvas.drawTextの引数は左下なので、フォント高分下に下げる必要がある
         val height = "9".size(context, font).height
         canvas.drawText(text, point.x.toFloat(), point.y.toFloat() + height.toFloat(), param.paint)
+
+        param.shouldAntialias = oldShouldAntialias
     }
 
     fun drawTextInRect(text: String, rect: CGRect, font: UIFont, color: UIColor) {
@@ -158,8 +163,13 @@ class CGContext(val canvas: Canvas, val context: Context) {
         param.fillColor = color
         param.fillMode()
 
+        val oldShouldAntialias = param.shouldAntialias
+        param.shouldAntialias = true
+
         val height = "9".size(context, font).height
         canvas.drawText(text, rect.origin.x.toFloat(), rect.origin.y.toFloat() + height.toFloat(), param.paint)
+
+        param.shouldAntialias = oldShouldAntialias
     }
 
     fun drawRadialGradient(colors: List<UIColor>, center: CGPoint, radius: CGFloat) {
