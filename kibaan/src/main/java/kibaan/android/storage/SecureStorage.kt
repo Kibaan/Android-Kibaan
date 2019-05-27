@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.security.KeyPairGeneratorSpec
 import android.util.Base64
+import kibaan.android.ios.removeAll
 import kibaan.android.util.AESUtils
 import java.math.BigInteger
 import java.security.GeneralSecurityException
@@ -57,6 +58,11 @@ class SecureStorage(private val context: Context, private val alias: String = co
      */
     private val hasSecretKey: Boolean get() = sharedPreferences.getString(keyOfSecretKey, null) != null
 
+    /**
+     * デコード処理が重いため、パフォーマンスのため一度読み込んだデータはキャッシュしておく
+     */
+    private val dataCache = mutableMapOf<String, ByteArray?>()
+
     // endregion
 
     // region -> Initializer
@@ -98,6 +104,7 @@ class SecureStorage(private val context: Context, private val alias: String = co
         val encrypted = encrypt(bytes = bytes)
         if (encrypted != null) {
             saveToPrefs(Base64.encodeToString(encrypted, Base64.DEFAULT), key = key)
+            dataCache[key] = bytes
             return true
         }
         return false
@@ -116,9 +123,17 @@ class SecureStorage(private val context: Context, private val alias: String = co
     }
 
     fun loadBytes(key: String): ByteArray? {
+
+        if (dataCache.containsKey(key)) {
+            return dataCache[key]
+        }
+
         val rawValue = loadForPrefs(key = key) ?: return null
         val encrypted = Base64.decode(rawValue, Base64.DEFAULT)
-        return decrypt(encrypted)
+        val data = decrypt(encrypted)
+
+        dataCache[key] = data
+        return data
     }
 
     // endregion
@@ -130,6 +145,7 @@ class SecureStorage(private val context: Context, private val alias: String = co
      */
     fun delete(key: String): Boolean {
         sharedPreferences.edit().remove(key).apply()
+        dataCache.remove(key)
         return true
     }
 
@@ -138,6 +154,7 @@ class SecureStorage(private val context: Context, private val alias: String = co
      */
     fun clear(): Boolean {
         sharedPreferences.edit().clear().apply()
+        dataCache.removeAll()
         return true
     }
 
@@ -189,6 +206,7 @@ class SecureStorage(private val context: Context, private val alias: String = co
 
     /**
      * 指定されたデータを復号化して返す
+     * 結構重いので注意
      */
     private fun decrypt(bytes: ByteArray): ByteArray? {
         if (hasSecretKey) {
