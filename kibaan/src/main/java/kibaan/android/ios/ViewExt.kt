@@ -98,4 +98,6 @@ fun ViewGroup.addSubview(view: View, params: ViewGroup.LayoutParams? = null) {
     }
 }
 
+val ViewGroup.subviews: List<View> get() = (0 until childCount).map { getChildAt(it) }
+
 // endregion
