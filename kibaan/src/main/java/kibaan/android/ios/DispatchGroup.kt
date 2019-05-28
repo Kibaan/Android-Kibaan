@@ -4,26 +4,47 @@ class DispatchGroup {
 
     var waitingCount = 0
     var work: (() -> Unit)? = null
+    var post: ((() -> Unit) -> Unit)? = null
 
     fun enter() {
         waitingCount++
     }
 
+    var isChecking = false
+
     fun leave() {
-        waitingCount--
         if (waitingCount == 0) {
-            work?.invoke()
+            throw IllegalStateException("This DispatchGroup can't leave anymore.")
+        }
+        waitingCount--
+        postCheck()
+    }
+
+    fun notify(post: (() -> Unit) -> Unit, work: () -> Unit) {
+        this.work = work
+        this.post = post
+        postCheck()
+    }
+
+    private fun postCheck() {
+        if (waitingCount == 0 && !isChecking) {
+            isChecking = true
+
+            val post = post
+            if (post != null) {
+                post.invoke {
+                    checkAndCallback()
+                    isChecking = false
+                }
+            } else {
+                isChecking = false
+            }
         }
     }
 
-    fun notify(queue: DispatchQueue, work: () -> Unit) {
-        this.work = work
-    }
-}
-
-// iOSと合わせるために作成するが、現状使わない
-class DispatchQueue {
-    companion object {
-        val main = DispatchQueue()
+    private fun checkAndCallback() {
+        if (waitingCount == 0) {
+            work?.invoke()
+        }
     }
 }
