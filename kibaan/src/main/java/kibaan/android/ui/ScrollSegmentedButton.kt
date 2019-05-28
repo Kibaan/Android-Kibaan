@@ -351,6 +351,7 @@ class ScrollSegmentedButton : HorizontalScrollView {
             val title = it.second
             button.title = title
         }
+        updateDummyButton()
     }
 
     /// ボタンの見た目を更新する
