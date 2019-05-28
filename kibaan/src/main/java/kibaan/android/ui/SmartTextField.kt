@@ -122,9 +122,15 @@ open class SmartTextField : RoundedConstraintLayout {
             if (!unfixed) {
                 val overCount = text.length - maxLength
                 val addTextCount = this.editTextCount - overCount
-                val first = text.substring(0..(start - 1))
-                val middle = text.substring((start)..(start + editTextCount - 1)).substring(0..(addTextCount - 1))
-                val last = text.substring((start + editTextCount)..(text.length - 1))
+
+                // editTextCountよりoverCountが大きくなってしまった場合は無視する
+                if (addTextCount < 0) {
+                    return
+                }
+
+                val first = text.substring(0 until start)
+                val middle = text.substring((start) until start + editTextCount).substring(0 until addTextCount)
+                val last = text.substring((start + editTextCount) until text.length)
                 val selectPosition = this.start + addTextCount
                 editText.setText("$first$middle$last")
                 editText.setSelection(selectPosition)
