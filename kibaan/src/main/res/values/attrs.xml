@@ -101,6 +101,7 @@
         <attr name="disabledBackgroundColor" format="color" />
 
         <attr name="android:background" />
+        <attr name="android:textStyle" />
         <attr name="android:textSize" />
     </declare-styleable>
 

@@ -35,7 +35,7 @@
         android:layout_height="50dp"
         app:scrollButtonWidth="110dp"
         android:background="#FFBBBB"
-        app:layout_constraintTop_toBottomOf="@+id/segment" />
+        app:layout_constraintTop_toBottomOf="@+id/segment"/>
 
     <kibaan.android.ui.SmartTextField
         android:id="@+id/textField"
@@ -120,6 +120,7 @@
         android:layout_marginBottom="20dp"
         android:background="@android:color/darker_gray"
         android:text="サブ画面へ"
+        android:textStyle="bold"
         android:textColor="@android:color/white"
         app:cornerRadius="15dp"
         app:layout_constraintBottom_toBottomOf="parent"

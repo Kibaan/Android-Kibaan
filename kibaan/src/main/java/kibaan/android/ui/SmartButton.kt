@@ -25,6 +25,15 @@ fun SmartButton.onTouchDown(listener: SmartButton.OnTouchDownListener) {
  */
 open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, ViewOutlineProcessable {
 
+    // region -> Constants
+
+    companion object {
+        /** 太字のスタイル */
+        private const val textStyleBold = 0b01
+    }
+
+    // endregion
+
     // region -> Variables
 
     @Suppress("LeakingThis")
@@ -182,6 +191,7 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
     private fun commonInit(context: Context, attrs: AttributeSet? = null) {
         // プロパティの読み込み
         var fontSizeUnit = SmartFontProtocol.defaultFontSizeUnit
+        var isBold = false
         var adjustsFontSizeForDevice = this.adjustsFontSizeForDevice
         var useGlobalFont = this.useGlobalFont
         if (attrs != null) {
@@ -223,12 +233,16 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
             updateBackgroundColor()
 
             // textSize単位の指定
-            val textSizeAttribute = array.getStringOrNull(R.styleable.SmartLabel_android_textSize)
+            val textSizeAttribute = array.getStringOrNull(R.styleable.SmartButton_android_textSize)
             if (textSizeAttribute?.hasSuffix("dip").isTrue) {
                 fontSizeUnit = FontSizeUnit.dp
             } else if (textSizeAttribute?.hasSuffix("sp").isTrue) {
                 fontSizeUnit = FontSizeUnit.sp
             }
+            // android:textStyleがある場合はそちらを優先、なければisBoldを反映
+            val textStyle = array.getInt(R.styleable.SmartButton_android_textStyle, 0)
+            isBold = (0 < textStyle and textStyleBold)
+
             array.recycle()
         }
         val textPointSize = if (fontSizeUnit == FontSizeUnit.sp) context.pxToSp(textSize) else context.pxToDp(textSize)
