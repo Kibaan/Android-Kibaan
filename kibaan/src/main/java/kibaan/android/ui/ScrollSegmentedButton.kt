@@ -116,7 +116,6 @@ class ScrollSegmentedButton : HorizontalScrollView {
 
     init {
         isHorizontalScrollBarEnabled = false
-        viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
     }
 
     constructor(context: Context) : super(context) {
@@ -210,6 +209,10 @@ class ScrollSegmentedButton : HorizontalScrollView {
         updateButtonTitles()
         updateButtonPosition()
         isScrollEnabled = !isFitButtons
+
+        // ボタンが生成される際にリスナーを登録する（イニシャライザのみだと中身が変更される場合をカバー出来ない）
+        viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
+        viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
     }
 
     // MARK: - Others
@@ -259,27 +262,32 @@ class ScrollSegmentedButton : HorizontalScrollView {
     /// スクロール時の処理
     override fun onScrollChanged(l: Int, t: Int, oldl: Int, oldt: Int) {
         super.onScrollChanged(l, t, oldl, oldt)
-
         val contentWidth = ((scrollButtonWidthPx * buttonCount)).toInt()
         val maxScrollOffset = scrollMargin + contentWidth
         if (scrollX < scrollMargin) {
             // 左端を超える場合は右端に移動する
-            scrollX += contentWidth - (scrollMargin - scrollX)
+            val moveDistance = contentWidth - (scrollMargin - scrollX)
+            if (scrollX + moveDistance < scrollMargin) {
+                scrollX = scrollMargin
+            } else {
+                scrollX += moveDistance
+            }
         } else if (maxScrollOffset < scrollX) {
             // 右端を超える場合は左端に移動する
             scrollX -= contentWidth - (scrollX - maxScrollOffset)
-            // 11920 -=
         }
         updateButtonPosition()
     }
 
     /// 各ボタンのX座標を調整する
     private fun updateButtonPosition() {
+        val margin = if (isFitButtons) 0 else scrollMargin
+
         // まずはページ順に横並び
         buttons.enumerated().forEach {
             val button = it.element
             val layoutParams = LayoutParams(button.layoutParams.width, button.layoutParams.height)
-            layoutParams.leftMargin = (buttonWidthPx * it.offset).toInt() + scrollMargin
+            layoutParams.leftMargin = (buttonWidthPx * it.offset).toInt() + margin
             button.layoutParams = layoutParams
         }
 
@@ -288,11 +296,11 @@ class ScrollSegmentedButton : HorizontalScrollView {
         // 右端のさらに右が見える場合、ボタンをさらに右にもってくる
         val marginCount = this.marginCount
         (0..marginCount).forEach { index ->
-            if (scrollMargin + buttonWidthPx * (buttons.size - (marginCount - index)) < scrollX) {
+            if (margin + buttonWidthPx * (buttons.size - (marginCount - index)) < scrollX) {
                 val button = buttons.safeGet(index)
                 if (button != null) {
                     val layoutParams = LayoutParams(button.layoutParams.width, button.layoutParams.height)
-                    layoutParams.leftMargin = (buttonWidthPx * (buttons.size + index)).toInt() + scrollMargin
+                    layoutParams.leftMargin = (buttonWidthPx * (buttons.size + index)).toInt() + margin
                     button.layoutParams = layoutParams
                 }
             }
