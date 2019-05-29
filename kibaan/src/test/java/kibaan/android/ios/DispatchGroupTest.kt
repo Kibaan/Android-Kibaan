@@ -1,5 +1,6 @@
 package kibaan.android.ios
 
+import android.os.Handler
 import org.junit.Assert
 import org.junit.Test
 
@@ -9,7 +10,7 @@ class DispatchGroupTest {
     fun testNotify1() {
         val group = DispatchGroup()
         var fired = false
-        group.notify(queue = DispatchQueue.main) {
+        group.notify(post = { Handler().post(it) }) {
             fired = true
         }
 
