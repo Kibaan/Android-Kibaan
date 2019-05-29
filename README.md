@@ -1,23 +1,23 @@
-# Kibaan
+# はじめに
 
 基本的な使用方法については`iOS-Kibaan`と同じな為、`iOS-Kibaan`の[README](https://github.com/altonotes/iOS-Kibaan/blob/master/README.md)を参照。
 本READMEには、Android版特有のことについてのみ説明する。  
 
-# バージョンアップ方法
+## 開発環境
+* Android Studio(v3.4)
+
+# リリース方法
 
 1. kibaan/build.gradle に記載の`kibaanVersion`の数字を更新する。
 2. プロジェクト直下にある`./buildAndArchive.sh`を実行する
 3. GitHubリポジトリにPUSHする
-
-## 開発環境
-* Android Studio(v3.2)
 
 ## 内包ライブラリ（サードパーティ）
 * ButterKnife
 * OKHttp
 * Gson
 
-## Download
+## アプリへの組み込み方法
 以下を`build.gradle`に記述することでダウンロード可能。
 
 ```
@@ -28,32 +28,44 @@ repositories {
 
 ```
 dependencies {
-	implementation 'jp.co.altonotes.kibaan:kibaan:0.6.0'
+	implementation 'jp.co.altonotes.kibaan:kibaan:0.7.76' // バージョンは最新を確認する
 }
+```
+
+## デバッグ方法
+
+Kibaanをアプリに組み込んだ状態でKibaan内のクラスのデバッグを行いたい場合は以下の設定を行う。
+
+- 本プロジェクトをGitHubからCloneし、アプリのプロジェクトと同じディレクトリに配置する
+- settings.gradle の内容をいかに変更
+
+```
+include ':app', ':kibaan'
+project(':kibaan').projectDir = new File('../Android-Kibaan/kibaan')
+```
+
+- build.gradle のKibaanのdependencyを以下に変更
+
+```
+implementation project(':kibaan')
+implementation 'com.google.code.gson:gson:2.8.2'
 ```
 
 ## ガイドライン
 
-### ViewControllerに対応するXML
-画面(ViewController)に対応するXMLファイルは、ViewControllerのクラス名称をスネークケースで変換した名称とすること。  
+### レイアウトXMLファイルの命名規則
+
+- ViewControllerに対応するXMLファイルは、ViewControllerのクラス名をスネークケースに変えた名前にする
+- UITableViewCellに対応するXMLファイルは、TableViewCellのクラス名をスネークケースに変えた名前にする
+
+ただし、一つのViewControllerに対して複数のレイアウトファイルを使いたい場合、任意のレイアウトファイル名をつけてViewControllerの引数にファイル名を渡すことができる。
 
 ***命名例***
 
 ```
-SampleViewController.kt
-↓
-sample_view_controller.xml
-```
-
-### TableViewCellに対応するXML
-`UITableView`のセル(TableViewCell)に対応するXMLファイルは、TableViewCellのクラス名称をスネークケースで変換した名称とすること。  
-
-***命名例***
-
-```
-SampleTableViewCell.kt
-↓
-sample_table_view_cell.xml
+SampleViewController.kt → sample_view_controller.xml
+HTMLViewController.kt → html_view_controller.xml
+SampleTableViewCell.kt → sample_table_view_cell.xml
 ```
 
 ### メッセージの管理
