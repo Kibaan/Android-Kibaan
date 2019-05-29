@@ -41,6 +41,10 @@ class CGContext(val canvas: Canvas, val context: Context) {
         param.lineDashLengths = lengths
     }
 
+    fun setLineJoin(lineJoin: CGLineJoin) {
+        param.lineJoin = lineJoin
+    }
+
     fun clip(to: CGRect) {
         canvas.clipRect(to.rectF)
     }
@@ -223,19 +227,22 @@ class CGContext(val canvas: Canvas, val context: Context) {
                 paint.strokeWidth = lineWidth.toFloat()
             }
 
-        constructor() {
-        }
+        var lineJoin: CGLineJoin? = null
+
+        constructor()
 
         constructor(fillColor: UIColor?,
                     strokeColor: UIColor?,
                     lineDashPhase: Int?,
                     lineDashLengths: List<CGFloat>?,
-                    shouldAntialias: Boolean) {
+                    shouldAntialias: Boolean,
+                    lineJoin: CGLineJoin?) {
             this.fillColor = fillColor
             this.strokeColor = strokeColor
             this.lineDashPhase = lineDashPhase
             this.lineDashLengths = lineDashLengths
             this.shouldAntialias = shouldAntialias
+            this.lineJoin = lineJoin
         }
 
         fun fillMode() {
@@ -263,16 +270,39 @@ class CGContext(val canvas: Canvas, val context: Context) {
             if (color != null) {
                 paint.color = color
             }
+
+            paint.strokeJoin = getStokeJoin(lineJoin)
         }
 
         fun clone(): Param {
-            return Param(fillColor, strokeColor, lineDashPhase, lineDashLengths, shouldAntialias)
+            return Param(fillColor,
+                strokeColor,
+                lineDashPhase,
+                lineDashLengths,
+                shouldAntialias,
+                lineJoin)
+        }
+
+        private fun getStokeJoin(join: CGLineJoin?): Paint.Join {
+            return when (join) {
+                CGLineJoin.miter -> Paint.Join.MITER
+                CGLineJoin.round -> Paint.Join.ROUND
+                CGLineJoin.bevel -> Paint.Join.BEVEL
+                else -> Paint.Join.MITER
+            }
         }
     }
 }
 
+// enumは用意したが今のところ使われない
 enum class CGPathFillRule {
     winding,
     // evenOdd is not supported
     ;
+}
+
+enum class CGLineJoin : IntEnumDefault {
+    miter,
+    round,
+    bevel,
 }
