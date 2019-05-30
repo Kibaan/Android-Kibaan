@@ -168,6 +168,7 @@ class CGContext(val canvas: Canvas, val context: Context) {
         param.shouldAntialias = oldShouldAntialias
     }
 
+    // テキストを描画する。文字列の左上とrectの左上を合わせる
     fun drawTextInRect(text: String, rect: CGRect, font: UIFont, color: UIColor) {
         param.paint.typeface = font.typeface
         param.paint.textSize = context.dpToPx(font.pointSize).toFloat()
@@ -299,6 +300,22 @@ class CGContext(val canvas: Canvas, val context: Context) {
             }
         }
     }
+}
+
+// 文字列の左上を基点座標にして描画する
+fun String.draw(at: CGPoint, withAttributes: Map<NSAttributedString.Key, Any>?) {
+    TODO("not implemented")
+
+    val font: UIFont = withAttributes?.get(NSAttributedString.Key.font) as? UIFont ?: UIFont.systemFont(14.0)
+    val color: UIColor = withAttributes?.get(NSAttributedString.Key.foregroundColor) as? UIColor ?: UIColor.black
+    val paragraphStyle: NSParagraphStyle = withAttributes?.get(NSAttributedString.Key.paragraphStyle) as? NSParagraphStyle ?: NSMutableParagraphStyle()
+
+}
+
+// 文字列の左上をRectの左上と合わせて描画する（attributesのParagraphStyleで、alignmentが指定された場合は中央寄せ、右寄せも可能）
+// Rectに文字が収まりきらない場合、標準では折り返すがattributesのParagraphStyleの指定により省略表示も可能
+fun String.draw(inRect: CGRect, withAttributes: Map<NSAttributedString.Key, Any>? = null) {
+    TODO("not implemented")
 }
 
 // enumは用意したが今のところ使われない
