@@ -86,9 +86,13 @@ fun <T, R : Any> Collection<T>.compactMap(transform: (T) -> R?): List<R> {
     return mapNotNull(transform)
 }
 
-fun <T> Collection<T>.sorted(by: (T, T) -> Int): List<T> {
-    return sortedWith(Comparator{left, right ->
-        by(left, right)
+fun <T> Collection<T>.sorted(by: (T, T) -> ComparisonResult): List<T> {
+    return sortedWith(Comparator { left, right ->
+        when (by(left, right)) {
+            ComparisonResult.orderedAscending -> -1
+            ComparisonResult.orderedDescending -> 1
+            else -> 0
+        }
     })
 }
 

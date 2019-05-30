@@ -83,37 +83,38 @@ class CollectionExtTest {
 
         var sorted = list.sorted { lhs, rhs ->
             when {
-                lhs < rhs -> -1
-                lhs > rhs -> 1
-                else -> 0
+                lhs < rhs -> ComparisonResult.orderedAscending
+                lhs > rhs -> ComparisonResult.orderedDescending
+                else -> ComparisonResult.orderedSame
             }
         }
         assertArrayEquals(arrayOf(1, 2, 3, 4, 5, 5), sorted.toTypedArray())
 
         sorted = list.sorted { lhs, rhs ->
             when {
-                lhs <= rhs -> -1
-                lhs > rhs -> 1
-                else -> 0
+                lhs <= rhs -> ComparisonResult.orderedAscending
+                lhs > rhs -> ComparisonResult.orderedDescending
+                else -> ComparisonResult.orderedSame
             }
         }
         assertArrayEquals(arrayOf(1, 2, 3, 4, 5, 5), sorted.toTypedArray())
 
         sorted = list.sorted { lhs, rhs ->
             when {
-                lhs > rhs -> -1
-                lhs < rhs -> 1
-                else -> 0
+                lhs > rhs -> ComparisonResult.orderedAscending
+                lhs < rhs -> ComparisonResult.orderedDescending
+                else -> ComparisonResult.orderedSame
             }
         }
         assertArrayEquals(arrayOf(5, 5, 4, 3, 2, 1), sorted.toTypedArray())
 
         sorted = list.sorted { lhs, rhs ->
             when {
-                lhs >= rhs -> -1
-                lhs < rhs -> 1
-                else -> 0
+                lhs >= rhs -> ComparisonResult.orderedAscending
+                lhs < rhs -> ComparisonResult.orderedDescending
+                else -> ComparisonResult.orderedSame
             }
         }
+        assertArrayEquals(arrayOf(5, 5, 4, 3, 2, 1), sorted.toTypedArray())
     }
 }

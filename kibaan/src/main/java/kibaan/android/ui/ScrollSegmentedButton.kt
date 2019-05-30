@@ -80,9 +80,9 @@ class ScrollSegmentedButton : HorizontalScrollView {
     private val leftEndButton: UIButton?
         get() = buttons.sorted(by = { lhs, rhs ->
             when {
-                lhs.frame.minX < rhs.frame.minX -> -1
-                lhs.frame.minX > rhs.frame.minX -> 1
-                else -> 0
+                lhs.frame.minX < rhs.frame.minX -> ComparisonResult.orderedAscending
+                lhs.frame.minX > rhs.frame.minX -> ComparisonResult.orderedDescending
+                else -> ComparisonResult.orderedSame
             }
         }).firstOrNull()
 
