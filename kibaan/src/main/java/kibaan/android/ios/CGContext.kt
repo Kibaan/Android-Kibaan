@@ -5,6 +5,13 @@ import android.graphics.*
 import kibaan.android.extension.dpToPx
 import kotlin.math.PI
 
+private var currentContext: CGContext? = null
+
+fun UIGraphicsGetCurrentContext(context: Context, canvas: Canvas): CGContext {
+    val context = CGContext(canvas, context)
+    currentContext = context
+    return context
+}
 
 /**
  * 描画コンテキスト
