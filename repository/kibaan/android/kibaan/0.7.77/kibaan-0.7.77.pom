@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>kibaan.android</groupId>
   <artifactId>kibaan</artifactId>
-  <version>0.7.77./ba</version>
+  <version>0.7.77</version>
   <packaging>aar</packaging>
   <dependencies>
     <dependency>
