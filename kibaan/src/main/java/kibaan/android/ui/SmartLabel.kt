@@ -200,9 +200,6 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
         isLayoutCompleted = true
-        if (text.toString().hasPrefix("+6円")) {
-            System.out.println("@@@@ onLayout!!")
-        }
         resizeFontForWidth()
     }
 
@@ -236,9 +233,6 @@ open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcess
                 text = text.toString(), baseTextSize = rawTextSizePx,
                 width = textFrameWidth, typeface = typeface, minSize = autoResizeMinTextSize
             )
-            if (text.toString().hasPrefix("+6円")) {
-                System.out.println("@@@@ rawTextSizePx = $rawTextSizePx, size = $size, textFrameWidth = $textFrameWidth")
-            }
             super.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
             fontCalculatedSnapshot = stateSnapshot
         }
