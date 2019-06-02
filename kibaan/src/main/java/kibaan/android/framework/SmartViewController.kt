@@ -173,6 +173,8 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
             SmartActivity.sharedOrNull?.isUserInteractionEnabled = true
         }
 
+        (controller.view.parent as? ViewGroup)?.removeView(controller.view)
+
         // 遷移アニメーション
         parentView.addView(controller.view)
         if (animated) {
