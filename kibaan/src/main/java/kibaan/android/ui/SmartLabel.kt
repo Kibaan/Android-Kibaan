@@ -14,6 +14,9 @@ import kibaan.android.ios.*
 
 /**
  * 共通テキストラベル
+ * FIXME: 「Wrap_Contentかつ自動縮小あり」でフォントが縮小されている場合、親ビューが拡大しても、フォントが大きくならない問題がある。
+ *  親ビューが拡大しても"onSizeChanged"は呼ばれない為、"OnGlobalLayoutListener"を使ってフォントサイズを設定し直す必要があるが、
+ *  パフォーマンスへの影響が不明な為、保留する。
  */
 open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcessable {
 
