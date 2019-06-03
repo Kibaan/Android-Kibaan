@@ -17,6 +17,7 @@ import kibaan.android.ios.*
  * FIXME: 「Wrap_Contentかつ自動縮小あり」でフォントが縮小されている場合、親ビューが拡大しても、フォントが大きくならない問題がある。
  *  親ビューが拡大しても"onSizeChanged"は呼ばれない為、"OnGlobalLayoutListener"を使ってフォントサイズを設定し直す必要があるが、
  *  パフォーマンスへの影響が不明な為、保留する。
+ * FIXME:「Match_Constraintかつ自動縮小あり」でフォントが縮小されている場合、親ビューが拡大した際にフォントサイズは大きくなるが、当該ラベルに"Baseline"で紐づけている別ラベルの表示位置が更新されない問題がある。
  */
 open class SmartLabel : AppCompatTextView, SmartFontProtocol, ViewOutlineProcessable {
 
