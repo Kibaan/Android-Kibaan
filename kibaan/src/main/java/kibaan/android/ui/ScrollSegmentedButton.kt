@@ -314,7 +314,7 @@ class ScrollSegmentedButton : HorizontalScrollView {
 
     private fun updateDummyButton() {
         // ダミーボタンは常に右端に表示する
-        val maxX = buttons.map { it.left + buttonWidthPx }.sorted().lastOrNull()
+        val maxX = buttons.map { ((it.layoutParams as? MarginLayoutParams)?.leftMargin ?: 0) + buttonWidthPx }.sorted().lastOrNull()
         if (maxX != null) {
             val layoutParams = LayoutParams(dummyButton.layoutParams.width, dummyButton.layoutParams.height)
             layoutParams.leftMargin = maxX.toInt()
