@@ -383,9 +383,22 @@ class ScrollSegmentedButton : HorizontalScrollView {
         val x1 = scrollButtonWidthPx * index - (width / 2) + (scrollButtonWidthPx / 2)
         val x2 = x1 + (scrollButtonWidthPx * buttonCount)
         if (abs(scrollX - x1) < abs(scrollX - x2) && animated) {
-            setContentOffset(CGPoint(x = x1, y = 0.0), animated = animated)
+            if (x1 < 0) {
+                val contentWidth = ((scrollButtonWidthPx * buttonCount)).toInt()
+                val maxScrollOffset = scrollMargin + contentWidth
+                this.scrollX = maxScrollOffset
+                setContentOffset(CGPoint(x = x2, y = 0.0), animated = animated)
+            } else {
+                setContentOffset(CGPoint(x = x1, y = 0.0), animated = animated)
+            }
         } else {
-            setContentOffset(CGPoint(x = x2, y = 0.0), animated = animated)
+            val contentWidth = ((scrollButtonWidthPx * buttonCount)).toInt()
+            if (contentWidth < x2) {
+                this.scrollX = scrollMargin
+                setContentOffset(CGPoint(x = x1, y = 0.0), animated = animated)
+            } else {
+                setContentOffset(CGPoint(x = x2, y = 0.0), animated = animated)
+            }
         }
     }
 
