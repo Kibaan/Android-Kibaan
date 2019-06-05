@@ -189,6 +189,7 @@ open class SmartTextField : RoundedConstraintLayout {
             val array = context.obtainStyledAttributes(attrs, R.styleable.SmartTextField)
             leftViewWidthPercent = array.getFloat(R.styleable.SmartTextField_left_view_width_percent, 0.0f)
             rightViewWidthPercent = array.getFloat(R.styleable.SmartTextField_right_view_width_percent, 0.0f)
+            editText.gravity = array.getInt(R.styleable.SmartTextField_android_gravity, editText.gravity)
             editText.hint = array.getString(R.styleable.SmartTextField_android_hint)
             // placeholderがあればhintを上書き
             val placeholder = array.getStringOrNull(R.styleable.SmartTextField_placeholder)

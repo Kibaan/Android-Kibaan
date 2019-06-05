@@ -135,6 +135,7 @@
         <attr name="android:textSize" />
         <attr name="android:imeOptions" />
         <attr name="android:maxLength" />
+        <attr name="android:gravity" />
     </declare-styleable>
 
     <!-- SmartScrollView -->
