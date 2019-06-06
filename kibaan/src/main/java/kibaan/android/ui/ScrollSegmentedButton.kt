@@ -300,7 +300,7 @@ class ScrollSegmentedButton : HorizontalScrollView {
         // 右端のさらに右が見える場合、ボタンをさらに右にもってくる
         val marginCount = this.marginCount
         (0..marginCount).forEach { index ->
-            if (margin + buttonWidthPx * (buttons.size - (marginCount - index)) < scrollX) {
+            if (margin + buttonWidthPx * (index + 1) < scrollX) {
                 val button = buttons.safeGet(index)
                 if (button != null) {
                     val layoutParams = LayoutParams(button.layoutParams.width, button.layoutParams.height)
