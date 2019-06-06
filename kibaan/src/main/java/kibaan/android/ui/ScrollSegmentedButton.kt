@@ -95,6 +95,17 @@ class ScrollSegmentedButton : HorizontalScrollView {
     private val scrollMargin = 5000
 
     @AndroidUnique
+    private val animatedScrollGap: Long = 250
+
+    @AndroidUnique
+    private var smoothScrollingPoint: CGPoint? = null
+
+    @AndroidUnique
+    private val clearSmoothScrollingPoint = {
+        smoothScrollingPoint = null
+    }
+
+    @AndroidUnique
     var isScrollEnabled = true
 
     @AndroidUnique
@@ -370,7 +381,7 @@ class ScrollSegmentedButton : HorizontalScrollView {
     // MARK: - Other
     /// ダミーボタンかどうか
     private fun isDummyButton(button: UIButton): Boolean =
-            button == dummyButton
+        button == dummyButton
 
     /// 選択中のボタンが中心に表示されるように位置を調整する
     private fun moveToCenter(animated: Boolean) {
@@ -405,6 +416,18 @@ class ScrollSegmentedButton : HorizontalScrollView {
     private fun setContentOffset(point: CGPoint, animated: Boolean) {
         val x = point.x + scrollMargin
         if (animated) {
+            if (smoothScrollingPoint?.x == point.x) {
+                return
+            }
+            smoothScrollingPoint = point
+
+            handler?.removeCallbacks(clearSmoothScrollingPoint)
+            handler?.postDelayed(clearSmoothScrollingPoint, animatedScrollGap)
+
+            if (handler == null) {
+                smoothScrollingPoint = null
+            }
+
             smoothScrollTo(x.toInt(), point.y.toInt())
         } else {
             scrollTo(x.toInt(), point.y.toInt())
