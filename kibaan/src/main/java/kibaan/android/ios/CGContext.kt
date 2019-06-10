@@ -144,6 +144,11 @@ class CGContext(val canvas: Canvas, val context: Context) {
         clearPath()
     }
 
+    fun strokeEllipse(rect: CGRect) {
+        addEllipse(rect)
+        strokePath()
+    }
+
     fun fillPath() {
         param.fillMode()
         canvas.drawPath(path, param.paint)
