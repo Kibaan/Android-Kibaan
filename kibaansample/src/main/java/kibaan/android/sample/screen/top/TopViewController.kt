@@ -1,10 +1,10 @@
 package kibaan.android.sample.screen.top
 
 import android.view.View
-import android.widget.ImageView
 import kibaan.android.framework.ScreenService
 import kibaan.android.framework.SmartViewController
-import kibaan.android.ios.*
+import kibaan.android.ios.IBAction
+import kibaan.android.ios.IBOutlet
 import kibaan.android.sample.R
 import kibaan.android.sample.screen.connection.ConnectionViewController
 import kibaan.android.sample.screen.page.FirstPageViewController
@@ -20,13 +20,10 @@ import kibaan.android.util.Log
  */
 class TopViewController : SmartViewController() {
 
-    @IBOutlet(R.id.hadoken_image) lateinit var imageView: ImageView
     @IBOutlet(R.id.scrollSegment) lateinit var scrollSegment: ScrollSegmentedButton
 
     override fun viewDidLoad() {
         super.viewDidLoad()
-
-        imageView.image = UIImage(context = context!!, named = "hadoken").drawable
 
         scrollSegment.setup(buttonCount = 10, buttonMaker = {
             SmartButton(context!!)
