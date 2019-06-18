@@ -2,10 +2,8 @@ package kibaan.android.ui
 
 import android.content.Context
 import android.content.res.Resources
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.FrameLayout
 import butterknife.ButterKnife
 import kibaan.android.extension.toSnakeCase
@@ -19,8 +17,6 @@ import kibaan.android.util.Log
  */
 @Suppress("LeakingThis")
 abstract class CustomNibView : FrameLayout {
-
-    val contentView: View
 
     // region -> Constructor
 
@@ -42,17 +38,11 @@ abstract class CustomNibView : FrameLayout {
         val resourceName = xibName() ?: javaClass.simpleName.toSnakeCase()
         val layoutId = context.resources.getIdentifier(resourceName, "layout", context.packageName)
         try {
-            contentView = LayoutInflater.from(context).inflate(layoutId, this, true)
-            ButterKnife.bind(contentView)
+            ButterKnife.bind(LayoutInflater.from(context).inflate(layoutId, this, true))
         } catch (e: Resources.NotFoundException) {
             Log.e(javaClass.simpleName, "Layout file not found!!! file name is [$resourceName]")
             throw e
         }
         backgroundColor = UIColor.clear
-    }
-
-    override fun setBackground(background: Drawable?) {
-        super.setBackground(background)
-        contentView.background = background
     }
 }
