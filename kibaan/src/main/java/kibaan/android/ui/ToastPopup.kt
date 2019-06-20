@@ -11,6 +11,7 @@ import android.view.*
 import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatTextView
 import kibaan.android.AndroidUnique
+import kibaan.android.extension.dpToPx
 import kibaan.android.framework.SmartActivity
 import kibaan.android.ios.IntEnumDefault
 import kibaan.android.ios.UIColor
@@ -66,19 +67,19 @@ open class ToastPopup : AppCompatTextView {
     @AndroidUnique
     private var slideOutAnimator: ViewPropertyAnimator? = null
 
+    var padding: Int = context.dpToPx(8)
+    var cornerRadius: Float = context.dpToPx(4).toFloat()
+    var topY: Int = context.dpToPx(5)
+
     // endregion
 
     // region -> Static
 
     companion object {
-        // FIXME: SmartActivity.shared はNullPointerExceptionを起こすので使わない
-        private var padding: Int = DeviceUtils.vminLength(SmartActivity.shared, 0.025).toInt()
-        private var cornerRadius: Float = DeviceUtils.vminLength(SmartActivity.shared, 0.01).toFloat()
-        private var topY: Int = DeviceUtils.vminLength(SmartActivity.shared, 0.01).toInt()
         private var queue: MutableList<ToastPopup> = mutableListOf()
 
         fun show(message: String, type: DisplayType = DisplayType.NORMAL, displayTime: Long = 3000) {
-            val smartActivity = SmartActivity.sharedOrNull ?: return
+            val smartActivity = SmartActivity.shared ?: return
 
             hideAllToastPopup()
             val toast = create(smartActivity, message, type)
@@ -97,6 +98,7 @@ open class ToastPopup : AppCompatTextView {
             toast.setTextColor(type.textColor.intValue)
             toast.text = message
             toast.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14.0f)
+            val padding = toast.padding
             toast.setPadding(padding, padding, padding, padding)
             toast.visibility = View.INVISIBLE
             return toast
@@ -139,7 +141,7 @@ open class ToastPopup : AppCompatTextView {
     private fun slideOut(delay: Long = 0) {
         val toPosition = -(top + height.toFloat())
         slideOutAnimator = animate().setStartDelay(delay).setDuration(animationDuration).translationY(toPosition).withEndAction {
-            SmartActivity.sharedOrNull?.runOnUiThread {
+            SmartActivity.shared?.runOnUiThread {
                 removeFromSuperview()
             }
         }

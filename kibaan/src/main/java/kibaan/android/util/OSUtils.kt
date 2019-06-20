@@ -8,10 +8,10 @@ import android.graphics.Rect
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
-import androidx.core.app.NotificationManagerCompat
 import android.view.View
-import kibaan.android.framework.SmartActivity
+import androidx.core.app.NotificationManagerCompat
 import kibaan.android.extension.isTrue
+import kibaan.android.framework.SmartActivity
 import java.io.IOException
 
 
@@ -20,7 +20,7 @@ class OSUtils {
     companion object {
         fun openUrl(urlStr: String) {
             var intent: Intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlStr))
-            SmartActivity.shared.startActivity(intent)
+            SmartActivity.shared?.startActivity(intent)
         }
 
         fun openPlayStore(activity: Activity, packageName: String) {

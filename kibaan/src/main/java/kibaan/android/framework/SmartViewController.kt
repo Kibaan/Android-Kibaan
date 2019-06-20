@@ -162,7 +162,7 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
         if (parentView == null || nextScreens.lastOrNull() == controller) {
             return null
         }
-        SmartActivity.sharedOrNull?.isUserInteractionEnabled = false
+        SmartActivity.shared?.isUserInteractionEnabled = false
 
         controller.navigationRootController = this
         val prevView = nextScreens.lastOrNull()?.view ?: targetView
@@ -170,7 +170,7 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
         leave()
 
         val finish: () -> Unit = {
-            SmartActivity.sharedOrNull?.isUserInteractionEnabled = true
+            SmartActivity.shared?.isUserInteractionEnabled = true
         }
 
         (controller.view.parent as? ViewGroup)?.removeView(controller.view)
@@ -229,14 +229,14 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
     fun removeNextScreen(targetView: View, animated: Boolean = true) {
         val removedScreen = this.nextScreens.removeLast() ?: return
 
-        SmartActivity.sharedOrNull?.isUserInteractionEnabled = false
+        SmartActivity.shared?.isUserInteractionEnabled = false
 
         removedScreen.leave()
         enter()
         val completion = {
             removedScreen.view.removeFromSuperview()
             removedScreen.removed()
-            SmartActivity.sharedOrNull?.isUserInteractionEnabled = true
+            SmartActivity.shared?.isUserInteractionEnabled = true
         }
         val prevView = nextScreens.lastOrNull()?.view ?: targetView
         if (animated) {

@@ -27,8 +27,7 @@ open class SmartActivity : AppCompatActivity() {
     companion object {
         @SuppressLint("StaticFieldLeak")
         private var sInstance: SmartActivity? = null
-        val shared: SmartActivity get() = sInstance!!
-        val sharedOrNull: SmartActivity? get() = sInstance
+        val shared: SmartActivity? get() = sInstance
     }
 
     // region -> Life cycle
