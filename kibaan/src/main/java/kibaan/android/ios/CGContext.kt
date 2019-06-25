@@ -3,11 +3,13 @@ package kibaan.android.ios
 import android.content.Context
 import android.graphics.*
 import kibaan.android.extension.dpToPx
+import kibaan.android.extension.width
 import kotlin.math.PI
 
 private var currentContext: CGContext? = null
 
-fun UIGraphicsGetCurrentContext(context: Context, canvas: Canvas): CGContext {
+fun UIGraphicsGetCurrentContext(context: Context, canvas: Canvas?): CGContext? {
+    val canvas = canvas ?: return null
     val context = CGContext(canvas, context)
     currentContext = context
     return context
@@ -144,6 +146,11 @@ class CGContext(val canvas: Canvas, val context: Context) {
         clearPath()
     }
 
+    fun strokeEllipse(rect: CGRect) {
+        addEllipse(rect)
+        strokePath()
+    }
+
     fun fillPath() {
         param.fillMode()
         canvas.drawPath(path, param.paint)
@@ -162,7 +169,7 @@ class CGContext(val canvas: Canvas, val context: Context) {
         param.shouldAntialias = true
 
         // canvas.drawTextの引数は左下なので、フォント高分下に下げる必要がある
-        val height = "9".size(context, font).height
+        val height = text.size(context, font).height
         canvas.drawText(text, point.x.toFloat(), point.y.toFloat() + height.toFloat(), param.paint)
 
         param.shouldAntialias = oldShouldAntialias
@@ -178,7 +185,7 @@ class CGContext(val canvas: Canvas, val context: Context) {
         val oldShouldAntialias = param.shouldAntialias
         param.shouldAntialias = true
 
-        val height = "9".size(context, font).height
+        val height = text.size(context, font).height
         canvas.drawText(text, rect.origin.x.toFloat(), rect.origin.y.toFloat() + height.toFloat(), param.paint)
 
         param.shouldAntialias = oldShouldAntialias
@@ -302,20 +309,46 @@ class CGContext(val canvas: Canvas, val context: Context) {
     }
 }
 
-// 文字列の左上を基点座標にして描画する
+/**
+ * 文字列の左上を基点座標にして描画する
+ */
 fun String.draw(at: CGPoint, withAttributes: Map<NSAttributedString.Key, Any>?) {
-    TODO("not implemented")
+    val context = currentContext ?: return
 
     val font: UIFont = withAttributes?.get(NSAttributedString.Key.font) as? UIFont ?: UIFont.systemFont(14.0)
-    val color: UIColor = withAttributes?.get(NSAttributedString.Key.foregroundColor) as? UIColor ?: UIColor.black
-    val paragraphStyle: NSParagraphStyle = withAttributes?.get(NSAttributedString.Key.paragraphStyle) as? NSParagraphStyle ?: NSMutableParagraphStyle()
+    val foregroundColor: UIColor = withAttributes?.get(NSAttributedString.Key.foregroundColor) as? UIColor ?: UIColor.black
 
+    context.drawText(this, at, font, foregroundColor)
 }
 
-// 文字列の左上をRectの左上と合わせて描画する（attributesのParagraphStyleで、alignmentが指定された場合は中央寄せ、右寄せも可能）
-// Rectに文字が収まりきらない場合、標準では折り返すがattributesのParagraphStyleの指定により省略表示も可能
+/**
+ * 文字列の左上をRectの左上と合わせて描画する（attributesのParagraphStyleで、alignmentが指定された場合は中央寄せ、右寄せも可能）
+ * Rectに文字が収まりきらない場合、標準では折り返すがattributesのParagraphStyleの指定により省略表示も可能
+ */
 fun String.draw(inRect: CGRect, withAttributes: Map<NSAttributedString.Key, Any>? = null) {
-    TODO("not implemented")
+    val context = currentContext ?: return
+
+    val font: UIFont = withAttributes?.get(NSAttributedString.Key.font) as? UIFont ?: UIFont.systemFont(14.0)
+    val foregroundColor: UIColor = withAttributes?.get(NSAttributedString.Key.foregroundColor) as? UIColor ?: UIColor.black
+    val paragraphStyle: NSParagraphStyle = withAttributes?.get(NSAttributedString.Key.paragraphStyle) as? NSParagraphStyle ?: NSMutableParagraphStyle()
+
+    val point = when (paragraphStyle.alignment) {
+        NSTextAlignment.left -> {
+            CGPoint(inRect.minX, inRect.minY)
+        }
+        NSTextAlignment.center -> {
+            val fontWidth = size(context.context, font).width
+            CGPoint(inRect.minX + (inRect.width - fontWidth) / 2, inRect.minY)
+        }
+        NSTextAlignment.right -> {
+            val fontWidth = size(context.context, font).width
+            CGPoint(inRect.minX + (inRect.width - fontWidth), inRect.minY)
+        }
+    }
+
+    // FIXME iOSはRect右端での折り返し、改行コードでの改行に対応しているがKibaanでは今のところ対応していない
+
+    context.drawText(this, point, font, foregroundColor)
 }
 
 // enumは用意したが今のところ使われない

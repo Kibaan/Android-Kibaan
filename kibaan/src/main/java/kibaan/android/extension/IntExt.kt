@@ -41,7 +41,7 @@ fun Int.Companion.random(min: Int, max: Int): Int {
  */
 val Int.localizedString: String
     get() {
-        val context = SmartActivity.sharedOrNull ?: return "Context is null"
+        val context = SmartActivity.shared ?: return "Context is null"
         return try {
             context.resources.getString(this)
         } catch (e: Resources.NotFoundException) {

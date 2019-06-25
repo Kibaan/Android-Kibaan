@@ -1,6 +1,9 @@
 package kibaan.android.ios
 
 class NSAttributedString {
+    /**
+     * iOSにあるキーの一部のみサポート
+     */
     enum class Key {
         font,
         foregroundColor,
@@ -11,15 +14,15 @@ class NSAttributedString {
 
 interface NSParagraphStyle {
     var alignment: NSTextAlignment
-    var lineBreakMode: LineBreakMode
+    var lineBreakMode: NSLineBreakMode
 }
 
 class NSMutableParagraphStyle: NSParagraphStyle {
     override var alignment: NSTextAlignment = NSTextAlignment.left
-    override var lineBreakMode: LineBreakMode = LineBreakMode.byTruncatingTail
+    override var lineBreakMode: NSLineBreakMode = NSLineBreakMode.byTruncatingTail
 }
 
-enum class LineBreakMode {
+enum class NSLineBreakMode {
     byTruncatingTail,
     byWordWrapping,
     byClipping

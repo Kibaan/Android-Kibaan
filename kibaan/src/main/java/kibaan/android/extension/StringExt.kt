@@ -385,7 +385,7 @@ val String.literalEscaped: String
  */
 val String.localizedString: String
     get() {
-        val context = SmartActivity.sharedOrNull ?: return "Context is null"
+        val context = SmartActivity.shared ?: return "Context is null"
         val stringId = context.resources.getIdentifier(this, "string", context.packageName)
         if (stringId == 0) {
             return this

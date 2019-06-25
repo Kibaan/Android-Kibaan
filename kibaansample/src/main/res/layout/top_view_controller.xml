@@ -6,19 +6,9 @@
     android:layout_height="match_parent"
     android:background="@android:color/black">
 
-    <ImageView
-        android:id="@+id/hadoken_image"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="#BBBBBB"
-        android:src="@drawable/ic_launcher_background"
-        android:scaleType="fitCenter"
-    />
-
     <kibaan.android.ui.SegmentedButton
         android:id="@+id/segment"
-        app:layout_constraintTop_toBottomOf="@id/hadoken_image"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         app:horizontalSpacing="10"
@@ -43,6 +33,13 @@
         android:layout_height="50dp"
         android:background="#FFFFFF"
         app:layout_constraintTop_toBottomOf="@+id/scrollSegment"
+    />
+
+    <kibaan.android.sample.view.CGContextTextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/textField"
+        app:layout_constraintBottom_toTopOf="@+id/page_button"
     />
 
 
