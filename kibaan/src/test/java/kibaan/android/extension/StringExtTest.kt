@@ -398,6 +398,16 @@ class StringExtTest {
         assertEquals("", result[0])
     }
 
+    @Test
+    fun testSplitError() {
+        val result1 = "123456".split(length = 0)
+        assertEquals(1, result1.size)
+        assertEquals("", result1[0])
+        val result2 = "123456".split(length = -1)
+        assertEquals(1, result2.size)
+        assertEquals("", result2[0])
+    }
+
     // endregion
 
     // region -> Others
@@ -584,6 +594,16 @@ class StringExtTest {
         assertEquals("", result[0])
     }
 
+    @Test
+    fun testSplitLeftError() {
+        val result1 = "123456".splitFromLeft(length = 0)
+        assertEquals(1, result1.size)
+        assertEquals("", result1[0])
+        val result2 = "123456".splitFromLeft(length = -1)
+        assertEquals(1, result2.size)
+        assertEquals("", result2[0])
+    }
+
     // endregion
 
     // region -> Split(Right)
@@ -618,6 +638,16 @@ class StringExtTest {
         val result = "".splitFromRight(length = 4)
         assertEquals(1, result.size)
         assertEquals("", result[0])
+    }
+
+    @Test
+    fun testSplitRightError() {
+        val result1 = "123456".splitFromRight(length = 0)
+        assertEquals(1, result1.size)
+        assertEquals("", result1[0])
+        val result2 = "123456".splitFromRight(length = -1)
+        assertEquals(1, result2.size)
+        assertEquals("", result2[0])
     }
 
     // endregion

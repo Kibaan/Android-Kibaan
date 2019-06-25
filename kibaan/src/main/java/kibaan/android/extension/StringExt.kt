@@ -175,7 +175,7 @@ fun String.split(length: Int): List<String> {
  */
 @Suppress("NAME_SHADOWING")
 fun String.splitFromLeft(length: Int): List<String> {
-    if (isEmpty) {
+    if (isEmpty || 0 >= length) {
         return listOf("")
     }
     val array: MutableList<String> = mutableListOf()
@@ -200,7 +200,7 @@ fun String.splitFromLeft(length: Int): List<String> {
  */
 @Suppress("NAME_SHADOWING")
 fun String.splitFromRight(length: Int): List<String> {
-    if (isEmpty) {
+    if (isEmpty || 0 >= length) {
         return listOf("")
     }
     val array: MutableList<String> = mutableListOf()
