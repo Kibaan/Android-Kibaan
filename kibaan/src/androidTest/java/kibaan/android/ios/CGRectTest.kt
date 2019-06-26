@@ -16,6 +16,8 @@ class CGRectTest {
         assertEquals(20.0, rect.minY, 0.0)
         assertEquals(110.0, rect.maxX, 0.0)
         assertEquals(220.0, rect.maxY, 0.0)
+        assertEquals(60.0, rect.midX, 0.0)
+        assertEquals(120.0, rect.midY, 0.0)
     }
 
     @Test

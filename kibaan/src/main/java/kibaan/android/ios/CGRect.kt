@@ -38,6 +38,18 @@ data class CGRect(var origin: CGPoint = CGPoint.zero, var size: CGSize = CGSize.
         get() = origin.y + size.height
 
     /**
+     * 矩形の中心のX軸位置
+     */
+    val midX: CGFloat
+        get() = origin.x + (size.width / 2)
+
+    /**
+     * 矩形の中心のY軸位置
+     */
+    val midY: CGFloat
+        get() = origin.y + (size.height / 2)
+
+    /**
      * RectF型に変換
      */
     val rectF: RectF
