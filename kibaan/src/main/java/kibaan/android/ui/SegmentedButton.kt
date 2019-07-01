@@ -34,7 +34,7 @@ open class SegmentedButton : UIStackView {
     private val undefinedSize = -1
 
     enum class SegmentType(override val rawValue: Int) : IntEnum {
-        PLAIN(0), ROUNDED_SQUARE(1);
+        CUSTOM(0), SQUARE(1), ROUNDED_SQUARE(2);
 
         companion object {
             fun find(byValue: Int?): SegmentType? {
@@ -62,7 +62,7 @@ open class SegmentedButton : UIStackView {
     /**
      * スタイル
      */
-    open var segmentType by didSet(SegmentType.PLAIN) {
+    open var segmentType by didSet(SegmentType.CUSTOM) {
         if (!ViewCompat.isAttachedToWindow(this)) return@didSet
         constructSegments()
     }
@@ -71,7 +71,9 @@ open class SegmentedButton : UIStackView {
     open var segmentCornerRadius: Int = DeviceUtils.toPx(context, 6.0)
         set(value) {
             field = value
-            setCornerRadius()
+            if (segmentType != SegmentType.CUSTOM) {
+                setCornerRadius()
+            }
         }
     /** ボタン間のスペース */
     open var horizontalSpacing: CGFloat = 1.0
@@ -207,7 +209,7 @@ open class SegmentedButton : UIStackView {
             val array = context.obtainStyledAttributes(attrs, R.styleable.SegmentedButton)
             columnSize = array.getInt(R.styleable.SegmentedButton_columnSize, columnSize)
             rowSize = array.getInt(R.styleable.SegmentedButton_rowSize, rowSize)
-            segmentType = SegmentType.find(array.getInt(R.styleable.SegmentedButton_segmentType, SegmentType.PLAIN.rawValue)) ?: SegmentType.PLAIN
+            segmentType = SegmentType.find(array.getInt(R.styleable.SegmentedButton_segmentType, SegmentType.CUSTOM.rawValue)) ?: SegmentType.CUSTOM
             textSize = array.getDimensionPixelSize(R.styleable.SegmentedButton_android_textSize, textSize.toInt()).toDouble()
             names = array.getStringOrNull(R.styleable.SegmentedButton_names) ?: names
             segmentCornerRadius = array.getDimensionPixelOffset(R.styleable.SegmentedButton_segmentCornerRadius, segmentCornerRadius)
@@ -425,7 +427,9 @@ open class SegmentedButton : UIStackView {
             button.isEnabled = !hidden
             button.isHidden = hidden
         }
-        setCornerRadius()
+        if (segmentType != SegmentType.CUSTOM) {
+            setCornerRadius()
+        }
     }
 
     /**
@@ -473,7 +477,9 @@ open class SegmentedButton : UIStackView {
             button.text = if (isEnabled) nameList[i] else ""
             button.visibility = if (isEnabled) View.VISIBLE else View.INVISIBLE
         }
-        setCornerRadius()
+        if (segmentType != SegmentType.CUSTOM) {
+            setCornerRadius()
+        }
     }
 
     /**

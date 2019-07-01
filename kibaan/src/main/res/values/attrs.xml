@@ -153,8 +153,9 @@
     <!-- SegmentedButton -->
     <declare-styleable name="SegmentedButton">
         <attr name="segmentType" format="enum">
-            <enum name="PLAIN" value="0" />
-            <enum name="ROUNDED_SQUARE" value="1" />
+            <enum name="CUSTOM" value="0" />
+            <enum name="SQUARE" value="1" />
+            <enum name="ROUNDED_SQUARE" value="2" />
         </attr>
         <attr name="columnSize" format="integer" />
         <attr name="rowSize" format="integer" />
