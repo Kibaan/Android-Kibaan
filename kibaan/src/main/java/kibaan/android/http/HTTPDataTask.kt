@@ -1,5 +1,6 @@
 package kibaan.android.http
 
+import kibaan.android.ios.Data
 import kibaan.android.ios.HTTPURLResponse
 import kibaan.android.task.TaskHolder
 
@@ -69,6 +70,14 @@ abstract class HTTPDataTask<DataType : Any> : HTTPTask {
         super.handleConnectionError(type, error = error, response = response, data = data)
         handler.post {
             handleError(type, result = null, response = response, data = data)
+            next()
+        }
+    }
+
+    override fun statusCodeError(response: HTTPURLResponse?, data: Data?) {
+        super.statusCodeError(response, data)
+        handler.post {
+            handleError(HTTPTaskError.statusCode, result = null, response = response, data = data)
             next()
         }
     }
