@@ -112,4 +112,9 @@ class UIColor {
         val blue = min(Color.blue(intValue) / 255.0 + value, 1.0)
         return UIColor(red = red, green = green, blue = blue, alpha = Color.alpha(intValue) / 255.0)
     }
+
+    fun withAlphaComponent(alpha: Double): UIColor {
+        return UIColor(argbInt and 0x00FFFFFF, alpha)
+
+    }
 }
