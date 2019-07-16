@@ -33,5 +33,6 @@ class UIColorTest {
         assertEquals(expected, UIColor(rgbHex = "1234EF"))
         assertEquals(expected, UIColor(argbHex = "#FF1234EF"))
         assertEquals(expected, UIColor(argbHex = "FF1234EF"))
+        assertEquals(expected, UIColor(argbHex = "1234EF"))
     }
 }

@@ -1,6 +1,7 @@
 package kibaan.android.ios
 
 import android.graphics.Color
+import kibaan.android.extension.substringFrom
 import java.lang.Math.min
 
 /**
@@ -63,16 +64,14 @@ class UIColor {
     }
 
     constructor(argbHex: String) {
-        val code = argbHex.removePrefix("#")
-        if (code.count != 8) {
-            return
+        var code = argbHex.removePrefix("#")
+        var alpha: CGFloat = 1.0
+        if (code.count == 8) {
+            val aStr = code.substring(0 .. 1)
+            code = code.substringFrom(2) ?: ""
+            alpha = (aStr.toIntOrNull(16) ?: 0) / 255.0
         }
-
-        val aStr = code.substring(0 .. 1)
-        val alpha = (aStr.toIntOrNull(16) ?: 0) / 255.0
-        val rgb = code.substring(startIndex = 2)
-
-        val rgbValue = rgb.toIntOrNull(16) ?: 0xFFFFFF
+        val rgbValue = code.toIntOrNull(16) ?: 0xFFFFFF
         setColorInt(rgbValue, alpha)
     }
 
