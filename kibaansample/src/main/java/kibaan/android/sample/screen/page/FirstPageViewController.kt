@@ -23,7 +23,7 @@ class FirstPageViewController : SmartViewController() {
 
     var count: Int = 0
 
-    override val nextScreenTargetView: View get() = contentsView
+    override val nextScreenContainer: View get() = contentsView
 
     // endregion
 

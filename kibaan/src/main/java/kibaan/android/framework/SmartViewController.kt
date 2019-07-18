@@ -36,7 +36,7 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
     /** スライド表示させた画面のビュー */
     private var nextScreenViews: List<View> = mutableListOf()
     /** スライド表示させる画面を追加する対象のビュー */
-    open val nextScreenTargetView: View get() = throw AssertionError("When using the next screen, be sure to implement it in a subclass")
+    open val nextScreenContainer: View get() = throw AssertionError("When using the next screen, be sure to implement it in a subclass")
     /** スライドアニメーション時間 */
     var nextScreenAnimationDuration: Long = 300
     /** オーバーレイ画面のオーナー */
@@ -129,7 +129,7 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
             nextScreens.forEach {
                 it.view.translationX = translationX
             }
-            nextScreenTargetView.translationX = translationX
+            nextScreenContainer.translationX = translationX
         }
         nextScreens.lastOrNull()?.view?.translationX = 0.0f
     }
@@ -149,7 +149,7 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
      * ViewControllerをスライド表示させる（targetView指定なし）
      */
     fun <T : SmartViewController> addNextScreen(type: KClass<T>, id: String? = null, cache: Boolean = true, animated: Boolean = true, prepare: ((T) -> Unit)? = null): T? {
-        return addNextScreen(type, targetView = nextScreenTargetView, id = id, cache = cache, animated = animated, prepare = prepare)
+        return addNextScreen(type, targetView = nextScreenContainer, id = id, cache = cache, animated = animated, prepare = prepare)
     }
 
     /**
@@ -220,7 +220,7 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
      * スライド表示させたViewControllerを１つ前に戻す（targetView指定なし）
      */
     fun removeNextScreen(animated: Boolean = true) {
-        removeNextScreen(targetView = nextScreenTargetView, animated = animated)
+        removeNextScreen(targetView = nextScreenContainer, animated = animated)
     }
 
     /**
@@ -266,7 +266,7 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
         if (!isViewLoaded) {
             return
         }
-        val targetView = targetView ?: nextScreenTargetView
+        val targetView = targetView ?: nextScreenContainer
         leave()
         nextScreens.forEach {
             it.view.removeFromSuperview()
