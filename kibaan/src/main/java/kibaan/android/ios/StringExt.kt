@@ -137,11 +137,11 @@ fun String.size(context: Context, font: UIFont): CGSize {
     paint.typeface = font.typeface
     paint.isAntiAlias = true
 
-    val bounds = Rect()
-    paint.getTextBounds(this, 0, this.length, bounds)
+    val fontMetrics = paint.fontMetrics
     val width = paint.measureText(this)
 
-    return CGSize(width = width.toDouble(), height = bounds.height().toDouble())
+    val height = fontMetrics.descent - fontMetrics.ascent
+    return CGSize(width = width.toDouble(), height = height.toDouble())
 }
 
 fun String.applyingTransform(transform: StringTransform, reverse: Boolean): String? {

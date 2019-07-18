@@ -169,8 +169,8 @@ class CGContext(val canvas: Canvas, val context: Context) {
         param.shouldAntialias = true
 
         // canvas.drawTextの引数は左下なので、フォント高分下に下げる必要がある
-        val height = text.size(context, font).height
-        canvas.drawText(text, point.x.toFloat(), point.y.toFloat() + height.toFloat(), param.paint)
+        val fontMetrics = param.paint.fontMetrics
+        canvas.drawText(text, point.x.toFloat(), point.y.toFloat() - fontMetrics.ascent, param.paint)
 
         param.shouldAntialias = oldShouldAntialias
     }
@@ -185,8 +185,8 @@ class CGContext(val canvas: Canvas, val context: Context) {
         val oldShouldAntialias = param.shouldAntialias
         param.shouldAntialias = true
 
-        val height = text.size(context, font).height
-        canvas.drawText(text, rect.origin.x.toFloat(), rect.origin.y.toFloat() + height.toFloat(), param.paint)
+        val fontMetrics = param.paint.fontMetrics
+        canvas.drawText(text, rect.origin.x.toFloat(), rect.origin.y.toFloat() - fontMetrics.ascent, param.paint)
 
         param.shouldAntialias = oldShouldAntialias
     }
