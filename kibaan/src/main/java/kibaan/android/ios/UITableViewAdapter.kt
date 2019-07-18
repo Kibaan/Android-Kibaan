@@ -194,7 +194,7 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
                     view = UITableViewHeaderFooterView(context, title)
                 }
                 holder.replaceInnerView(view)
-                val height = tableView.delegate?.heightForHeaderInSection(tableView, section = indexPath.section)
+                val height = tableView.delegate?.heightForHeaderInSection(tableView, section = indexPath.section) ?: tableView.sectionHeaderHeight
                 if (height != null) {
                     updateCellHeight(holder.itemView, dpHeight = height)
                 }
@@ -207,7 +207,7 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
                     view = UITableViewHeaderFooterView(context, title)
                 }
                 holder.replaceInnerView(view)
-                val height = tableView.delegate?.heightForFooterInSection(tableView, section = indexPath.section)
+                val height = tableView.delegate?.heightForFooterInSection(tableView, section = indexPath.section) ?: tableView.sectionFooterHeight
                 if (height != null) {
                     updateCellHeight(holder.itemView, dpHeight = height)
                 }
@@ -330,9 +330,12 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
         if (title != null) {
             return true
         }
-        // TODO:sectionHeaderHeightを追加
-        val viewHeight = tableView.delegate?.heightForHeaderInSection(tableView, section = section) ?: Double.leastNormalMagnitude
+        val viewHeight = tableView.sectionHeaderHeight ?: Double.leastNormalMagnitude
         if (viewHeight != CGFloat.leastNormalMagnitude && viewHeight != UITableViewAutomaticDimension) {
+            return true
+        }
+        val heightOfSection = tableView.delegate?.heightForHeaderInSection(tableView, section = section)
+        if (heightOfSection != null && heightOfSection != Double.leastNormalMagnitude) {
             return true
         }
         val view = tableView.delegate?.viewForHeaderInSection(tableView, section = section)
