@@ -27,14 +27,19 @@ open class LocalStorage {
     val context: Context?
         get() = SmartActivity.shared
 
-    constructor(fileName: String) {
+    constructor(fileName: String, load: Boolean = true) {
         this.fileName = fileName
-        loadItems()
+        if (load) {
+            loadItems()
+        }
     }
 
-    constructor() {
-        fileName = this::class.simpleName.toString() // クラス名をファイル名とする
-        loadItems()
+    constructor(load: Boolean = true) {
+        // 引数なしコンストラクタではクラス名をファイル名とする
+        fileName = this::class.simpleName.toString()
+        if (load) {
+            loadItems()
+        }
     }
 
     constructor(other: LocalStorage) {
