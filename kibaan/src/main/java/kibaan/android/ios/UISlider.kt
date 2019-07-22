@@ -24,7 +24,7 @@ open class UISlider : AppCompatSeekBar {
 
     var maximumValue: Int = 1
         get() {
-            return max
+            return max + minimumValue
         }
         set(value) {
             field = value
