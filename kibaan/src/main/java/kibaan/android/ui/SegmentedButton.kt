@@ -491,7 +491,7 @@ open class SegmentedButton : UIStackView {
         stackView.axis = LinearLayout.HORIZONTAL
         val params = LinearLayout.LayoutParams(MATCH_PARENT, 0, 1.0f)
         if (childCount != 0) {
-            params.topMargin = DeviceUtils.toPx(context, verticalSpacing)
+            params.topMargin = verticalSpacing
         }
         stackView.layoutParams = params
         addView(stackView)
