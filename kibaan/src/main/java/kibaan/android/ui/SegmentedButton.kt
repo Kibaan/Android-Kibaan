@@ -2,17 +2,18 @@ package kibaan.android.ui
 
 import android.content.Context
 import android.graphics.Typeface
-import androidx.core.view.ViewCompat
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.LinearLayout
+import androidx.core.view.ViewCompat
+import kibaan.android.R
+import kibaan.android.extension.dpToPx
 import kibaan.android.extension.getStringOrNull
+import kibaan.android.ios.*
 import kibaan.android.util.DeviceUtils
 import kibaan.android.util.EnumUtils
-import kibaan.android.R
-import kibaan.android.ios.*
 import kotlin.reflect.KClass
 
 /**
@@ -68,7 +69,7 @@ open class SegmentedButton : UIStackView {
     }
 
     /** 角丸サイズ */
-    open var segmentCornerRadius: Int = DeviceUtils.toPx(context, 6.0)
+    open var segmentCornerRadius: Int = context.dpToPx(6.0)
         set(value) {
             field = value
             if (segmentType != SegmentType.CUSTOM) {
@@ -76,13 +77,13 @@ open class SegmentedButton : UIStackView {
             }
         }
     /** ボタン間のスペース */
-    open var horizontalSpacing: CGFloat = 1.0
+    open var horizontalSpacing: Int = context.dpToPx(1.0)
         set(value) {
             field = value
             updateHorizontalSpacing()
         }
     /** ボタン間の縦スペース */
-    open var verticalSpacing: CGFloat = 1.0
+    open var verticalSpacing: Int = context.dpToPx(1.0)
         set(value) {
             field = value
             updateVerticalSpacing()
@@ -96,7 +97,7 @@ open class SegmentedButton : UIStackView {
      * テキストのフォントサイズ
      */
     @IBInspectable
-    var textSize: CGFloat by didSet(DeviceUtils.toPx(context, 12).toDouble()) {
+    var textSize: CGFloat by didSet(context.dpToPx(12.0).toDouble()) {
         if (!ViewCompat.isAttachedToWindow(this)) return@didSet
         constructSegments()
     }
@@ -213,8 +214,8 @@ open class SegmentedButton : UIStackView {
             textSize = array.getDimensionPixelSize(R.styleable.SegmentedButton_android_textSize, textSize.toInt()).toDouble()
             names = array.getStringOrNull(R.styleable.SegmentedButton_names) ?: names
             segmentCornerRadius = array.getDimensionPixelOffset(R.styleable.SegmentedButton_segmentCornerRadius, segmentCornerRadius)
-            horizontalSpacing = array.getFloat(R.styleable.SegmentedButton_horizontalSpacing, horizontalSpacing.toFloat()).toDouble()
-            verticalSpacing = array.getFloat(R.styleable.SegmentedButton_verticalSpacing, verticalSpacing.toFloat()).toDouble()
+            horizontalSpacing = array.getDimensionPixelOffset(R.styleable.SegmentedButton_horizontalSpacing, horizontalSpacing)
+            verticalSpacing = array.getDimensionPixelOffset(R.styleable.SegmentedButton_verticalSpacing, verticalSpacing)
             normalButtonBackgroundColor = UIColor(array.getColor(R.styleable.SegmentedButton_normalButtonBackgroundColor, normalButtonBackgroundColor.intValue))
             selectedButtonBackgroundColor = UIColor(array.getColor(R.styleable.SegmentedButton_selectedButtonBackgroundColor, selectedButtonBackgroundColor.intValue))
             normalButtonTextColor = UIColor(array.getColor(R.styleable.SegmentedButton_normalButtonTextColor, normalButtonTextColor.intValue))
@@ -501,11 +502,10 @@ open class SegmentedButton : UIStackView {
      * 縦のスペースを更新する
      */
     fun updateVerticalSpacing() {
-        val pxSpace = DeviceUtils.toPx(context, verticalSpacing)
         arrangedSubviews.filterIndexed {index, view -> 0 < index}
                 .forEach {
                     val param = it.layoutParams as? LinearLayout.LayoutParams
-                    param?.topMargin = pxSpace
+                    param?.topMargin = verticalSpacing
                 }
     }
 
@@ -513,8 +513,6 @@ open class SegmentedButton : UIStackView {
      * 横のスペースを更新する
      */
     fun updateHorizontalSpacing() {
-        val pxSpace = DeviceUtils.toPx(context, horizontalSpacing)
-
         arrangedSubviews
                 .mapNotNull { it as? UIStackView }
                 .forEach {stackView ->
@@ -522,7 +520,7 @@ open class SegmentedButton : UIStackView {
                       .filterIndexed {index, view -> index < stackView.arrangedSubviews.size - 1}
                       .forEach {
                           val param = it.layoutParams as? LinearLayout.LayoutParams
-                          param?.rightMargin = pxSpace
+                          param?.rightMargin = horizontalSpacing
                       }
                 }
     }

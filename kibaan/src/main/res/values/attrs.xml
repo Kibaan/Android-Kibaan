@@ -162,8 +162,8 @@
         <attr name="names" format="string" />
         <attr name="android:textSize" />
         <attr name="segmentCornerRadius" format="dimension" />
-        <attr name="horizontalSpacing"  format="float" />
-        <attr name="verticalSpacing"  format="float" />
+        <attr name="horizontalSpacing"  format="dimension" />
+        <attr name="verticalSpacing"  format="dimension" />
         <attr name="normalButtonBackgroundColor" format="color" />
         <attr name="selectedButtonBackgroundColor" format="color" />
         <attr name="normalButtonTextColor" format="color" />
