@@ -70,27 +70,29 @@ class ScreenService {
 
     fun <T : SmartViewController> setRoot(type: KClass<T>, prepare: ((T) -> Unit)? = null): T {
         val controller = ViewControllerCache.shared.get(type)
+        setRootViewController(controller, prepare = prepare)
+        return controller
+    }
+
+    fun <T : SmartViewController> setRootViewController(controller: T, prepare: ((T) -> Unit)? = null) {
         if (activityRootViewController == controller) {
-            return controller
+            return
         }
+
         screenStack.forEach {
             it.view.removeFromSuperview()
             it.removed()
         }
         screenStack.removeAll()
-        setRootViewController(controller, prepare = prepare)
-        screenStack.add(controller)
-        return controller
-    }
 
-    fun <T : SmartViewController> setRootViewController(viewController: T, prepare: ((T) -> Unit)? = null) {
         val oldRootViewController = activityRootViewController as? SmartViewController
         oldRootViewController?.leave()
-        activityRootViewController = viewController
+        activityRootViewController = controller
+        screenStack.add(controller)
         oldRootViewController?.removed()
-        prepare?.invoke(viewController)
-        viewController.added()
-        viewController.enter()
+        prepare?.invoke(controller)
+        controller.added()
+        controller.enter()
     }
 
     fun <T : SmartViewController> addSubScreen(type: KClass<T>,
