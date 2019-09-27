@@ -1,5 +1,6 @@
 package kibaan.android.ios
 
+import kibaan.android.ios.ComparisonResult.*
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -83,38 +84,63 @@ class CollectionExtTest {
 
         var sorted = list.sorted { lhs, rhs ->
             when {
-                lhs < rhs -> ComparisonResult.orderedAscending
-                lhs > rhs -> ComparisonResult.orderedDescending
-                else -> ComparisonResult.orderedSame
+                lhs < rhs -> orderedAscending
+                lhs > rhs -> orderedDescending
+                else -> orderedSame
             }
         }
         assertArrayEquals(arrayOf(1, 2, 3, 4, 5, 5), sorted.toTypedArray())
 
         sorted = list.sorted { lhs, rhs ->
             when {
-                lhs <= rhs -> ComparisonResult.orderedAscending
-                lhs > rhs -> ComparisonResult.orderedDescending
-                else -> ComparisonResult.orderedSame
+                lhs <= rhs -> orderedAscending
+                lhs > rhs -> orderedDescending
+                else -> orderedSame
             }
         }
         assertArrayEquals(arrayOf(1, 2, 3, 4, 5, 5), sorted.toTypedArray())
 
         sorted = list.sorted { lhs, rhs ->
             when {
-                lhs > rhs -> ComparisonResult.orderedAscending
-                lhs < rhs -> ComparisonResult.orderedDescending
-                else -> ComparisonResult.orderedSame
+                lhs > rhs -> orderedAscending
+                lhs < rhs -> orderedDescending
+                else -> orderedSame
             }
         }
         assertArrayEquals(arrayOf(5, 5, 4, 3, 2, 1), sorted.toTypedArray())
 
         sorted = list.sorted { lhs, rhs ->
             when {
-                lhs >= rhs -> ComparisonResult.orderedAscending
-                lhs < rhs -> ComparisonResult.orderedDescending
-                else -> ComparisonResult.orderedSame
+                lhs >= rhs -> orderedAscending
+                lhs < rhs -> orderedDescending
+                else -> orderedSame
             }
         }
         assertArrayEquals(arrayOf(5, 5, 4, 3, 2, 1), sorted.toTypedArray())
+    }
+
+    @Test
+    fun sortedByInt() {
+        val list = listOf(2, 5, 1, 5, 3, 4)
+        var sorted = list.sortedByInt { l, r ->
+            l.compareTo(r)
+        }
+        assertArrayEquals(arrayOf(1, 2, 3, 4, 5, 5), sorted.toTypedArray())
+    }
+
+    @Test
+    fun sortedByComparisonResult() {
+        val list = listOf(2, 5, 1, 5, 3, 4)
+        var sorted = list.sorted { l, r ->
+            l.compareTo(r).toComparisonResult()
+        }
+        assertArrayEquals(arrayOf(1, 2, 3, 4, 5, 5), sorted.toTypedArray())
+    }
+
+    @Test
+    fun toComparisonResult() {
+        assertEquals(orderedAscending, 1.compareTo(2).toComparisonResult())
+        assertEquals(orderedDescending, 2.compareTo(1).toComparisonResult())
+        assertEquals(orderedSame, 1.compareTo(1).toComparisonResult())
     }
 }
