@@ -6,8 +6,15 @@ import kibaan.android.ios.toHiragana
 import kibaan.android.ios.toKatakana
 import org.junit.Assert.*
 import org.junit.Test
+import java.util.*
 
 class StringExtTest {
+
+    // region -> Variables
+
+    private val calendar = Calendar.getInstance()
+
+    // endregion
 
     // region -> SubScript
 
@@ -831,5 +838,27 @@ class StringExtTest {
     fun testHiraganaToKatakanaMulti() {
         assertEquals("アカイオシャレ龍", "あかいオシャレ龍".toKatakana())
         assertEquals("あかいおしゃれ龍", "あかいオシャレ龍".toHiragana())
+    }
+
+    @Test
+    fun testDateFormat() {
+        "2018".date(format = "yyyy")?.let { date ->
+            calendar.time = date
+            assertEquals(2018, calendar.get(Calendar.YEAR))
+            assertEquals("2018", date.string(format = "yyyy"))
+        }
+        "201809".date(format = "yyyyMM")?.let { date ->
+            calendar.time = date
+            assertEquals(2018, calendar.get(Calendar.YEAR))
+            assertEquals(9 - 1, calendar.get(Calendar.MONTH))
+            assertEquals("201809", date.string(format = "yyyyMM"))
+        }
+        "20180912".date(format = "yyyyMMdd")?.let { date ->
+            calendar.time = date
+            assertEquals(2018, calendar.get(Calendar.YEAR))
+            assertEquals(9 - 1, calendar.get(Calendar.MONTH))
+            assertEquals(12, calendar.get(Calendar.DAY_OF_MONTH))
+            assertEquals("20180912", date.string(format = "yyyyMMdd"))
+        }
     }
 }

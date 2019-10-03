@@ -7,6 +7,9 @@ import kibaan.android.ios.*
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.security.MessageDigest
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * スネークケースに変換する
@@ -470,3 +473,14 @@ val String.decimalNumber: NSDecimalNumber?
         val decimalNumber = NSDecimalNumber(string = this)
         return if (decimalNumber.bigDecimal == null) null else decimalNumber
     }
+
+/**
+ * フォーマットを指定してDateオブジェクトを作成する
+ */
+fun String.date(format: String): Date? {
+    return try {
+        SimpleDateFormat(format, Locale.US).parse(this)
+    } catch (e: ParseException) {
+        null
+    }
+}
