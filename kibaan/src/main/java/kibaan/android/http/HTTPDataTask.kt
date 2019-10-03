@@ -3,6 +3,7 @@ package kibaan.android.http
 import kibaan.android.ios.Data
 import kibaan.android.ios.HTTPURLResponse
 import kibaan.android.task.TaskHolder
+import kibaan.android.util.Log
 
 
 typealias ErrorHandler<DataType> = (DataType?, HTTPErrorInfo) -> HTTPTask.ErrorHandlingStatus
@@ -83,6 +84,8 @@ abstract class HTTPDataTask<DataType : Any> : HTTPTask {
     }
 
     open fun handleError(type: HTTPTaskError, result: DataType?, error: Exception? = null, response: HTTPURLResponse?, data: ByteArray?) {
+        Log.d(javaClass.simpleName, "[Error] URL=${requestURL}")
+        Log.d(javaClass.simpleName, errorDetailedMessage(type, error = error, statusCode = response?.statusCode))
         val errorInfo = HTTPErrorInfo(error = error, response = response, data = data)
 
         if (errorHandler == null || errorHandler?.invoke(result, errorInfo) == ErrorHandlingStatus.handleError) {
@@ -91,6 +94,20 @@ abstract class HTTPDataTask<DataType : Any> : HTTPTask {
 
         this.error()
     }
+
+
+    open fun errorDetailedMessage(type: HTTPTaskError, error: Exception? = null, statusCode: Int?) : String {
+        var message = type.description
+        if (type == HTTPTaskError.statusCode) {
+            message += "(statusCode=${statusCode ?: 0})"
+        }
+        val nativeMessage = error?.toString()
+        if (nativeMessage != null) {
+            message += nativeMessage
+        }
+        return message
+    }
+
 
     open fun errorProcess(type: HTTPTaskError, result: DataType?, errorInfo: HTTPErrorInfo) {
         // Override

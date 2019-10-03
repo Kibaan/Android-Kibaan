@@ -144,16 +144,12 @@ abstract class HTTPTask : Task {
      * 通信エラーを処理する
      */
     open fun handleConnectionError(type: HTTPTaskError, error: Exception? = null, response: HTTPURLResponse? = null, data: ByteArray? = null) {
-        val message = error?.localizedMessage ?: ""
-        Log.d( javaClass.simpleName,"[ConnectionError] Type= ${type.description}, NativeMessage=$message")
     }
-
 
     /**
      * ステータスコードエラーを処理する
      */
     open fun statusCodeError(response: HTTPURLResponse?, data: Data?) {
-        Log.d( javaClass.simpleName, "[StatusCodeError] ${response?.statusCode ?: 0}")
     }
 
     /**
