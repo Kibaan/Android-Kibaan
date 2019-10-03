@@ -52,4 +52,10 @@ class IterableExtTest {
         val list = mutableListOf(0, 1, 2, 3)
         assertArrayEquals(listOf(1, 2, 3).toIntArray(), list.dropFirst().toIntArray())
     }
+
+    @Test
+    fun isEmpty() {
+        assertFalse(listOf(0, 1, 2, 3).isEmpty)
+        assertTrue(listOf<String>().isEmpty)
+    }
 }

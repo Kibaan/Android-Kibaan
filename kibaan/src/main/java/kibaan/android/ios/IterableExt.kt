@@ -10,6 +10,9 @@ val <T> Iterable<T>.first: T?
 val <T> Iterable<T>.last: T?
     get() = lastOrNull()
 
+val <T> Iterable<T>.isEmpty: Boolean
+    get() = count() == 0
+
 fun <T> Iterable<T>.min(by: (T, T) -> Boolean): T? {
     return minWith(Comparator { o1, o2 ->
         if (by(o1, o2)) -1 else 1
