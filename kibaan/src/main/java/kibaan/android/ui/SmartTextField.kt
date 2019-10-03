@@ -3,6 +3,7 @@ package kibaan.android.ui
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Typeface
 import android.text.Editable
 import android.text.InputType
 import android.text.Spanned
@@ -48,6 +49,15 @@ interface UITextFieldDelegate {
 }
 
 open class SmartTextField : RoundedConstraintLayout {
+
+    // region -> Constants
+
+    companion object {
+        /** 太字のスタイル */
+        private const val textStyleBold = 0b01
+    }
+
+    // endregion
 
     // region -> Variables
 
@@ -191,6 +201,13 @@ open class SmartTextField : RoundedConstraintLayout {
             rightViewWidthPercent = array.getFloat(R.styleable.SmartTextField_right_view_width_percent, 0.0f)
             editText.gravity = array.getInt(R.styleable.SmartTextField_android_gravity, editText.gravity)
             editText.hint = array.getString(R.styleable.SmartTextField_android_hint)
+
+            val textStyle = array.getInt(R.styleable.SmartTextField_android_textStyle, 0)
+            val isBold = (0 < textStyle and textStyleBold)
+            if (isBold) {
+                editText.typeface = Typeface.DEFAULT_BOLD
+            }
+
             // placeholderがあればhintを上書き
             val placeholder = array.getStringOrNull(R.styleable.SmartTextField_placeholder)
             if (placeholder != null) {
