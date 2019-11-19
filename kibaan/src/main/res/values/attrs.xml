@@ -190,9 +190,9 @@
 
     <!-- UISlider -->
     <declare-styleable name="UISlider">
-        <attr name="value" format="integer" />
-        <attr name="minimum" format="integer" />
-        <attr name="maximum" format="integer" />
+        <attr name="value" format="float" />
+        <attr name="minimum" format="float" />
+        <attr name="maximum" format="float" />
     </declare-styleable>
 
 </resources>

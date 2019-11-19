@@ -12,24 +12,27 @@ interface UISliderDelegate {
 
 open class UISlider : AppCompatSeekBar {
 
-    var value: Int
+    /**
+     * スライダーの分解能。この値で分割した刻みでスライダーの値を取得できる
+     */
+    var resolution: Int = 1000
+
+    var value: Float
         get() {
-            return progress + minimumValue
+            return progressToValue(progress)
         }
         set(value) {
-            progress = (value - minimumValue)
+            // プログラムから値を変更した場合は、リスナーを呼びたくないので一度リスナーを外す
+            setOnSeekBarChangeListener(null)
+            val rate = (value - minimumValue) / rangeWidth
+            progress = (rate * resolution).toInt()
+            setOnSeekBarChangeListener(seekBarChangeListener)
         }
 
-    var minimumValue: Int = 0
+    var minimumValue: Float = 0.0f
 
-    var maximumValue: Int = 1
-        get() {
-            return max + minimumValue
-        }
-        set(value) {
-            field = value
-            this.max = (value - minimumValue)
-        }
+    var maximumValue: Float = 1.0f
+    val rangeWidth: Float get() = (maximumValue - minimumValue)
 
     var delegate: UISliderDelegate? = null
 
@@ -45,12 +48,18 @@ open class UISlider : AppCompatSeekBar {
         setupUISlider(context, attrs)
     }
 
+    private fun progressToValue(progress: Int): Float {
+        val add = rangeWidth * (progress / resolution.toFloat())
+        return minimumValue + add
+    }
+
     private fun setupUISlider(context: Context, attrs: AttributeSet? = null) {
+        max = resolution
         if (attrs != null) {
             val array = context.obtainStyledAttributes(attrs, R.styleable.UISlider)
-            value = array.getInt(R.styleable.UISlider_value, 0)
-            minimumValue = array.getInt(R.styleable.UISlider_minimum, 0)
-            maximumValue = array.getInt(R.styleable.UISlider_maximum, 1)
+            value = array.getFloat(R.styleable.UISlider_value, 0.0f)
+            minimumValue = array.getFloat(R.styleable.UISlider_minimum, 0.0f)
+            maximumValue = array.getFloat(R.styleable.UISlider_maximum, 1.0f)
             array.recycle()
         }
         setOnSeekBarChangeListener(seekBarChangeListener)
