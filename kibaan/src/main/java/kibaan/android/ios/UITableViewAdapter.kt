@@ -307,7 +307,7 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
             list.add(SectionInfo(null, true, false, 0, startPosition))
             startPosition += 1
         }
-        val sectionCount = tableView.dataSource?.numberOfSection(tableView) ?: 1
+        val sectionCount = tableView.dataSource?.numberOfSections(tableView) ?: 1
         (0 until sectionCount).forEach {
             val rowCount = (tableView.dataSource?.numberOfRows(tableView, section = it) ?: 0)
             val hasSectionHeader = hasHeaderOfSection(section = it)
