@@ -18,7 +18,7 @@ open class UISlider : AppCompatSeekBar {
     /**
      * スライダーの分解能。この値で分割した刻みでスライダーの値を取得できる
      */
-    private val resolution: Int = Integer.MAX_VALUE
+    private val resolution: Int = Int.MAX_VALUE
 
     /**
      * SeekBarに設定する最大値。SeekBarのvalueは0始まりのため1ひく
