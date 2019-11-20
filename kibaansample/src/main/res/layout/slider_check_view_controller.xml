@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <kibaan.android.ui.SmartButton
+        android:id="@+id/minusButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#777777"
+        android:text="-"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+    />
+
+    <kibaan.android.ios.UISlider
+        android:id="@+id/slider"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        app:layout_constraintLeft_toRightOf="@+id/minusButton"
+        app:layout_constraintRight_toLeftOf="@id/plusButton"
+        app:layout_constraintTop_toTopOf="@+id/plusButton"
+        app:layout_constraintBottom_toBottomOf="@id/plusButton"
+        />
+
+    <kibaan.android.ui.SmartButton
+        android:id="@+id/plusButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cornerRadius="6dp"
+        android:background="#777777"
+        android:text="+"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/slider"
+        app:layout_constraintRight_toRightOf="parent"
+    />
+
+    <kibaan.android.ui.SmartLabel
+        android:id="@+id/valueLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/slider"
+        app:layout_constraintLeft_toLeftOf="@+id/slider"
+        app:layout_constraintRight_toRightOf="@+id/slider"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

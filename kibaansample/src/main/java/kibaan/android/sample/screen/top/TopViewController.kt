@@ -1,23 +1,19 @@
 package kibaan.android.sample.screen.top
 
 import android.view.View
-import kibaan.android.framework.ScreenService
 import kibaan.android.framework.SmartViewController
 import kibaan.android.ios.*
 import kibaan.android.sample.R
 import kibaan.android.sample.screen.connection.ConnectionViewController
 import kibaan.android.sample.screen.other.PagerCheckViewController
 import kibaan.android.sample.screen.other.SegmentCheckViewController
-import kibaan.android.sample.screen.other.SegmentCheckViewController_ViewBinding
 import kibaan.android.sample.screen.other.TextFieldCheckViewController
 import kibaan.android.sample.screen.page.FirstPageViewController
+import kibaan.android.sample.screen.slider.SliderCheckViewController
 import kibaan.android.sample.screen.sub.ButtonViewController
 import kibaan.android.sample.screen.sub.SubViewController
 import kibaan.android.sample.screen.table.SampleTableViewController
-import kibaan.android.ui.ScrollSegmentedButton
-import kibaan.android.ui.SmartButton
 import kibaan.android.ui.SmartTableView
-import kibaan.android.util.Log
 import kotlin.reflect.KClass
 
 /**
@@ -26,7 +22,7 @@ import kotlin.reflect.KClass
 class TopViewController : SmartViewController(), UITableViewDelegate, UITableViewDataSource {
 
     enum class Screen {
-        PAGE, CONNECTION, TABLE, BUTTON, SUB, SEGMENT, TEXT_FIELD, PAGER;
+        PAGE, CONNECTION, TABLE, BUTTON, SUB, SEGMENT, TEXT_FIELD, PAGER, SLIDER;
 
         val text: String
             get() {
@@ -39,6 +35,7 @@ class TopViewController : SmartViewController(), UITableViewDelegate, UITableVie
                     SEGMENT -> "セグメント確認"
                     TEXT_FIELD -> "テキストフィールド確認"
                     PAGER -> "ページャー確認"
+                    SLIDER -> "スライダー確認"
                 }
             }
         val type: KClass<out SmartViewController>
@@ -52,6 +49,7 @@ class TopViewController : SmartViewController(), UITableViewDelegate, UITableVie
                     SEGMENT -> SegmentCheckViewController::class
                     TEXT_FIELD -> TextFieldCheckViewController::class
                     PAGER -> PagerCheckViewController::class
+                    SLIDER -> SliderCheckViewController::class
                 }
             }
         val id: String?

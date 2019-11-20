@@ -5,6 +5,9 @@ import android.util.AttributeSet
 import android.widget.SeekBar
 import androidx.appcompat.widget.AppCompatSeekBar
 import kibaan.android.R
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.roundToInt
 
 interface UISliderDelegate {
     fun onSliderValueChanged(slider: UISlider)
@@ -15,24 +18,35 @@ open class UISlider : AppCompatSeekBar {
     /**
      * スライダーの分解能。この値で分割した刻みでスライダーの値を取得できる
      */
-    var resolution: Int = 1000
+    private val resolution: Int = Integer.MAX_VALUE
+
+    /**
+     * SeekBarに設定する最大値。SeekBarのvalueは0始まりのため1ひく
+     */
+    private val innerMax: Int
+        get() = resolution - 1
 
     var value: Float
         get() {
-            return progressToValue(progress)
+            return progressToValue(innerProgress).toFloat()
         }
         set(value) {
+            var limitedValue = min(value, maximumValue)
+            limitedValue = max(limitedValue, minimumValue)
+
             // プログラムから値を変更した場合は、リスナーを呼びたくないので一度リスナーを外す
             setOnSeekBarChangeListener(null)
-            val rate = (value - minimumValue) / rangeWidth
-            progress = (rate * resolution).toInt()
+            innerProgress = valueToProgress(limitedValue.toDouble())
+            progress = innerProgress.roundToInt()
             setOnSeekBarChangeListener(seekBarChangeListener)
         }
 
-    var minimumValue: Float = 0.0f
+    private var innerProgress: Double = 0.0
 
+    var minimumValue: Float = 0.0f
     var maximumValue: Float = 1.0f
-    val rangeWidth: Float get() = (maximumValue - minimumValue)
+
+    private val rangeWidth: Double get() = (maximumValue - minimumValue).toDouble()
 
     var delegate: UISliderDelegate? = null
 
@@ -48,13 +62,8 @@ open class UISlider : AppCompatSeekBar {
         setupUISlider(context, attrs)
     }
 
-    private fun progressToValue(progress: Int): Float {
-        val add = rangeWidth * (progress / resolution.toFloat())
-        return minimumValue + add
-    }
-
     private fun setupUISlider(context: Context, attrs: AttributeSet? = null) {
-        max = resolution
+        max = innerMax
         if (attrs != null) {
             val array = context.obtainStyledAttributes(attrs, R.styleable.UISlider)
             value = array.getFloat(R.styleable.UISlider_value, 0.0f)
@@ -65,12 +74,23 @@ open class UISlider : AppCompatSeekBar {
         setOnSeekBarChangeListener(seekBarChangeListener)
     }
 
+    private fun progressToValue(progress: Double): Double {
+        val add = rangeWidth * (progress / resolution.toFloat())
+        return minimumValue + add
+    }
+
+    private fun valueToProgress(value: Double): Double {
+        val rate = (value - minimumValue) / rangeWidth
+        return rate * innerMax
+    }
+
     private val seekBarChangeListener = object : OnSeekBarChangeListener {
-        override fun onProgressChanged(p0: SeekBar, p1: Int, p2: Boolean) {
-            delegate?.onSliderValueChanged(p0 as UISlider)
+        override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+            innerProgress = progress.toDouble()
+            delegate?.onSliderValueChanged(seekBar as UISlider)
         }
 
-        override fun onStartTrackingTouch(p0: SeekBar?) {}
-        override fun onStopTrackingTouch(p0: SeekBar) {}
+        override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+        override fun onStopTrackingTouch(seekBar: SeekBar) {}
     }
 }
