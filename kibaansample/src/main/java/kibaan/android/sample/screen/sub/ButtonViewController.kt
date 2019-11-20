@@ -2,13 +2,13 @@ package kibaan.android.sample.screen.sub
 
 import android.view.View
 import kibaan.android.extension.toggled
+import kibaan.android.framework.ScreenService
 import kibaan.android.framework.SmartViewController
 import kibaan.android.ios.IBAction
 import kibaan.android.ios.IBOutlet
+import kibaan.android.ios.UIButton
 import kibaan.android.ios.UIControlState
 import kibaan.android.sample.R
-import kibaan.android.framework.ScreenService
-import kibaan.android.ios.UIButton
 import kibaan.android.ui.SmartButton
 
 /**
@@ -21,6 +21,8 @@ class ButtonViewController : SmartViewController() {
     @IBOutlet(R.id.set_image_button) lateinit var setImageButton: SmartButton
     @IBOutlet(R.id.text_color_button) lateinit var textColorButton :UIButton
     @IBOutlet(R.id.background_color_button) lateinit var backgroundColorButton: SmartButton
+
+    @IBOutlet(R.id.bgSelectedImageButton) lateinit var bgSelectedImageButton: SmartButton
 
     // endregion
 
@@ -61,7 +63,10 @@ class ButtonViewController : SmartViewController() {
         }
     }
 
-//    fun action
+    @IBAction(R.id.bgSelectedImageButton)
+    fun actionBGSDelectedImageButton(sender: View) {
+        bgSelectedImageButton.isSelected = bgSelectedImageButton.isSelected.toggled()
+    }
 
     // endregion
 }

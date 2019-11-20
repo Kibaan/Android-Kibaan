@@ -3,15 +3,14 @@ package kibaan.android.ios
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.*
-import androidx.annotation.DrawableRes
-import androidx.appcompat.widget.AppCompatButton
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.ViewGroup
+import androidx.annotation.DrawableRes
+import androidx.appcompat.widget.AppCompatButton
 import kibaan.android.R
 import kibaan.android.extension.getBitmapOrNull
 import kibaan.android.extension.getUIColorOrNull
-import kibaan.android.util.min
 
 /**
  *
@@ -323,12 +322,8 @@ open class UIButton : AppCompatButton {
         super.draw(canvas)
         val canvas = canvas ?: return
         val bitmap = getImageBitmap() ?: return
-        val width = min(bitmap.width, this.width)
-        val height = min(bitmap.height, this.height)
-        val left = (this.width - width) / 2
-        val top = (this.height - height) / 2
-        val src = Rect(0, 0, width, height)
-        val dst = Rect(left, top, width + left, height + top)
+        val src = Rect(0, 0, bitmap.width, bitmap.height)
+        val dst = Rect(0, 0, width, height)
         canvas.drawBitmap(bitmap, src, dst, Paint())
     }
 
