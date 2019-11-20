@@ -75,7 +75,7 @@ open class UISlider : AppCompatSeekBar {
     }
 
     private fun progressToValue(progress: Double): Double {
-        val add = rangeWidth * (progress / resolution.toFloat())
+        val add = rangeWidth * (progress / innerMax.toFloat())
         return minimumValue + add
     }
 
