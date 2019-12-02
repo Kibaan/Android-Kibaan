@@ -202,7 +202,7 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
             isUserInteractionEnabled = array.getBoolean(R.styleable.SmartButton_isUserInteractionEnabled, isUserInteractionEnabled)
             adjustsFontSizeForDevice = array.getBoolean(R.styleable.SmartButton_adjustsFontSizeForDevice, adjustsFontSizeForDevice)
             useGlobalFont = array.getBoolean(R.styleable.SmartButton_useGlobalFont, useGlobalFont)
-            isEnableRepeat = array.getBoolean(R.styleable.SmartButton_enableRepeat, true)
+            isEnableRepeat = array.getBoolean(R.styleable.SmartButton_enableRepeat, false)
             iconScaleString = array.getStringOrNull(R.styleable.SmartButton_iconScale)
             iconTopInset = array.getFloat(R.styleable.SmartButton_iconTopInset, 0.0f).toDouble()
             iconBottomInset = array.getFloat(R.styleable.SmartButton_iconBottomInset, 0.0f).toDouble()
