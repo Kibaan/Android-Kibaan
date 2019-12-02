@@ -42,7 +42,7 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
     var isUserInteractionEnabled = true
 
     /** 長押しを有効とするか */
-    var isEnableRepeat: Boolean = true
+    var isEnableRepeat: Boolean = false
 
     var onTouchDownListener: OnTouchDownListener? = null
 
