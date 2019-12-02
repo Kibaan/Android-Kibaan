@@ -1,4 +1,4 @@
-package kibaan.android.sample.screen.sub
+package kibaan.android.sample.screen.button
 
 import android.view.View
 import kibaan.android.extension.toggled
