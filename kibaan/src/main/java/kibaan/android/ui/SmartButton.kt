@@ -328,7 +328,10 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
             }
             MotionEvent.ACTION_MOVE -> {
                 if (repeatTimer != null) {
-                    return isUserInteractionEnabled // 長押し処理中は他にイベントを通知しない
+                    // 長押し処理中は他にイベントを通知しない
+                    // NOTE ここで `true` を返すと、指をボタン外に動かしてもタップがキャンセルされなくなり、
+                    // ボタン外で指を離してもクリックイベントが発生するようになってしまう。
+                    return isUserInteractionEnabled
                 }
             }
             MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
