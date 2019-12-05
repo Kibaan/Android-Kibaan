@@ -14,6 +14,7 @@ import kibaan.android.sample.screen.page.FirstPageViewController
 import kibaan.android.sample.screen.slider.SliderCheckViewController
 import kibaan.android.sample.screen.sub.SubViewController
 import kibaan.android.sample.screen.table.SampleTableViewController
+import kibaan.android.sample.screen.table.TableDragViewController
 import kibaan.android.ui.SmartTableView
 import kotlin.reflect.KClass
 
@@ -23,7 +24,7 @@ import kotlin.reflect.KClass
 class TopViewController : SmartViewController(), UITableViewDelegate, UITableViewDataSource {
 
     enum class Screen {
-        PAGE, CONNECTION, TABLE, BUTTON, BUTTON_EVENT, SUB, SEGMENT, TEXT_FIELD, PAGER, SLIDER;
+        PAGE, CONNECTION, TABLE, TABLE_DRAG, BUTTON, BUTTON_EVENT, SUB, SEGMENT, TEXT_FIELD, PAGER, SLIDER;
 
         val text: String
             get() {
@@ -31,6 +32,7 @@ class TopViewController : SmartViewController(), UITableViewDelegate, UITableVie
                     PAGE -> "画面遷移確認"
                     CONNECTION -> "通信確認"
                     TABLE -> "テーブル確認"
+                    TABLE_DRAG -> "テーブルドラッグ"
                     BUTTON -> "ボタン確認"
                     BUTTON_EVENT -> "ボタンイベント"
                     SUB -> "サブ画面"
@@ -46,6 +48,7 @@ class TopViewController : SmartViewController(), UITableViewDelegate, UITableVie
                     PAGE -> FirstPageViewController::class
                     CONNECTION -> ConnectionViewController::class
                     TABLE -> SampleTableViewController::class
+                    TABLE_DRAG -> TableDragViewController::class
                     BUTTON -> ButtonViewController::class
                     BUTTON_EVENT -> ButtonEventViewController::class
                     SUB -> SubViewController::class

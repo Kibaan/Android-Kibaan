@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Switch
+        android:id="@+id/editSwitch"
+        android:text="編集"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
+
+    <Switch
+        android:id="@+id/longPressSwitch"
+        android:text="長押し"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintTop_toTopOf="@+id/editSwitch"
+        app:layout_constraintLeft_toRightOf="@+id/editSwitch"
+        />
+
+    <kibaan.android.ui.SmartTableView
+        android:id="@+id/tableView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:separatorColor="#CCCCCC"
+        app:layout_constraintTop_toBottomOf="@id/editSwitch"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
