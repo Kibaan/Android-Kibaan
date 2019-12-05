@@ -14,10 +14,11 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import kibaan.android.R
+import kibaan.android.extension.dpToPx
 import kibaan.android.util.DeviceUtils
 
 
-class UITableViewAdapter(private var tableView: UITableView) : androidx.recyclerview.widget.RecyclerView.Adapter<UITableViewAdapter.UITableViewHolder>() {
+class UITableViewAdapter(val tableView: UITableView) : androidx.recyclerview.widget.RecyclerView.Adapter<UITableViewAdapter.UITableViewHolder>() {
 
     // region -> Variables
 
@@ -89,7 +90,7 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
         }
 
         override fun isLongPressDragEnabled(): Boolean {
-            return false
+            return tableView.isLongPressDragEnabled
         }
     })
 
@@ -153,11 +154,11 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
                 }
                 return@setOnTouchListener false
             }
-            UITableViewHolder(cell)
+            UITableViewHolder(cell, this)
         } else {
             val frameView = FrameLayout(context)
             frameView.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT)
-            UITableViewHolder(frameView)
+            UITableViewHolder(frameView, this)
         }
     }
 
@@ -378,7 +379,7 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
     // region -> Inner class
 
     @SuppressLint("ClickableViewAccessibility")
-    open class UITableViewHolder(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
+    open class UITableViewHolder(view: View, val adapter: UITableViewAdapter) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
 
         var draggableListener: UITableViewAdapter? = null
 
@@ -392,10 +393,14 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
             linearLayout.addView(leftLineView, ViewGroup.LayoutParams(DeviceUtils.toPx(view.context, 1), ViewGroup.LayoutParams.MATCH_PARENT))
 
             val imageView = ImageView(itemView.context)
-            val padding = DeviceUtils.toPx(itemView.context, 14)
+            val padding = itemView.context.dpToPx(14)
             imageView.setImageResource(R.drawable.sort_edit)
             imageView.setPadding(padding, padding, padding, padding)
             val listener = View.OnTouchListener { _, motionEvent ->
+                if (adapter.tableView.isLongPressDragEnabled) {
+                    return@OnTouchListener false
+                }
+
                 when (motionEvent.action) {
                     MotionEvent.ACTION_DOWN -> {
                         draggableListener?.onStartDrag(this)

@@ -6,7 +6,6 @@ import kibaan.android.framework.SmartViewController
 import kibaan.android.ios.*
 import kibaan.android.sample.R
 import kibaan.android.ui.SmartTableView
-import kibaan.android.ui.ToastPopup
 
 /**
  * UITableView関連の動作をチェックする為のコントローラ
@@ -40,7 +39,7 @@ class TableDragViewController : SmartViewController(), UITableViewDataSource, UI
 
     @IBAction(R.id.longPressSwitch)
     fun actionLongPressSwitch(sender: View) {
-        ToastPopup.show("LongPress")
+        tableView.isLongPressDragEnabled = longPressSwitch.isChecked
     }
 
     override fun numberOfRows(tableView: UITableView, section: Int): Int {

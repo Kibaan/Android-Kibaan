@@ -42,6 +42,12 @@ open class UITableView : FrameLayout {
             adapter?.notifyDataSetChanged()
         }
 
+    var isLongPressDragEnabled = false
+        set(value) {
+            field = value
+            adapter?.notifyDataSetChanged()
+        }
+
     // endregion
 
     // region -> Variables
