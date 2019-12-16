@@ -79,7 +79,6 @@ abstract class HTTPDataTask<DataType : Any> : HTTPTask {
         super.statusCodeError(response, data)
         handler.post {
             handleError(HTTPTaskError.statusCode, result = null, response = response, data = data)
-            next()
         }
     }
 
