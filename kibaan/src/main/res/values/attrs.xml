@@ -11,6 +11,8 @@
     <attr name="isUserInteractionEnabled" format="boolean" />
     <!-- 文字サイズを端末サイズに合わせて調整するかどうか -->
     <attr name="adjustsFontSizeForDevice" format="boolean" />
+    <!-- 文字サイズを横幅に合わせて調整するかどうか -->
+    <attr name="adjustsFontSizeForWidth" format="boolean" />
     <!-- カスタムフォントを使用するかどうか -->
     <attr name="useGlobalFont" format="boolean" />
 
