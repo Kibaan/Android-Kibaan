@@ -329,7 +329,15 @@ open class LocalStorage {
     fun setCodable(key: String, value: Any, willSave: Boolean = true) {
         val json = Gson().toJson(value)
         setString(key, json, willSave)
+    }
 
+    fun setCodableOrNil(key: String, value: Any?, willSave: Boolean = true) {
+        if (value != null) {
+            val json = Gson().toJson(value)
+            setString(key, json, willSave)
+        } else {
+            setStringOrNil(key, value, willSave)
+        }
     }
     // endregion
 
