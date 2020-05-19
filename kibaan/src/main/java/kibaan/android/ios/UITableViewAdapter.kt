@@ -14,10 +14,11 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import kibaan.android.R
+import kibaan.android.extension.dpToPx
 import kibaan.android.util.DeviceUtils
 
 
-class UITableViewAdapter(private var tableView: UITableView) : androidx.recyclerview.widget.RecyclerView.Adapter<UITableViewAdapter.UITableViewHolder>() {
+class UITableViewAdapter(val tableView: UITableView) : androidx.recyclerview.widget.RecyclerView.Adapter<UITableViewAdapter.UITableViewHolder>() {
 
     // region -> Variables
 
@@ -89,7 +90,7 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
         }
 
         override fun isLongPressDragEnabled(): Boolean {
-            return false
+            return tableView.isLongPressDragEnabled
         }
     })
 
@@ -153,11 +154,11 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
                 }
                 return@setOnTouchListener false
             }
-            UITableViewHolder(cell)
+            UITableViewHolder(cell, this)
         } else {
             val frameView = FrameLayout(context)
             frameView.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT)
-            UITableViewHolder(frameView)
+            UITableViewHolder(frameView, this)
         }
     }
 
@@ -194,7 +195,7 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
                     view = UITableViewHeaderFooterView(context, title)
                 }
                 holder.replaceInnerView(view)
-                val height = tableView.delegate?.heightForHeaderInSection(tableView, section = indexPath.section)
+                val height = tableView.delegate?.heightForHeaderInSection(tableView, section = indexPath.section) ?: tableView.sectionHeaderHeight
                 if (height != null) {
                     updateCellHeight(holder.itemView, dpHeight = height)
                 }
@@ -207,7 +208,7 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
                     view = UITableViewHeaderFooterView(context, title)
                 }
                 holder.replaceInnerView(view)
-                val height = tableView.delegate?.heightForFooterInSection(tableView, section = indexPath.section)
+                val height = tableView.delegate?.heightForFooterInSection(tableView, section = indexPath.section) ?: tableView.sectionFooterHeight
                 if (height != null) {
                     updateCellHeight(holder.itemView, dpHeight = height)
                 }
@@ -307,7 +308,7 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
             list.add(SectionInfo(null, true, false, 0, startPosition))
             startPosition += 1
         }
-        val sectionCount = tableView.dataSource?.numberOfSection(tableView) ?: 1
+        val sectionCount = tableView.dataSource?.numberOfSections(tableView) ?: 1
         (0 until sectionCount).forEach {
             val rowCount = (tableView.dataSource?.numberOfRows(tableView, section = it) ?: 0)
             val hasSectionHeader = hasHeaderOfSection(section = it)
@@ -330,9 +331,12 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
         if (title != null) {
             return true
         }
-        // TODO:sectionHeaderHeightを追加
-        val viewHeight = tableView.delegate?.heightForHeaderInSection(tableView, section = section) ?: Double.leastNormalMagnitude
+        val viewHeight = tableView.sectionHeaderHeight ?: Double.leastNormalMagnitude
         if (viewHeight != CGFloat.leastNormalMagnitude && viewHeight != UITableViewAutomaticDimension) {
+            return true
+        }
+        val heightOfSection = tableView.delegate?.heightForHeaderInSection(tableView, section = section)
+        if (heightOfSection != null && heightOfSection != Double.leastNormalMagnitude) {
             return true
         }
         val view = tableView.delegate?.viewForHeaderInSection(tableView, section = section)
@@ -375,7 +379,7 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
     // region -> Inner class
 
     @SuppressLint("ClickableViewAccessibility")
-    open class UITableViewHolder(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
+    open class UITableViewHolder(view: View, val adapter: UITableViewAdapter) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
 
         var draggableListener: UITableViewAdapter? = null
 
@@ -389,10 +393,14 @@ class UITableViewAdapter(private var tableView: UITableView) : androidx.recycler
             linearLayout.addView(leftLineView, ViewGroup.LayoutParams(DeviceUtils.toPx(view.context, 1), ViewGroup.LayoutParams.MATCH_PARENT))
 
             val imageView = ImageView(itemView.context)
-            val padding = DeviceUtils.toPx(itemView.context, 14)
+            val padding = itemView.context.dpToPx(14)
             imageView.setImageResource(R.drawable.sort_edit)
             imageView.setPadding(padding, padding, padding, padding)
             val listener = View.OnTouchListener { _, motionEvent ->
+                if (adapter.tableView.isLongPressDragEnabled) {
+                    return@OnTouchListener false
+                }
+
                 when (motionEvent.action) {
                     MotionEvent.ACTION_DOWN -> {
                         draggableListener?.onStartDrag(this)

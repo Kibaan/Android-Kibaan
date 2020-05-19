@@ -1,78 +1,104 @@
 package kibaan.android.sample.screen.top
 
 import android.view.View
-import android.widget.ImageView
-import kibaan.android.framework.ScreenService
 import kibaan.android.framework.SmartViewController
 import kibaan.android.ios.*
 import kibaan.android.sample.R
+import kibaan.android.sample.screen.button.ButtonEventViewController
+import kibaan.android.sample.screen.button.ButtonViewController
 import kibaan.android.sample.screen.connection.ConnectionViewController
+import kibaan.android.sample.screen.other.PagerCheckViewController
+import kibaan.android.sample.screen.other.SegmentCheckViewController
+import kibaan.android.sample.screen.other.TextFieldCheckViewController
 import kibaan.android.sample.screen.page.FirstPageViewController
-import kibaan.android.sample.screen.sub.ButtonViewController
+import kibaan.android.sample.screen.slider.SliderCheckViewController
 import kibaan.android.sample.screen.sub.SubViewController
 import kibaan.android.sample.screen.table.SampleTableViewController
-import kibaan.android.ui.ScrollSegmentedButton
-import kibaan.android.ui.SmartButton
-import kibaan.android.util.Log
+import kibaan.android.sample.screen.table.TableDragViewController
+import kibaan.android.ui.SmartTableView
+import kotlin.reflect.KClass
 
 /**
  * トップ画面
  */
-class TopViewController : SmartViewController() {
+class TopViewController : SmartViewController(), UITableViewDelegate, UITableViewDataSource {
 
-    @IBOutlet(R.id.hadoken_image) lateinit var imageView: ImageView
-    @IBOutlet(R.id.scrollSegment) lateinit var scrollSegment: ScrollSegmentedButton
+    enum class Screen {
+        PAGE, CONNECTION, TABLE, TABLE_DRAG, BUTTON, BUTTON_EVENT, SUB, SEGMENT, TEXT_FIELD, PAGER, SLIDER;
+
+        val text: String
+            get() {
+                return when (this) {
+                    PAGE -> "画面遷移確認"
+                    CONNECTION -> "通信確認"
+                    TABLE -> "テーブル確認"
+                    TABLE_DRAG -> "テーブルドラッグ"
+                    BUTTON -> "ボタン確認"
+                    BUTTON_EVENT -> "ボタンイベント"
+                    SUB -> "サブ画面"
+                    SEGMENT -> "セグメント確認"
+                    TEXT_FIELD -> "テキストフィールド確認"
+                    PAGER -> "ページャー確認"
+                    SLIDER -> "スライダー確認"
+                }
+            }
+        val type: KClass<out SmartViewController>
+            get() {
+                return when (this) {
+                    PAGE -> FirstPageViewController::class
+                    CONNECTION -> ConnectionViewController::class
+                    TABLE -> SampleTableViewController::class
+                    TABLE_DRAG -> TableDragViewController::class
+                    BUTTON -> ButtonViewController::class
+                    BUTTON_EVENT -> ButtonEventViewController::class
+                    SUB -> SubViewController::class
+                    SEGMENT -> SegmentCheckViewController::class
+                    TEXT_FIELD -> TextFieldCheckViewController::class
+                    PAGER -> PagerCheckViewController::class
+                    SLIDER -> SliderCheckViewController::class
+                }
+            }
+        val id: String?
+            get() {
+                return when (this) {
+                    PAGE -> "test_0"
+                    else -> null
+                }
+            }
+    }
+
+    @IBOutlet(R.id.tableView)
+    lateinit var tableView: SmartTableView
+
+    override val nextScreenContainer: View get() = view
 
     override fun viewDidLoad() {
         super.viewDidLoad()
-
-        imageView.image = UIImage(context = context!!, named = "hadoken").drawable
-
-        scrollSegment.setup(buttonCount = 10, buttonMaker = {
-            SmartButton(context!!)
-        })
-        scrollSegment.onSelected = {oldIndex, index ->
-            Log.d(javaClass.simpleName, "$oldIndex > $index")
-        }
-        scrollSegment.select(0, animated = false, needsCallback = false)
+        tableView.delegate = this
+        tableView.dataSource = this
     }
 
     override fun onEnterForeground() {
         super.onEnterForeground()
-
-        scrollSegment.titles = (1..10).map { "ウォッチ$it" }
-        scrollSegment.select(0)
+        tableView.reloadData()
     }
 
-    @IBAction(R.id.page_button)
-    fun actionPageButton(sender: View) {
-        ScreenService.shared.addSubScreen(FirstPageViewController::class, id = "test_0")
+    override fun numberOfRows(tableView: UITableView, section: Int): Int {
+        return Screen.values().size
     }
 
-    @IBAction(R.id.count_up_button)
-    fun actionCountUp(sender: View) {
+    @Suppress("NAME_SHADOWING")
+    override fun cellForRow(tableView: UITableView, indexPath: IndexPath): View {
+        val tableView = tableView as? SmartTableView ?: return UITableViewCell(context)
+        val cell = tableView.registeredCell(indexPath, UITableViewCell::class)
+        cell.backgroundColor = UIColor(0xFF555555)
+        cell.textLabel?.textColor = UIColor.white
+        cell.textLabel?.text = Screen.values()[indexPath.row].text
+        return cell
     }
 
-    @IBAction(R.id.connection_button)
-    fun actionConnectionButton(sender: View) {
-        Log.d(javaClass.simpleName, "actionConnectionButton: ${System.currentTimeMillis()}")
-        ScreenService.shared.addSubScreen(ConnectionViewController::class)
+    override fun didSelectRow(tableView: UITableView, indexPath: IndexPath) {
+        val screen = Screen.values()[indexPath.row]
+        addNextScreen(screen.type, id = screen.id)
     }
-
-    @IBAction(R.id.table_button)
-    fun actionTableButton(sender: View) {
-        Log.d(javaClass.simpleName, "actionTableButton: ${System.currentTimeMillis()}")
-        ScreenService.shared.addSubScreen(SampleTableViewController::class)
-    }
-
-    @IBAction(R.id.button_button)
-    fun actionButtonButton(sender: View) {
-        ScreenService.shared.addSubScreen(ButtonViewController::class)
-    }
-
-    @IBAction(R.id.sub_button)
-    fun actionSubButton(sender: View) {
-        ScreenService.shared.addSubScreen(SubViewController::class)
-    }
-
 }

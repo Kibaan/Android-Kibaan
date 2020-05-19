@@ -3,7 +3,7 @@
   <groupId>kibaan.android</groupId>
   <artifactId>kibaan</artifactId>
   <versioning>
-    <release>0.7.77</release>
+    <release>0.8.06</release>
     <versions>
       <version>0.6.14</version>
       <version>0.6.15</version>
@@ -131,7 +131,36 @@
       <version>0.7.76</version>
       <version>0.7.77./ba</version>
       <version>0.7.77</version>
+      <version>0.7.78</version>
+      <version>0.7.79</version>
+      <version>0.7.80</version>
+      <version>0.7.81</version>
+      <version>0.7.82</version>
+      <version>0.7.83</version>
+      <version>0.7.84</version>
+      <version>0.7.85</version>
+      <version>0.7.86</version>
+      <version>0.7.87</version>
+      <version>0.7.88</version>
+      <version>0.7.89</version>
+      <version>0.7.90</version>
+      <version>0.7.91</version>
+      <version>0.7.92</version>
+      <version>0.7.93</version>
+      <version>0.7.94</version>
+      <version>0.7.95</version>
+      <version>0.7.96</version>
+      <version>0.7.97</version>
+      <version>0.7.98</version>
+      <version>0.7.99</version>
+      <version>0.8.00</version>
+      <version>0.8.01</version>
+      <version>0.8.02</version>
+      <version>0.8.03</version>
+      <version>0.8.04</version>
+      <version>0.8.05</version>
+      <version>0.8.06</version>
     </versions>
-    <lastUpdated>20190530023624</lastUpdated>
+    <lastUpdated>20191216072106</lastUpdated>
   </versioning>
 </metadata>

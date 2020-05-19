@@ -17,9 +17,10 @@ fun <T> MutableList<T>.removeLast(): T? {
 }
 
 fun <T> MutableList<T>.removeSubrange(range: IntRange) {
-    if (range.first < range.last) {
-        val remove = subList(range.first, range.last).toList()
-        removeAll(remove)
+    if (range.first <= range.last) {
+        range.reversed().forEach {
+            removeAt(it)
+        }
     }
 }
 

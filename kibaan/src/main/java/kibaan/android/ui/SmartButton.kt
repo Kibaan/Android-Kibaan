@@ -42,7 +42,7 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
     var isUserInteractionEnabled = true
 
     /** 長押しを有効とするか */
-    var isEnableRepeat: Boolean = true
+    var isEnableRepeat: Boolean = false
 
     var onTouchDownListener: OnTouchDownListener? = null
 
@@ -202,7 +202,7 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
             isUserInteractionEnabled = array.getBoolean(R.styleable.SmartButton_isUserInteractionEnabled, isUserInteractionEnabled)
             adjustsFontSizeForDevice = array.getBoolean(R.styleable.SmartButton_adjustsFontSizeForDevice, adjustsFontSizeForDevice)
             useGlobalFont = array.getBoolean(R.styleable.SmartButton_useGlobalFont, useGlobalFont)
-            isEnableRepeat = array.getBoolean(R.styleable.SmartButton_enableRepeat, true)
+            isEnableRepeat = array.getBoolean(R.styleable.SmartButton_enableRepeat, false)
             iconScaleString = array.getStringOrNull(R.styleable.SmartButton_iconScale)
             iconTopInset = array.getFloat(R.styleable.SmartButton_iconTopInset, 0.0f).toDouble()
             iconBottomInset = array.getFloat(R.styleable.SmartButton_iconBottomInset, 0.0f).toDouble()
@@ -328,7 +328,10 @@ open class SmartButton : UIButton, View.OnTouchListener, SmartFontProtocol, View
             }
             MotionEvent.ACTION_MOVE -> {
                 if (repeatTimer != null) {
-                    return isUserInteractionEnabled // 長押し処理中は他にイベントを通知しない
+                    // 長押し処理中は他にイベントを通知しない
+                    // NOTE ここで `true` を返すと、指をボタン外に動かしてもタップがキャンセルされなくなり、
+                    // ボタン外で指を離してもクリックイベントが発生するようになってしまう。
+                    return isUserInteractionEnabled
                 }
             }
             MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {

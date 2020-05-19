@@ -1,6 +1,7 @@
 package kibaan.android.ios
 
 import android.graphics.Color
+import kibaan.android.extension.substringFrom
 import java.lang.Math.min
 
 /**
@@ -20,7 +21,7 @@ class UIColor {
         val gray = UIColor(rgbValue = 0x808080)
         val yellow = UIColor(rgbValue = 0xFFFF00)
         val cyan = UIColor(rgbValue = 0x00FFFF)
-        val lightGray = UIColor(rgbValue = 0xFFFFFF, alpha = 0.667)
+        val lightGray = UIColor(rgbValue = 0x9A9A9A)
         val defaultTint = UIColor(rgbValue = 0x007AF)
     }
 
@@ -63,16 +64,14 @@ class UIColor {
     }
 
     constructor(argbHex: String) {
-        val code = argbHex.removePrefix("#")
-        if (code.count != 8) {
-            return
+        var code = argbHex.removePrefix("#")
+        var alpha: CGFloat = 1.0
+        if (code.count == 8) {
+            val aStr = code.substring(0 .. 1)
+            code = code.substringFrom(2) ?: ""
+            alpha = (aStr.toIntOrNull(16) ?: 0) / 255.0
         }
-
-        val aStr = code.substring(0 .. 1)
-        val alpha = (aStr.toIntOrNull(16) ?: 0) / 255.0
-        val rgb = code.substring(startIndex = 2)
-
-        val rgbValue = rgb.toIntOrNull(16) ?: 0xFFFFFF
+        val rgbValue = code.toIntOrNull(16) ?: 0xFFFFFF
         setColorInt(rgbValue, alpha)
     }
 
@@ -112,5 +111,9 @@ class UIColor {
         val green = min(Color.green(intValue) / 255.0 + value, 1.0)
         val blue = min(Color.blue(intValue) / 255.0 + value, 1.0)
         return UIColor(red = red, green = green, blue = blue, alpha = Color.alpha(intValue) / 255.0)
+    }
+
+    fun withAlphaComponent(alpha: Double): UIColor {
+        return UIColor(argbInt and 0x00FFFFFF, alpha)
     }
 }

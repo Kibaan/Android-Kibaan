@@ -2,6 +2,7 @@ package kibaan.android.ios
 
 import android.content.Context
 import android.util.TypedValue
+import android.view.Gravity
 import kibaan.android.ui.RoundedFrameLayout
 import kibaan.android.ui.SmartLabel
 import kibaan.android.util.DeviceUtils
@@ -17,6 +18,7 @@ class UITableViewHeaderFooterView(context: Context) : RoundedFrameLayout(context
         textLabel?.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
         textLabel?.textColor = UIColor(rgbValue = 0x333333)
         textLabel?.isBold = true
+        textLabel?.gravity = Gravity.BOTTOM
     }
 
     constructor(context: Context, title: String) : this(context) {

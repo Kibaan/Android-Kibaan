@@ -76,8 +76,12 @@ open class UIViewController(layoutName: String? = null) {
     }
 
     init {
-        val context = globalContext ?: throw IllegalStateException("Context is not set. Call UIViewController.setGlobalContext(Context) before init.")
-        loadLayout(context = context, layoutName = layoutName)
+        val context = globalContext
+        if (context != null) {
+            loadLayout(context = context, layoutName = layoutName)
+        } else {
+            Log.e(javaClass.simpleName, "Context is not set. Call UIViewController.setGlobalContext(Context) before init.")
+        }
     }
 
     // レイアウトファイルを読み込み、Viewを作成する

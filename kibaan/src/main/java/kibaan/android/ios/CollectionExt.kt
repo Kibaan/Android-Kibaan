@@ -86,6 +86,11 @@ fun <T, R : Any> Collection<T>.compactMap(transform: (T) -> R?): List<R> {
     return mapNotNull(transform)
 }
 
+/**
+ * 引数の関数で大小比較して並べ替える。
+ * iOSは比較結果を Bool で返して並べ替えができるが、Kotlinのsort関数は大・小・同値で返さないと並べ替えられないため、
+ * IFがiOSと少し異なっている。
+ */
 fun <T> Collection<T>.sorted(by: (T, T) -> ComparisonResult): List<T> {
     return sortedWith(Comparator { left, right ->
         when (by(left, right)) {
@@ -93,6 +98,12 @@ fun <T> Collection<T>.sorted(by: (T, T) -> ComparisonResult): List<T> {
             ComparisonResult.orderedDescending -> 1
             else -> 0
         }
+    })
+}
+
+fun <T> Collection<T>.sortedByInt(by: (T, T) -> Int): List<T> {
+    return sortedWith(Comparator { left, right ->
+        by(left, right)
     })
 }
 

@@ -42,6 +42,12 @@ open class UITableView : FrameLayout {
             adapter?.notifyDataSetChanged()
         }
 
+    var isLongPressDragEnabled = false
+        set(value) {
+            field = value
+            adapter?.notifyDataSetChanged()
+        }
+
     // endregion
 
     // region -> Variables
@@ -63,9 +69,10 @@ open class UITableView : FrameLayout {
     /** セルの推定の高さ（iOS版との互換性を保つ為のプロパティであり、使用することはない） */
     @Suppress("unused")
     var estimatedRowHeight: CGFloat? = null
+    /** セクション内のヘッダーの高さ */
+    var sectionHeaderHeight: CGFloat? = null
     /** セクション内フッターの高さ */
     var sectionFooterHeight: CGFloat? = null
-    // TODO:sectionHeaderHeightを追加
 
     /** スクロール可能かどうか */
     var isScrollEnabled = true

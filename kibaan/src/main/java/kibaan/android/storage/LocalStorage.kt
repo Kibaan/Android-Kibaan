@@ -25,16 +25,21 @@ open class LocalStorage {
     val fileName: String
 
     val context: Context?
-        get() = SmartActivity.sharedOrNull
+        get() = SmartActivity.shared
 
-    constructor(fileName: String) {
+    constructor(fileName: String, load: Boolean = true) {
         this.fileName = fileName
-        loadItems()
+        if (load) {
+            loadItems()
+        }
     }
 
-    constructor() {
-        fileName = this::class.simpleName.toString() // クラス名をファイル名とする
-        loadItems()
+    constructor(load: Boolean = true) {
+        // 引数なしコンストラクタではクラス名をファイル名とする
+        fileName = this::class.simpleName.toString()
+        if (load) {
+            loadItems()
+        }
     }
 
     constructor(other: LocalStorage) {
@@ -88,9 +93,11 @@ open class LocalStorage {
         val jsonString = jsonObject.toString()
 
         try {
-            val output = SmartActivity.shared.openFileOutput(filePath, Context.MODE_PRIVATE)
-            PrintWriter(output).use { writer ->
-                writer.print(jsonString)
+            val output = SmartActivity.shared?.openFileOutput(filePath, Context.MODE_PRIVATE)
+            if (output != null) {
+                PrintWriter(output).use { writer ->
+                    writer.print(jsonString)
+                }
             }
         } catch (e: Exception) {
             e.printStackTrace()

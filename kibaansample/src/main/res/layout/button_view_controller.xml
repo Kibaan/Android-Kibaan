@@ -317,6 +317,33 @@
         android:layout_marginLeft="10dp"
     />
 
+    <kibaan.android.ui.SmartButton
+        android:id="@+id/bgImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="背景画像"
+        android:textSize="50sp"
+        app:defaultImage="@drawable/rounded_corner"
+        android:background="@color/clear"
+        app:layout_constraintTop_toBottomOf="@id/text_color_button"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="10dp"
+        />
+
+    <kibaan.android.ui.SmartButton
+        android:id="@+id/bgSelectedImageButton"
+        android:layout_width="40dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="10dp"
+        android:text="1"
+        android:background="@color/clear"
+        app:selectedImage="@drawable/rounded_corner"
+        app:layout_constraintTop_toBottomOf="@id/text_color_button"
+        app:layout_constraintLeft_toRightOf="@+id/bgImageButton"
+        android:layout_marginLeft="10dp"
+        />
+
     <kibaan.android.sample.screen.sub.SampleCustomView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

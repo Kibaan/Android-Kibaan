@@ -33,5 +33,14 @@ class UIColorTest {
         assertEquals(expected, UIColor(rgbHex = "1234EF"))
         assertEquals(expected, UIColor(argbHex = "#FF1234EF"))
         assertEquals(expected, UIColor(argbHex = "FF1234EF"))
+        assertEquals(expected, UIColor(argbHex = "1234EF"))
+    }
+
+    @Test
+    fun testWithAlphaComponent() {
+        assertEquals(UIColor(argbHex = "FFFF0000"), UIColor(rgbValue = 0xFF0000, alpha = 0.5).withAlphaComponent(1.0))
+        assertEquals(UIColor(argbHex = "33FF0000"), UIColor(rgbValue = 0xFF0000, alpha = 1.0).withAlphaComponent(0.2))
+        assertEquals(UIColor(argbHex = "33FF0000"), UIColor(rgbValue = 0xFF0000, alpha = 1.0).withAlphaComponent(0.2))
+        assertEquals(UIColor(argbHex = "660000FF"), UIColor(rgbValue = 0x0000FF, alpha = 1.0).withAlphaComponent(0.4))
     }
 }

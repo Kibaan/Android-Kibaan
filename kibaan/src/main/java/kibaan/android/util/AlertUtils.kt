@@ -39,7 +39,7 @@ object AlertUtils {
              cancelHandler: (() -> Unit)? = null): AlertDialog? {
 
         if (!isEnabled) return null
-        val activity = SmartActivity.sharedOrNull ?: return null
+        val activity = SmartActivity.shared ?: return null
 
         val builder = AlertDialog.Builder(activity)
                 .setTitle(title)

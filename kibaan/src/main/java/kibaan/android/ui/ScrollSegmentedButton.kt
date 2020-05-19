@@ -95,6 +95,17 @@ class ScrollSegmentedButton : HorizontalScrollView {
     private val scrollMargin = 5000
 
     @AndroidUnique
+    private val animatedScrollGap: Long = 250
+
+    @AndroidUnique
+    private var smoothScrollingPoint: CGPoint? = null
+
+    @AndroidUnique
+    private val clearSmoothScrollingPoint = {
+        smoothScrollingPoint = null
+    }
+
+    @AndroidUnique
     var isScrollEnabled = true
 
     @AndroidUnique
@@ -300,7 +311,7 @@ class ScrollSegmentedButton : HorizontalScrollView {
         // 右端のさらに右が見える場合、ボタンをさらに右にもってくる
         val marginCount = this.marginCount
         (0..marginCount).forEach { index ->
-            if (margin + buttonWidthPx * (buttons.size - (marginCount - index)) < scrollX) {
+            if (margin + buttonWidthPx * (index + 1) < scrollX) {
                 val button = buttons.safeGet(index)
                 if (button != null) {
                     val layoutParams = LayoutParams(button.layoutParams.width, button.layoutParams.height)
@@ -314,7 +325,7 @@ class ScrollSegmentedButton : HorizontalScrollView {
 
     private fun updateDummyButton() {
         // ダミーボタンは常に右端に表示する
-        val maxX = buttons.map { it.left + buttonWidthPx }.sorted().lastOrNull()
+        val maxX = buttons.map { ((it.layoutParams as? MarginLayoutParams)?.leftMargin ?: 0) + buttonWidthPx }.sorted().lastOrNull()
         if (maxX != null) {
             val layoutParams = LayoutParams(dummyButton.layoutParams.width, dummyButton.layoutParams.height)
             layoutParams.leftMargin = maxX.toInt()
@@ -370,7 +381,7 @@ class ScrollSegmentedButton : HorizontalScrollView {
     // MARK: - Other
     /// ダミーボタンかどうか
     private fun isDummyButton(button: UIButton): Boolean =
-            button == dummyButton
+        button == dummyButton
 
     /// 選択中のボタンが中心に表示されるように位置を調整する
     private fun moveToCenter(animated: Boolean) {
@@ -383,15 +394,40 @@ class ScrollSegmentedButton : HorizontalScrollView {
         val x1 = scrollButtonWidthPx * index - (width / 2) + (scrollButtonWidthPx / 2)
         val x2 = x1 + (scrollButtonWidthPx * buttonCount)
         if (abs(scrollX - x1) < abs(scrollX - x2) && animated) {
-            setContentOffset(CGPoint(x = x1, y = 0.0), animated = animated)
+            if (x1 < 0) {
+                val contentWidth = ((scrollButtonWidthPx * buttonCount)).toInt()
+                val maxScrollOffset = scrollMargin + contentWidth
+                this.scrollX = maxScrollOffset
+                setContentOffset(CGPoint(x = x2, y = 0.0), animated = animated)
+            } else {
+                setContentOffset(CGPoint(x = x1, y = 0.0), animated = animated)
+            }
         } else {
-            setContentOffset(CGPoint(x = x2, y = 0.0), animated = animated)
+            val contentWidth = ((scrollButtonWidthPx * buttonCount)).toInt()
+            if (contentWidth < x2) {
+                this.scrollX = scrollMargin
+                setContentOffset(CGPoint(x = x1, y = 0.0), animated = animated)
+            } else {
+                setContentOffset(CGPoint(x = x2, y = 0.0), animated = animated)
+            }
         }
     }
 
     private fun setContentOffset(point: CGPoint, animated: Boolean) {
         val x = point.x + scrollMargin
         if (animated) {
+            if (smoothScrollingPoint?.x == point.x) {
+                return
+            }
+            smoothScrollingPoint = point
+
+            handler?.removeCallbacks(clearSmoothScrollingPoint)
+            handler?.postDelayed(clearSmoothScrollingPoint, animatedScrollGap)
+
+            if (handler == null) {
+                smoothScrollingPoint = null
+            }
+
             smoothScrollTo(x.toInt(), point.y.toInt())
         } else {
             scrollTo(x.toInt(), point.y.toInt())

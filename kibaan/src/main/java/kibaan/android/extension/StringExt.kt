@@ -7,6 +7,9 @@ import kibaan.android.ios.*
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.security.MessageDigest
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * スネークケースに変換する
@@ -175,7 +178,7 @@ fun String.split(length: Int): List<String> {
  */
 @Suppress("NAME_SHADOWING")
 fun String.splitFromLeft(length: Int): List<String> {
-    if (isEmpty) {
+    if (isEmpty || 0 >= length) {
         return listOf("")
     }
     val array: MutableList<String> = mutableListOf()
@@ -200,7 +203,7 @@ fun String.splitFromLeft(length: Int): List<String> {
  */
 @Suppress("NAME_SHADOWING")
 fun String.splitFromRight(length: Int): List<String> {
-    if (isEmpty) {
+    if (isEmpty || 0 >= length) {
         return listOf("")
     }
     val array: MutableList<String> = mutableListOf()
@@ -385,7 +388,7 @@ val String.literalEscaped: String
  */
 val String.localizedString: String
     get() {
-        val context = SmartActivity.sharedOrNull ?: return "Context is null"
+        val context = SmartActivity.shared ?: return "Context is null"
         val stringId = context.resources.getIdentifier(this, "string", context.packageName)
         if (stringId == 0) {
             return this
@@ -470,3 +473,14 @@ val String.decimalNumber: NSDecimalNumber?
         val decimalNumber = NSDecimalNumber(string = this)
         return if (decimalNumber.bigDecimal == null) null else decimalNumber
     }
+
+/**
+ * フォーマットを指定してDateオブジェクトを作成する
+ */
+fun String.date(format: String): Date? {
+    return try {
+        SimpleDateFormat(format, Locale.US).parse(this)
+    } catch (e: ParseException) {
+        null
+    }
+}

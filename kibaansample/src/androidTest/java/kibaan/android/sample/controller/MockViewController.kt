@@ -21,7 +21,7 @@ class MockViewController : MockBaseViewController() {
     val subVc2 = MockSubViewController()
     var tab: Tab = Tab.tab1
 
-    override val nextScreenTargetView: View get() = containerView
+    override val nextScreenContainer: View get() = containerView
 
     override val foregroundSubControllers: List<SmartViewController>
         get() = if (tab == Tab.tab1) listOf(subVc1) else listOf(subVc2)

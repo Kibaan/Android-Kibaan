@@ -3,7 +3,7 @@ package kibaan.android.ios
 import android.view.View
 
 interface UITableViewDataSource {
-    fun numberOfSection(tableView: UITableView): Int {
+    fun numberOfSections(tableView: UITableView): Int {
         return 1
     }
 

@@ -20,13 +20,28 @@ class ListExtTest {
     @Test
     fun testRemoveSubRange() {
         var list = mutableListOf("A", "B", "C", "D")
-        list.removeSubrange(0..2)
+        list.removeSubrange(0..0)
+        assertArrayEquals(arrayOf("B", "C", "D"), list.toTypedArray())
+
+        list = mutableListOf("A", "B", "C", "D")
+        list.removeSubrange(0..1)
         assertArrayEquals(arrayOf("C", "D"), list.toTypedArray())
 
         list = mutableListOf("A", "B", "C", "D")
-        list.removeSubrange(1..3)
+        list.removeSubrange(1..2)
         assertArrayEquals(arrayOf("A", "D"), list.toTypedArray())
 
+    }
+
+    @Test
+    fun testRemoveSubRangeDup() {
+        var list = mutableListOf("A", "A", "B", "B", "C", "C")
+        list.removeSubrange(0..2)
+        assertArrayEquals(arrayOf("B", "C", "C"), list.toTypedArray())
+
+        list = mutableListOf("A", "A", "B", "B", "C", "C")
+        list.removeSubrange(1..3)
+        assertArrayEquals(arrayOf("A", "C", "C"), list.toTypedArray())
     }
 
     @Test

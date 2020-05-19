@@ -9,6 +9,7 @@ import android.widget.FrameLayout
 import androidx.viewpager.widget.ViewPager
 import kibaan.android.ios.isHidden
 import kibaan.android.ios.removeFromSuperview
+import kibaan.android.ios.removeLast
 import kibaan.android.ios.safeGet
 
 /**
@@ -119,6 +120,15 @@ open class LoopPagerView : ViewPager {
         changePage(pageIndex = index, animated = animated)
     }
 
+    fun clear() {
+        pageViews.forEach {
+            it.removeFromSuperview()
+            pageFrames.removeAt(pageFrames.size - 1)
+        }
+        pageViews.clear()
+        adapter?.notifyDataSetChanged()
+    }
+
     private fun toRealPosition(position: Int): Int {
         return position + 1
     }
@@ -196,7 +206,7 @@ open class LoopPagerView : ViewPager {
 
             val nextPosition = if (currentItem != position) position else position + 1
             val nextFrame = pageFrames[nextPosition]
-            val nextPage = pageViews[toPagePosition(nextPosition)]
+            val nextPage = pageViews.safeGet(toPagePosition(nextPosition)) ?: return
 
             if (nextPage.parent != nextFrame) {
                 nextPage.removeFromSuperview()
@@ -235,6 +245,13 @@ open class LoopPagerView : ViewPager {
             }
 
             return frame
+        }
+
+        override fun getItemPosition(`object`: Any): Int {
+            if (pageFrames.contains(`object`)) {
+                return POSITION_UNCHANGED
+            }
+            return POSITION_NONE
         }
 
         override fun destroyItem(container: ViewGroup, position: Int, keyObject: Any) {}

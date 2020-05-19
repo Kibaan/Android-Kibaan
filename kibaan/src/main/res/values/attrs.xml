@@ -135,6 +135,8 @@
         <attr name="android:textSize" />
         <attr name="android:imeOptions" />
         <attr name="android:maxLength" />
+        <attr name="android:gravity" />
+        <attr name="android:textStyle" />
     </declare-styleable>
 
     <!-- SmartScrollView -->
@@ -152,16 +154,17 @@
     <!-- SegmentedButton -->
     <declare-styleable name="SegmentedButton">
         <attr name="segmentType" format="enum">
-            <enum name="PLAIN" value="0" />
-            <enum name="ROUNDED_SQUARE" value="1" />
+            <enum name="CUSTOM" value="0" />
+            <enum name="SQUARE" value="1" />
+            <enum name="ROUNDED_SQUARE" value="2" />
         </attr>
         <attr name="columnSize" format="integer" />
         <attr name="rowSize" format="integer" />
         <attr name="names" format="string" />
         <attr name="android:textSize" />
         <attr name="segmentCornerRadius" format="dimension" />
-        <attr name="horizontalSpacing"  format="float" />
-        <attr name="verticalSpacing"  format="float" />
+        <attr name="horizontalSpacing"  format="dimension" />
+        <attr name="verticalSpacing"  format="dimension" />
         <attr name="normalButtonBackgroundColor" format="color" />
         <attr name="selectedButtonBackgroundColor" format="color" />
         <attr name="normalButtonTextColor" format="color" />
@@ -183,6 +186,13 @@
         <attr name="scrollButtonWidth" format="dimension" />
         <attr name="titlesText" format="string" />
         <attr name="buttonCount" format="integer" />
+    </declare-styleable>
+
+    <!-- UISlider -->
+    <declare-styleable name="UISlider">
+        <attr name="value" format="float" />
+        <attr name="minimum" format="float" />
+        <attr name="maximum" format="float" />
     </declare-styleable>
 
 </resources>

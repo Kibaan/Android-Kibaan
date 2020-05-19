@@ -74,11 +74,21 @@ val View.frame: CGRect
         return CGRect(x, y, width = width, height = height)
     }
 
+val View.pxFrame: CGRect
+    get() {
+        return CGRect(left, top, width, height)
+    }
+
 val View.bounds: CGRect
     get() {
         val width = context.pxToDp(width).toDouble()
         val height = context.pxToDp(height).toDouble()
         return CGRect(0.0, 0.0, width = width, height = height)
+    }
+
+val View.pxBounds: CGRect
+    get() {
+        return CGRect(0, 0, width, height)
     }
 
 fun View.isDescendant(of: View): Boolean {

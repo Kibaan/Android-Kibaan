@@ -52,6 +52,7 @@ open class UITableViewCell : LinearLayout {
         set(value) {
             if (value != null) {
                 if (field != value) {
+                    value.removeFromSuperview()
                     addView(value, LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT))
                     value.backgroundColor = contentView?.backgroundColor
                 }
