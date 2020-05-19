@@ -1,6 +1,6 @@
 package kibaan.android.ios
 
-class NSAttributedString {
+data class NSAttributedString(val string: String, val attributes: Map<Key, Any>) {
     /**
      * iOSにあるキーの一部のみサポート
      */
