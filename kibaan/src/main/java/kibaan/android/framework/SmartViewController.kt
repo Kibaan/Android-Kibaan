@@ -1,9 +1,11 @@
 package kibaan.android.framework
 
 import android.animation.Animator
+import android.animation.TimeInterpolator
 import android.os.Build
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import kibaan.android.extension.isTrue
 import kibaan.android.ios.*
@@ -38,7 +40,7 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
     /** スライド表示させる画面を追加する対象のビュー */
     open val nextScreenContainer: View get() = throw AssertionError("When using the next screen, be sure to implement it in a subclass")
     /** スライドアニメーション時間 */
-    var nextScreenAnimationDuration: Long = 300
+    var nextScreenAnimationDuration: Long = 500
     /** オーバーレイ画面のオーナー */
     var owner: SmartViewController? = null
     /** スライド表示させた画面の遷移のルート */
@@ -187,19 +189,20 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
                     finish()
                 }
             }
+            val interpolator = DecelerateInterpolator(3.0f)
             android.os.Handler().postDelayed({
                 nextScreens.add(controller)
                 controller.view.animate().setDuration(0).translationX(controller.view.width.toFloat()).withEndAction {
                     controller.view.isHidden = false
                     controller.view.animate()
-                        .setInterpolator(LinearInterpolator())
+                        .setInterpolator(interpolator)
                         .setDuration(nextScreenAnimationDuration)
                         .translationX(0.0f)
                         .start()
                     prevView.animate()
-                        .setInterpolator(LinearInterpolator())
+                        .setInterpolator(interpolator)
                         .setDuration(nextScreenAnimationDuration)
-                        .translationX(-parentView.width.toFloat())
+                        .translationX(-parentView.width.toFloat() / 4)
                         .setListener(cancelListener)
                         .withEndAction(finish)
                         .start()
@@ -240,13 +243,14 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
         }
         val prevView = nextScreens.lastOrNull()?.view ?: targetView
         if (animated) {
+            val interpolator = DecelerateInterpolator(3.0f)
             removedScreen.view.animate()
-                .setInterpolator(LinearInterpolator())
+                .setInterpolator(interpolator)
                 .setDuration(nextScreenAnimationDuration)
                 .translationX(removedScreen.view.width.toFloat())
                 .withStartAction {
                     prevView.animate()
-                        .setInterpolator(LinearInterpolator())
+                        .setInterpolator(interpolator)
                         .setDuration(nextScreenAnimationDuration)
                         .translationX(0.0f)
                         .start()
