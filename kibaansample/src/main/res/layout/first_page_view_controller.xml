@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/contentsView"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/contentsView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/black">
@@ -11,111 +10,140 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:padding="10dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <kibaan.android.ui.SmartLabel
             android:id="@+id/title_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
+            android:layout_marginBottom="10dp"
             android:text="FirstPageViewController"
-            android:textStyle="bold"
+            android:textColor="@android:color/white"
             android:textSize="24sp"
-            android:layout_marginBottom="10dp"/>
+            android:textStyle="bold" />
 
         <kibaan.android.ui.SmartButton
             android:id="@+id/add_sub_screen_first_button"
             android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:background="#335599"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:layout_height="30dp"
-            android:textColor="@android:color/white"
-            android:background="#335599"
-            android:layout_marginBottom="10dp"
             android:text="addSubScreen(FirstPageViewController)"
             android:textAllCaps="false"
-            app:cornerRadius="15dp"/>
+            android:textColor="@android:color/white"
+            app:cornerRadius="15dp" />
 
         <kibaan.android.ui.SmartButton
             android:id="@+id/add_sub_screen_second_button"
             android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:background="#DD6600"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:layout_height="30dp"
-            android:textColor="@android:color/white"
-            android:background="#DD6600"
-            android:layout_marginBottom="10dp"
             android:text="addSubScreen(SecondPageViewController)"
             android:textAllCaps="false"
-            app:cornerRadius="15dp"/>
+            android:textColor="@android:color/white"
+            app:cornerRadius="15dp" />
+
+        <kibaan.android.ui.SmartButton
+            android:id="@+id/add_sub_screen_view_controller_button"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:background="#2266FF"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="addSubScreenViewController(InstancePage...)"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            app:cornerRadius="15dp" />
 
         <kibaan.android.ui.SmartButton
             android:id="@+id/remove_sub_screen_button"
             android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:background="#669922"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:layout_height="30dp"
-            android:textColor="@android:color/white"
-            android:background="#669922"
             android:text="removeSubScreen"
             android:textAllCaps="false"
-            android:layout_marginBottom="10dp"
-            app:cornerRadius="15dp"/>
+            android:textColor="@android:color/white"
+            app:cornerRadius="15dp" />
 
         <kibaan.android.ui.SmartButton
             android:id="@+id/remove_sub_screen_target_button"
             android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:background="#992222"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:layout_height="30dp"
-            android:textColor="@android:color/white"
-            android:background="#992222"
             android:text="removeSubScreen(to = SecondPageViewController_2)"
             android:textAllCaps="false"
-            android:layout_marginBottom="10dp"
-            app:cornerRadius="15dp"/>
+            android:textColor="@android:color/white"
+            app:cornerRadius="15dp" />
 
         <kibaan.android.ui.SmartButton
             android:id="@+id/remove_all_sub_screen_button"
             android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:background="#222299"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:layout_height="30dp"
-            android:textColor="@android:color/white"
-            android:background="#222299"
-            android:layout_marginBottom="10dp"
             android:text="removeAllSubScreen"
             android:textAllCaps="false"
-            app:cornerRadius="15dp"/>
+            android:textColor="@android:color/white"
+            app:cornerRadius="15dp" />
 
         <kibaan.android.ui.SmartButton
             android:id="@+id/add_next_screen"
             android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:background="#447799"
+            android:gravity="left|center_vertical"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:layout_height="30dp"
-            android:textColor="@android:color/white"
-            android:background="#447799"
-            android:layout_marginBottom="10dp"
             android:text="addNextScreen"
             android:textAllCaps="false"
-            app:cornerRadius="15dp"/>
+            android:textColor="@android:color/white"
+            app:cornerRadius="15dp" />
+
+        <kibaan.android.ui.SmartButton
+            android:id="@+id/add_next_screen_view_controller"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:background="#447799"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="addNextScreenViewController(InstancePage...)"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            app:cornerRadius="15dp" />
 
         <kibaan.android.ui.SmartButton
             android:id="@+id/remove_next_screen"
             android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:background="#BB7722"
+            android:gravity="left|center_vertical"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:layout_height="30dp"
-            android:textColor="@android:color/white"
-            android:background="#BB7722"
-            android:layout_marginBottom="10dp"
             android:text="removeNextScreen"
             android:textAllCaps="false"
-            app:cornerRadius="15dp"/>
+            android:textColor="@android:color/white"
+            app:cornerRadius="15dp" />
 
     </LinearLayout>
 

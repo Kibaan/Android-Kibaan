@@ -101,10 +101,16 @@ class ScreenService {
                                                cache: Boolean = true,
                                                transitionType: TransitionType = TransitionType.normal,
                                                prepare: ((T) -> Unit)? = null): T? {
+        val controller = ViewControllerCache.shared.get(type, layoutName = nibName, id = id, cache = cache)
+        return addSubScreenViewController(controller = controller, transitionType = transitionType, prepare = prepare)
+    }
+
+    fun <T : SmartViewController> addSubScreenViewController(controller: T,
+                                                             transitionType: TransitionType = TransitionType.normal,
+                                                             prepare: ((T) -> Unit)? = null): T? {
         activity?.isUserInteractionEnabled = false
 
         foregroundController?.leave()
-        val controller = ViewControllerCache.shared.get(type, layoutName = nibName, id = id, cache = cache)
         screenStack.add(controller)
         activity?.rootContainer?.addSubview(controller.view)
 

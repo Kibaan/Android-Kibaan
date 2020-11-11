@@ -40,7 +40,7 @@ class FirstPageViewController : SmartViewController() {
     // region -> Action
 
     @IBAction(R.id.add_sub_screen_first_button)
-    fun actionAddSubScreen(sender: View) {
+    fun actionAddSubScreen(@Suppress("UNUSED_PARAMETER") sender: View) {
         val nextCount = this.count + 1
         ScreenService.shared.addSubScreen(FirstPageViewController::class, id = "test_$nextCount", prepare = {
             it.count = nextCount
@@ -48,20 +48,26 @@ class FirstPageViewController : SmartViewController() {
     }
 
     @IBAction(R.id.add_sub_screen_second_button)
-    fun actionAddSubScreenSecond(sender: View) {
+    fun actionAddSubScreenSecond(@Suppress("UNUSED_PARAMETER") sender: View) {
         val nextCount = this.count + 1
         ScreenService.shared.addSubScreen(SecondPageViewController::class, id = "test_$nextCount", prepare = {
             it.count = nextCount
         })
     }
 
+    @IBAction(R.id.add_sub_screen_view_controller_button)
+    fun actionAddSubScreenViewController(@Suppress("UNUSED_PARAMETER") sender: View) {
+        val controller = InstancePageViewController(text = "インスタンス生成")
+        ScreenService.shared.addSubScreenViewController(controller)
+    }
+
     @IBAction(R.id.remove_sub_screen_button)
-    fun actionRemoveSubScreen(sender: View) {
+    fun actionRemoveSubScreen(@Suppress("UNUSED_PARAMETER") sender: View) {
         ScreenService.shared.removeSubScreen()
     }
 
     @IBAction(R.id.remove_sub_screen_target_button)
-    fun actionRemoveSubScreenTarget(sender: View) {
+    fun actionRemoveSubScreenTarget(@Suppress("UNUSED_PARAMETER") sender: View) {
         ScreenService.shared.removeSubScreen(
             to = ViewControllerCache.shared.get(
                 SecondPageViewController::class,
@@ -71,12 +77,12 @@ class FirstPageViewController : SmartViewController() {
     }
 
     @IBAction(R.id.remove_all_sub_screen_button)
-    fun actionRemoveAllSubScreen(sender: View) {
+    fun actionRemoveAllSubScreen(@Suppress("UNUSED_PARAMETER") sender: View) {
         ScreenService.shared.removeAllSubScreen()
     }
 
     @IBAction(R.id.add_next_screen)
-    fun actionAddNextScreen(sender: View) {
+    fun actionAddNextScreen(@Suppress("UNUSED_PARAMETER") sender: View) {
         val targetViewController = navigationRootController ?: this
         val nextCount = this.count + 1
         targetViewController.addNextScreen(SecondPageViewController::class, id = "test_$nextCount", prepare = {
@@ -84,8 +90,16 @@ class FirstPageViewController : SmartViewController() {
         })
     }
 
+    @IBAction(R.id.add_next_screen_view_controller)
+    fun actionAddNextScreenViewController(@Suppress("UNUSED_PARAMETER") sender: View) {
+        val targetViewController = navigationRootController ?: this
+        val controller = InstancePageViewController(text = "インスタンス生成したけど、表示されてる？")
+        targetViewController.addNextScreenViewController(controller)
+    }
+
+
     @IBAction(R.id.remove_next_screen)
-    fun actionRemoveNextScreen(sender: View) {
+    fun actionRemoveNextScreen(@Suppress("UNUSED_PARAMETER") sender: View) {
         navigationRootController?.removeNextScreen()
     }
 

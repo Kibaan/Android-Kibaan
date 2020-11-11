@@ -148,18 +148,20 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
     }
 
     /**
-     * ViewControllerをスライド表示させる（targetView指定なし）
+     * ViewControllerをスライド表示させる（タイプ指定）
      */
-    fun <T : SmartViewController> addNextScreen(type: KClass<T>, id: String? = null, cache: Boolean = true, animated: Boolean = true, prepare: ((T) -> Unit)? = null): T? {
-        return addNextScreen(type, targetView = nextScreenContainer, id = id, cache = cache, animated = animated, prepare = prepare)
+    fun <T : SmartViewController> addNextScreen(type: KClass<T>, targetView: View? = null, id: String? = null, cache: Boolean = true, animated: Boolean = true, prepare: ((T) -> Unit)? = null): T? {
+        val controller = ViewControllerCache.shared.get(type, id = id, cache = cache)
+        return addNextScreenViewController(controller, targetView = targetView, animated = animated, prepare = prepare)
     }
 
     /**
-     * ViewControllerをスライド表示させる（targetView指定あり）
+     * ViewControllerをスライド表示させる（コントローラ指定）
      */
-    fun <T : SmartViewController> addNextScreen(type: KClass<T>, targetView: View, id: String? = null, cache: Boolean = true, animated: Boolean = true, prepare: ((T) -> Unit)? = null): T? {
+    @Suppress("NAME_SHADOWING")
+    fun <T : SmartViewController> addNextScreenViewController(controller: T, targetView: View? = null, animated: Boolean = true, prepare: ((T) -> Unit)? = null): T? {
+        val targetView = targetView ?: nextScreenContainer
         checkTargetView(targetView)
-        val controller = ViewControllerCache.shared.get(type, id = id, cache = cache)
         val parentView = targetView.superview
         if (parentView == null || nextScreens.lastOrNull() == controller) {
             return null
@@ -288,10 +290,17 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
     // region -> Overlay
 
     /**
-     * ViewControllerを上に乗せる
+     * ViewControllerを上に乗せる（タイプ指定）
      */
     fun <T : SmartViewController> addOverlay(type: KClass<T>, id: String? = null, cache: Boolean = true, prepare: ((T) -> Unit)? = null): T? {
         val controller = ViewControllerCache.shared.get(type, id = id, cache = cache)
+        return addOverlayViewController(controller = controller, prepare = prepare)
+    }
+
+    /**
+     * ViewControllerを上に乗せる（コントローラ指定）
+     */
+    fun <T : SmartViewController> addOverlayViewController(controller: T, prepare: ((T) -> Unit)? = null): T? {
         controller.owner = this
         overlays.add(controller)
         view.addSubview(controller.view, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
