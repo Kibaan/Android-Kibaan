@@ -44,10 +44,19 @@ include ':app', ':kibaan'
 project(':kibaan').projectDir = new File('../Android-Kibaan/kibaan')
 ```
 
-- build.gradle のKibaanのdependencyを以下に変更
+- build.gradle のdependencyにkibaanのプロジェクト参照を追加
 
 ```
 implementation project(':kibaan')
+```
+
+- その他kibaanで利用しているライブラリのDependencyを追加。
+
+例）
+```
+implementation 'com.jakewharton:butterknife:10.1.0'
+implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha05'
 implementation 'com.google.code.gson:gson:2.8.2'
 ```
 
