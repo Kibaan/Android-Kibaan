@@ -33,6 +33,8 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
     private var overlays = mutableListOf<SmartViewController>()
     /** オーバーレイ画面が乗っているか */
     val hasOverlay: Boolean get() = !overlays.isEmpty()
+    /** NextScreenの画面遷移途中か */
+    private var duringNextScreenTransition = false
     /** スライド表示させた画面リスト */
     private var nextScreens = mutableListOf<SmartViewController>()
     /** スライド表示させた画面のビュー */
@@ -126,14 +128,17 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
 
     override fun viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        if (0 < nextScreens.count) {
-            val translationX = -(view.width).toFloat()
-            nextScreens.forEach {
-                it.view.translationX = translationX
+
+        if (!duringNextScreenTransition) {
+            if (0 < nextScreens.count) {
+                val translationX = -(view.width).toFloat()
+                nextScreens.forEach {
+                    it.view.translationX = translationX
+                }
+                nextScreenContainer.translationX = translationX
             }
-            nextScreenContainer.translationX = translationX
+            nextScreens.lastOrNull()?.view?.translationX = 0.0f
         }
-        nextScreens.lastOrNull()?.view?.translationX = 0.0f
     }
 
     // region -> Next screen
@@ -167,6 +172,7 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
             return null
         }
         SmartActivity.shared?.isUserInteractionEnabled = false
+        duringNextScreenTransition = true
 
         controller.navigationRootController = this
         val prevView = nextScreens.lastOrNull()?.view ?: targetView
@@ -175,6 +181,7 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
 
         val finish: () -> Unit = {
             SmartActivity.shared?.isUserInteractionEnabled = true
+            duringNextScreenTransition = false
         }
 
         (controller.view.parent as? ViewGroup)?.removeView(controller.view)
@@ -235,6 +242,7 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
         val removedScreen = this.nextScreens.removeLast() ?: return
 
         SmartActivity.shared?.isUserInteractionEnabled = false
+        duringNextScreenTransition = true
 
         removedScreen.leave()
         enter()
@@ -242,6 +250,7 @@ open class SmartViewController(layoutName: String? = null) : UIViewController(la
             removedScreen.view.removeFromSuperview()
             removedScreen.removed()
             SmartActivity.shared?.isUserInteractionEnabled = true
+            duringNextScreenTransition = false
         }
         val prevView = nextScreens.lastOrNull()?.view ?: targetView
         if (animated) {
