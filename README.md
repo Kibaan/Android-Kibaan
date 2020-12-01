@@ -4,7 +4,7 @@
 本READMEには、Android版特有のことについてのみ説明する。  
 
 ## 開発環境
-* Android Studio(v3.4)
+* Android Studio(v4.1)
 
 # リリース方法
 
