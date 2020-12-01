@@ -12,6 +12,13 @@
 2. プロジェクト直下にある`./buildAndArchive.sh`を実行する
 3. GitHubリポジトリにPUSHする
 
+※ build.gradleにも記載しているが、JDK10以上を使っていると `javax.xml.bind` がみつからずビルドエラーになる。
+そのため、buildAndArchive.sh を実行する前にJDK1.8に切り替える必要がある。（JDK1.8はインストールされている前提）
+
+```
+export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+```
+
 ## 内包ライブラリ（サードパーティ）
 * ButterKnife
 * OKHttp
